@@ -13,21 +13,22 @@ class UsersTableSeeder extends Seeder
     public function run()
     {
         $user1 = User::create([
-            'name' => 'Claudia',
+            'name' => 'Camilo',
             'lastname' => 'admin',
-            'email' => 'claudia@ucundinamarca.edu.co',
+            'email' => 'camilo@ucundinamarca.edu.co',
             'password' => '123456',
             'cedula' => '123',
             'id_estado' => '1'
         ]);
         $user1->assignRole('SUPERADMIN');
         $user1->assignRole('FUENTES_PRIMARIAS');
+        $user1->assignRole('FUENTES_SECUNDARIAS');
 
 
         $user1 = User::create([
-            'name' => 'Alejandro',
-            'lastname' => '2',
-            'email' => 'alejo@ucundinamarca.edu.co',
+            'name' => 'Fuentes Primarias',
+            'lastname' => 'Ucundi',
+            'email' => 'fp@ucundinamarca.edu.co',
             'password' => '123456',
             'cedula' => '12',
             'id_estado' => '1'
@@ -35,9 +36,9 @@ class UsersTableSeeder extends Seeder
         $user1->assignRole('FUENTES_PRIMARIAS');
 
         $user1 = User::create([
-            'name' => 'Liz',
-            'lastname' => 'Quintero',
-            'email' => 'liz@ucundinamarca.edu.co',
+            'name' => 'Fuentes Secundarias',
+            'lastname' => 'Ucundi',
+            'email' => 'fs@ucundinamarca.edu.co',
             'password' => '123456',
             'cedula' => '1221',
             'id_estado' => '1'
@@ -45,9 +46,9 @@ class UsersTableSeeder extends Seeder
         $user1->assignRole('FUENTES_SECUNDARIAS');
 
         $user1 = User::create([
-            'name' => 'Angie',
-            'lastname' => 'Lorena',
-            'email' => 'an@ucundinamarca.edu.co',
+            'name' => 'Admin',
+            'lastname' => 'Ucundi',
+            'email' => 'admin@ucundinamarca.edu.co',
             'password' => '123456',
             'cedula' => '167887',
             'id_estado' => '1'

@@ -20,6 +20,11 @@
 </li>
 <li><a><i class="fa fa-male"></i> Super administrador <span class="fa fa-chevron-down"></span></a>
     <ul class="nav child_menu">
+
+            <li>
+                <a href="{{ route('admin.sedes.index')}}"><i class="fa fa-university"></i> Institución</a>
+            </li>
+
         @can('ACCEDER_SEDES')
             <li>
                 <a href="{{ route('admin.sedes.index')}}"><i class="fa fa-industry"></i> Sedes</a>
