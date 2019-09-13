@@ -1,3 +1,4 @@
+@can('ACCESO_USUARIOS')
 <li><a href="#"><i class="fa fa-users">
         </i> Usuarios<span class="fa fa-chevron-down"></span></a>
     <ul class="nav child_menu">
@@ -18,13 +19,14 @@
         @endcan
     </ul>
 </li>
+@endcan
 <li><a><i class="fa fa-male"></i> Super administrador <span class="fa fa-chevron-down"></span></a>
     <ul class="nav child_menu">
-
+        @can('ACCEDER_INSTITUCION')    
             <li>
                 <a href="{{ route('admin.sedes.index')}}"><i class="fa fa-university"></i> Institución</a>
             </li>
-
+        @endcan
         @can('ACCEDER_SEDES')
             <li>
                 <a href="{{ route('admin.sedes.index')}}"><i class="fa fa-industry"></i> Sedes</a>
@@ -59,6 +61,7 @@
                     de Interes</a>
             </li>
         @endcan
+        @can('ACCESO_CNA')
         <li><a><i class="fa fa-bookmark"></i>CNA<span class="fa fa-chevron-down"></span> </a>
             <ul class="nav child_menu">
                 @can('ACCEDER_LINEAMIENTOS')
@@ -85,7 +88,8 @@
                 @endcan
             </ul>
         </li>
-
+        @endcan
+        @can('ACCESO_PLAN_MEJORAMIENTO')
         <li><a><i class="fa fa-star"></i>Plan de Mejoramiento<span class="fa fa-chevron-down"></span> </a>
             <ul class="nav child_menu">
                 @can('ACCEDER_RESPONSABLES')
@@ -107,5 +111,6 @@
                 @endcan
             </ul>
         </li>
+        @endcan
     </ul>
 </li>

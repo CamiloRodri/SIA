@@ -15,7 +15,8 @@
             <div class="menu_section">
                 <h3>General</h3>
                 <ul class="nav side-menu">
-                    <li><a href="{{ route('admin.home')}}"><i class="fa fa-home"></i> Home
+                    <li><a 
+                            href="{{ route('admin.home')}}"><i class="fa fa-home"></i> Home
                         </a>
                     </li>
                     @can('ACCESO_MODULO_SUPERADMINISTRADOR')
@@ -26,6 +27,9 @@
                     @endcan
                     @can('ACCESO_MODULO_FUENTES_SECUNDARIAS')
                         @include('admin.shared.menuSidebar.fuentesSecundarias')
+                    @endcan
+                    @can('ACCESO_MODULO_EVALUADOR')
+                        @include('admin.shared.menuSidebar.evaluador')
                     @endcan
                     <li>
                         <a href="{{ route('admin.historial')}}">

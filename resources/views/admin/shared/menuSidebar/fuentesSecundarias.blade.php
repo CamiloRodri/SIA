@@ -5,9 +5,11 @@
             <li><a href="{{ route('documental.dependencia.index') }}"><i class="fa fa-suitcase"></i>Dependencias</a>
             </li>
         @endcan
+        @can('ACCEDER_INDICADORES_DOCUMENTALES')
         <li><a href="{{ route('documental.indicadores_documentales.index')}}"><i class="fa fa-list"></i>Indicadores
                 Documentales</a>
         </li>
+        @endcan
         <li><a><i class="fa fa-file"></i>Documentos<span class="fa fa-chevron-down"></span> </a>
             <ul class="nav child_menu">
                 @can('ACCEDER_DOCUMENTOS_AUTOEVALUACION')
@@ -33,14 +35,20 @@
                 @endcan
             </ul>
         </li>
+        @can('ACCEDER_INFORMES_FUENTES_SECUNDARIAS')
         <li><a><i class="fa fa-spinner"></i>Informes<span class="fa fa-chevron-down"></span> </a>
             <ul class="nav child_menu">
+                @can('ACCEDER_INFORMES_DOCUMENTOS_AUTOEVALUACION')
                 <li class="sub_menu"><a href="{{ route('documental.informe_documental') }}"><i
                                 class="fa fa-list-alt"></i>Documentos Autoevaluacion</a>
                 </li>
+                @endcan
+                @can('ACCEDER_INFORMES_DOCUMENTOS_INSTITUCIONALES')
                 <li><a href="{{ route('documental.informe_documental.institucional') }}"><i class="fa fa-eye"></i>Documentos
                         Institucionales</a>
                 </li>
+                @endcan
             </ul>
         </li>
+        @endcan
     </ul>

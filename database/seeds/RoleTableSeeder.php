@@ -21,6 +21,7 @@ class RoleTableSeeder extends Seeder
         $role = Role::create(['name' => 'ADMIN']);
 
         $role->givePermissionTo([
+            'ACCESO_USUARIOS',
             'ACCESO_MODULO_SUPERADMINISTRADOR',
             'ACCESO_MODULO_FUENTES_PRIMARIAS',
             'ACCESO_MODULO_FUENTES_SECUNDARIAS',
@@ -212,7 +213,25 @@ class RoleTableSeeder extends Seeder
             'CREAR_DOCUMENTOS_INSTITUCIONALES',
             'MODIFICAR_DOCUMENTOS_INSTITUCIONALES',
             'ELIMINAR_DOCUMENTOS_INSTITUCIONALES',
-            'EVALUAR_DOCUMENTOS_AUTOEVALUACION'
+            'EVALUAR_DOCUMENTOS_AUTOEVALUACION',
+            'ACCEDER_INFORMES_FUENTES_SECUNDARIAS',
+            'ACCEDER_INFORMES_DOCUMENTOS_AUTOEVALUACION',
+            'ACCEDER_INFORMES_DOCUMENTOS_INSTITUCIONALES'
         ]);
+
+        $role = Role::create(['name' => 'EVALUADOR']);
+
+        $role->givePermissionTo([
+            'ACCESO_MODULO_FUENTES_PRIMARIAS',
+            'ACCESO_MODULO_SUPERADMINISTRADOR',
+            'ACCESO_MODULO_FUENTES_SECUNDARIAS',
+            'ACCESO_MODULO_EVALUADOR',
+            'ACCEDER_DOCUMENTOS_AUTOEVALUACION',
+            'ACCEDER_INFORMES_FUENTES_SECUNDARIAS',
+            'ACCEDER_INFORMES_DOCUMENTOS_AUTOEVALUACION',
+            'ACCESO_PLAN_MEJORAMIENTO',
+            'ACCEDER_ACTIVIDADES_MEJORAMIENTO',
+            'ACCESO_FECHAS_CORTE'
+        ]);  
     }
 }

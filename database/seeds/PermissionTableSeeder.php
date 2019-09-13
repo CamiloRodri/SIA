@@ -15,9 +15,11 @@ class PermissionTableSeeder extends Seeder
         // Reset cached roles and permissions
         app()['cache']->forget('spatie.permission.cache');
         //Permisos Acceso mudulo
+        Permission::create(['name' => 'ACCESO_USUARIOS']);
         Permission::create(['name' => 'ACCESO_MODULO_SUPERADMINISTRADOR']);
         Permission::create(['name' => 'ACCESO_MODULO_FUENTES_PRIMARIAS']);
         Permission::create(['name' => 'ACCESO_MODULO_FUENTES_SECUNDARIAS']);
+        Permission::create(['name' => 'ACCESO_MODULO_EVALUADOR']);
         Permission::create(['name' => 'ACCESO_SEGURIDAD']);
 
         // Permisos Superadmin
@@ -41,6 +43,7 @@ class PermissionTableSeeder extends Seeder
         Permission::create(['name' => 'MODIFICAR_PERMISOS']);
         Permission::create(['name' => 'ELIMINAR_PERMISOS']);
         //Permisos para lineamientos
+        Permission::create(['name' => 'ACCESO_CNA']);
         Permission::create(['name' => 'ACCEDER_LINEAMIENTOS']);
         Permission::create(['name' => 'VER_LINEAMIENTOS']);
         Permission::create(['name' => 'CREAR_LINEAMIENTOS']);
@@ -52,6 +55,12 @@ class PermissionTableSeeder extends Seeder
         Permission::create(['name' => 'CREAR_ASPECTOS']);
         Permission::create(['name' => 'MODIFICAR_ASPECTOS']);
         Permission::create(['name' => 'ELIMINAR_ASPECTOS']);
+        //Permisos para institucion
+        Permission::create(['name' => 'ACCEDER_INSTITUCION']);
+        Permission::create(['name' => 'VER_INSTITUCION']);
+        Permission::create(['name' => 'CREAR_INSTITUCION']);
+        Permission::create(['name' => 'MODIFICAR_INSTITUCION']);
+        Permission::create(['name' => 'ELIMINAR_INSTITUCION']);
         //Permisos para sedes
         Permission::create(['name' => 'ACCEDER_SEDES']);
         Permission::create(['name' => 'VER_SEDES']);
@@ -97,15 +106,16 @@ class PermissionTableSeeder extends Seeder
         Permission::create(['name' => 'MODIFICAR_RESPONSABLES']);
         Permission::create(['name' => 'ELIMINAR_RESPONSABLES']);
         //Permisos para Actividades de mejoramiento
+        Permission::create(['name' => 'ACCESO_PLAN_MEJORAMIENTO']);
         Permission::create(['name' => 'ACCEDER_ACTIVIDADES_MEJORAMIENTO']);
         Permission::create(['name' => 'VER_ACTIVIDADES_MEJORAMIENTO']);
         Permission::create(['name' => 'CREAR_ACTIVIDADES_MEJORAMIENTO']);
         Permission::create(['name' => 'MODIFICAR_ACTIVIDADES_MEJORAMIENTO']);
         Permission::create(['name' => 'ELIMINAR_ACTIVIDADES_MEJORAMIENTO']);
-
         //Permisos para valorizacion de caracteristicas 
         Permission::create(['name' => 'ACCEDER_VALORIZACION_CARACTERISTICAS']);
         Permission::create(['name' => 'VER_VALORIZACION_CARACTERISTICAS']);
+
 
         // Permisos Fuentes primarias
         Permission::create(['name' => 'ACCEDER_ENCUESTAS']);
@@ -159,8 +169,11 @@ class PermissionTableSeeder extends Seeder
         Permission::create(['name' => 'ELIMINAR_RESPUESTAS']);
         Permission::create(['name' => 'CREAR_RESPUESTAS']);
          // Permisos para respuestas
-         Permission::create(['name' => 'ACCEDER_RESULTADOS']);
-         Permission::create(['name' => 'VER_RESULTADOS']);
+        Permission::create(['name' => 'ACCEDER_RESULTADOS']);
+        Permission::create(['name' => 'VER_RESULTADOS']);
+
+
+
         // Permisos Fuentes secundarias
         Permission::create(['name' => 'ACCEDER_DEPENDENCIAS']);
         Permission::create(['name' => 'VER_DEPENDENCIAS']);
@@ -216,7 +229,12 @@ class PermissionTableSeeder extends Seeder
         Permission::create(['name' => 'MODIFICAR_DOCUMENTOS_INSTITUCIONALES']);
         Permission::create(['name' => 'ELIMINAR_DOCUMENTOS_INSTITUCIONALES']);
         Permission::create(['name' => 'EVALUAR_DOCUMENTOS_AUTOEVALUACION']);
+        //Permisos para Informes
+        Permission::create(['name' => 'ACCEDER_INFORMES_FUENTES_SECUNDARIAS']);
+        Permission::create(['name' => 'ACCEDER_INFORMES_DOCUMENTOS_AUTOEVALUACION']);
+        Permission::create(['name' => 'ACCEDER_INFORMES_DOCUMENTOS_INSTITUCIONALES']);
 
-
+        //Permisos Evaluador
+        Permission::create(['name' => 'ACCESO_FECHAS_CORTE']);
     }
 }

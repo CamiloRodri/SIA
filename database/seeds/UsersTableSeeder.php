@@ -54,5 +54,16 @@ class UsersTableSeeder extends Seeder
             'id_estado' => '1'
         ]);
         $user1->assignRole('ADMIN');
+
+        $user1 = User::create([
+            'name' => 'Evaluador',
+            'lastname' => 'eval',
+            'email' => 'evaluador@ucundinamarca.edu.co',
+            'password' => '123456',
+            'cedula' => '123',
+            'id_estado' => '1'
+        ]);
+        $user1->assignRole('EVALUADOR');
+        
     }
 }
