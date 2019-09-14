@@ -1,7 +1,7 @@
-@can('ACCESO_FECHAS_CORTE')
+@can('ACCESO_FECHA_CORTE')
 	<li>
 		<a 
-	    	href="{{ route('admin.home')}}"><i class="fa fa-calendar"></i> Fechas de Corte
+	    	href="{{ route('admin.fechacorte.index') }}"><i class="fa fa-calendar"></i> Fechas de Corte
 		</a>
 	</li>
 @endcan

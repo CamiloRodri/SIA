@@ -18,7 +18,7 @@ class DatabaseSeeder extends Seeder
             'TBL_Encuestas', 'TBL_Estados' , 'TBL_Factores', 'TBL_Facultades', 'TBL_Fases', 'TBL_Grupos', 'TBL_Grupos_Documentos', 'TBL_Grupos_Interes', 'TBL_Indicadores', 'TBL_Indicadores_Documentales',
             'TBL_Lineamientos', 'TBL_Modulos', 'TBL_Plan_de_Mejoramiento', 'TBL_Ponderacion_Respuestas', 'TBL_Preguntas', 'TBL_Preguntas_Encuestas', 'TBL_Procesos', 'TBL_Procesos_Usuarios',
             'TBL_Programas_Academicos', 'TBL_Responsables', 'TBL_Respuestas_Preguntas', 'TBL_Sedes', 'TBL_Solucion_Encuestas', 'TBL_Subgrupos', 'TBL_Tipo_Documentos', 'TBL_Tipo_Respuestas', 
-            'TBL_Usuarios', 'TBL_Metodologias', 'TBL_Frentes_Estrategicos'
+            'TBL_Usuarios', 'TBL_Metodologias', 'TBL_Frentes_Estrategicos','TBL_Fechas_corte'
         ]);
 
         $this->call(EstadosTableSeeder::class);

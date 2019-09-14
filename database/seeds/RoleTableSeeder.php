@@ -231,7 +231,11 @@ class RoleTableSeeder extends Seeder
             'ACCEDER_INFORMES_DOCUMENTOS_AUTOEVALUACION',
             'ACCESO_PLAN_MEJORAMIENTO',
             'ACCEDER_ACTIVIDADES_MEJORAMIENTO',
-            'ACCESO_FECHAS_CORTE'
+            'ACCESO_FECHA_CORTE',
+            'VER_FECHA_CORTE',
+            'CREAR_FECHA_CORTE',
+            'MODIFICAR_FECHA_CORTE',
+            'ELIMINAR_FECHA_CORTE'
         ]);  
     }
 }

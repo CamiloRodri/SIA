@@ -112,6 +112,13 @@ class PermissionTableSeeder extends Seeder
         Permission::create(['name' => 'CREAR_ACTIVIDADES_MEJORAMIENTO']);
         Permission::create(['name' => 'MODIFICAR_ACTIVIDADES_MEJORAMIENTO']);
         Permission::create(['name' => 'ELIMINAR_ACTIVIDADES_MEJORAMIENTO']);
+        //Permisos para fechas de corte
+        Permission::create(['name' => 'ACCESO_FECHA_CORTE']);
+        Permission::create(['name' => 'ACCEDER_FECHA_CORTE']);
+        Permission::create(['name' => 'VER_FECHA_CORTE']);
+        Permission::create(['name' => 'CREAR_FECHA_CORTE']);
+        Permission::create(['name' => 'MODIFICAR_FECHA_CORTE']);
+        Permission::create(['name' => 'ELIMINAR_FECHA_CORTE']);
         //Permisos para valorizacion de caracteristicas 
         Permission::create(['name' => 'ACCEDER_VALORIZACION_CARACTERISTICAS']);
         Permission::create(['name' => 'VER_VALORIZACION_CARACTERISTICAS']);
@@ -233,8 +240,6 @@ class PermissionTableSeeder extends Seeder
         Permission::create(['name' => 'ACCEDER_INFORMES_FUENTES_SECUNDARIAS']);
         Permission::create(['name' => 'ACCEDER_INFORMES_DOCUMENTOS_AUTOEVALUACION']);
         Permission::create(['name' => 'ACCEDER_INFORMES_DOCUMENTOS_INSTITUCIONALES']);
-
-        //Permisos Evaluador
-        Permission::create(['name' => 'ACCESO_FECHAS_CORTE']);
+        
     }
 }
