@@ -45,22 +45,12 @@ class FechaCorte extends Model
     protected $guarded = ['PK_FCO_Id', 'created_at', 'updated_at'];
 
     /**
-     * Relacion de muchos a uno de la tabla factor
-     * Un estado tiene muchos factores
-     * y un factor un estados
+     * Relacion de muchos a uno de la tabla procesos
+     * Muchas fechas de Corte tiene un Proceso
+     * y un proceso, muchas fechas de corte
      */
-    public function factor()
+    public function proceso()
     {
-        return $this->hasMany(Factor::class, 'FK_FCT_Estado', 'PK_ESD_Id');
-    }
-
-    /**
-     * Relacion de muchos a uno de la tabla factor
-     * Un estado tiene muchas caracteristicas
-     * y un caracteristica un estado
-     */
-    public function caracteristica()
-    {
-        return $this->hasMany(Caracteristica::class, 'FK_CRT_Estado', 'PK_ESD_Id');
+        return $this->belongsTo(Proceso::class, 'FK_FCO_Proceso', 'PK_PCS_Id');
     }
 }
