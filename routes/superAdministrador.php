@@ -182,3 +182,8 @@ Route::get('seguridad/data', array(
     'as' => 'admin.seguridad.data',
     'uses' => 'SeguridadController@data'
 ));
+
+//Fechas de Corte
+Route::resource('fechacorte', 'FechaCorteController', ['as' => 'admin']);
+Route::get('fechacorte/data/data', array('as' => 'admin.fechacorte.data',
+    'uses' => 'FechaCorteController@data'));
