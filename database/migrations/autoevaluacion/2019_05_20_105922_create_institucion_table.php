@@ -18,7 +18,7 @@ class CreateInstitucionTable extends Migration
             $table->string("ITN_Nombre");
             $table->string("ITN_Domicilio");
             $table->string("ITN_Caracter");
-            $table->string("ITN_CodigoSNIES");
+            $table->mediumText("ITN_CodigoSNIES");
             $table->string("ITN_Norma_Creacion");
             $table->integer("ITN_Estudiantes");
             $table->integer("FK_ITN_Metodologia")->unsigned();

@@ -2,7 +2,7 @@
 
 use Illuminate\Database\Seeder;
 
-class Ucundinamarca/FechascorteSeeder extends Seeder
+class FechascorteSeeder extends Seeder
 {
     /**
      * Run the database seeds.

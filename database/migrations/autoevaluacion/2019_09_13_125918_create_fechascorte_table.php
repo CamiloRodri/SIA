@@ -13,7 +13,7 @@ class CreateFechascorteTable extends Migration
      */
     public function up()
     {
-        Schema::create('fechascorte', function (Blueprint $table) {
+        Schema::connection('autoevaluacion')->create('tbl_fechas_cortes', function (Blueprint $table) {
             $table->increments('PK_FCO_Id');
             $table->date('FCO_Fecha');
             $table->integer('FK_FCO_Proceso')->unsigned();
