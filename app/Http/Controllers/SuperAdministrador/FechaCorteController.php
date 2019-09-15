@@ -12,6 +12,8 @@ use Illuminate\Http\Request;
 use DataTables;
 use App\Http\Controllers\Controller;
 
+use Carbon\Carbon;
+
 class FechaCorteController extends Controller
 {
     /**
@@ -92,8 +94,9 @@ class FechaCorteController extends Controller
      */
     public function store(FechasCorteRequest $request)
     {
+        $fecha = Carbon::createFromFormat('d/m/Y', $request->get('FCO_Fecha'));
      	$fechacorte = new FechaCorte();
-        $fechacorte->fill($request->only(['FCO_Fecha']));
+        $fechacorte->FCO_Fecha = $fecha;
         $fechacorte->FK_FCO_Proceso = $request->get('PK_PCS_Id');
         $fechacorte->save();
 

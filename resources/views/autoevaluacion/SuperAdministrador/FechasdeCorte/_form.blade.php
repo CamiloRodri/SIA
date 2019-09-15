@@ -1,7 +1,7 @@
 {!! Form::hidden('PK_FCO_Id', old('PK_FCO_Id'), ['id' => 'PK_FCO_Id']) !!}
 
 
-<div class="item form-group">
+{{-- <div class="item form-group">
     {!! Form::label('FCO_Fecha','Fecha', ['class'=>'control-label col-md-3 col-sm-3 col-xs-12']) !!}
     <div class="col-md-6 col-sm-6 col-xs-12">
         {!! Form::text('FCO_Fecha', old('FCO_Fecha'),[ 'class' => 'form-control col-md-6 col-sm-6 col-xs-12', 'required' => 'required',      
@@ -10,7 +10,14 @@
         'data-parsley-length'=>'[2, 60]', 
         'data-parsley-trigger'=>"change" ] ) !!}
     </div>
-</div>
+</div> --}}
+<br>
+<br><br>
+<br>
+<br>
+<br>
+
+
 <div class="form-group">
     {!! Form::label('PK_PCS_Id', 'Proceso', ['class' => 'control-label col-md-3 col-sm-3 col-xs-12']) !!}
     <div class="col-md-6 col-sm-6 col-xs-12">
@@ -22,16 +29,18 @@
         !!}
     </div>
 </div>
+<br>
+<br>
 
 <div class="form-group">
-    {!! Form::label('PCS_FechaInicio','Inicio', ['class'=>'control-label col-md-3 col-sm-3 col-xs-12']) !!}
+    {!! Form::label('FCO_Fecha','Inicio', ['class'=>'control-label col-md-3 col-sm-3 col-xs-12']) !!}
     <div class="col-md-6 col-sm-6 col-xs-12">
-        {!! Form::text('PCS_FechaInicio', 
-        old('PCS_FechaInicio', isset($proceso)?(string)$proceso->PCS_FechaInicio->format('d/m/Y'):''), 
+        {!! Form::text('FCO_Fecha', 
+        old('FCO_Fecha', isset($fechacorte)?(string)$fechacorte->FCO_Fecha->format('d/m/Y'):''), 
         [ 
             'class' => 'form-control col-md-6 col-sm-6 col-xs-12', 
             'required' => 'required',
-            'id' => 'fecha_inicio'
+            'id' => 'fecha'
         ] ) !!}
     </div>
 </div>
