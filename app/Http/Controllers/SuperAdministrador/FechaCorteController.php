@@ -4,7 +4,7 @@ namespace App\Http\Controllers\SuperAdministrador;
 use App\Models\Autoevaluacion\FechaCorte;
 use App\Models\Autoevaluacion\Proceso;
 
-use App\Http\Requests\SedesRequest;
+use App\Http\Requests\FechasCorteRequest;
 use App\Models\Autoevaluacion\Sede;
 use App\Models\Autoevaluacion\Estado;
 
@@ -90,9 +90,18 @@ class FechaCorteController extends Controller
     /**
      * Esta funcion crea las fechas de corte
      */
-    public function store()
+    public function store(FechasCorteRequest $request)
     {
+     	$fechacorte = new FechaCorte();
+        $fechacorte->fill($request->only(['FCO_Fecha']));
+        $fechacorte->FK_FCO_Proceso = $request->get('PK_PCS_Id');
+        $fechacorte->save();
 
+        return response([
+            'msg' => 'Fecha de Corte registrada correctamente.',
+            'title' => '¡Registro exitoso!',
+        ], 200) // 200 Status Code: Standard response for successful HTTP request
+        ->header('Content-Type', 'application/json');
     }
 
     /**
@@ -129,7 +138,7 @@ class FechaCorteController extends Controller
     /**
      * Esta funcion edita las fechas de corte
      */
-    public function update()
+    public function update(FechaCortesRequest $request)
     {
         
     }

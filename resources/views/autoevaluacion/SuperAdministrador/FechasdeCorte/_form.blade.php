@@ -1,6 +1,8 @@
 {!! Form::hidden('PK_FCO_Id', old('PK_FCO_Id'), ['id' => 'PK_FCO_Id']) !!}
+
+
 <div class="item form-group">
-    {!! Form::label('FCO_Fecha','Nombre', ['class'=>'control-label col-md-3 col-sm-3 col-xs-12']) !!}
+    {!! Form::label('FCO_Fecha','Fecha', ['class'=>'control-label col-md-3 col-sm-3 col-xs-12']) !!}
     <div class="col-md-6 col-sm-6 col-xs-12">
         {!! Form::text('FCO_Fecha', old('FCO_Fecha'),[ 'class' => 'form-control col-md-6 col-sm-6 col-xs-12', 'required' => 'required',      
         'data-parsley-pattern' => '^[a-zA-Z0-9-_\.,;:ñÑáéíóúÁÉÍÓÚ ]+$',
@@ -18,5 +20,18 @@
         'style' => 'width:100%'
         ])
         !!}
+    </div>
+</div>
+
+<div class="form-group">
+    {!! Form::label('PCS_FechaInicio','Inicio', ['class'=>'control-label col-md-3 col-sm-3 col-xs-12']) !!}
+    <div class="col-md-6 col-sm-6 col-xs-12">
+        {!! Form::text('PCS_FechaInicio', 
+        old('PCS_FechaInicio', isset($proceso)?(string)$proceso->PCS_FechaInicio->format('d/m/Y'):''), 
+        [ 
+            'class' => 'form-control col-md-6 col-sm-6 col-xs-12', 
+            'required' => 'required',
+            'id' => 'fecha_inicio'
+        ] ) !!}
     </div>
 </div>
