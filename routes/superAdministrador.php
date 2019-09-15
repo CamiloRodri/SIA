@@ -40,6 +40,10 @@ Route::get('lineamientos/data/data', array('as' => 'admin.lineamientos.data', 'u
 Route::resource('factores', 'FactorController', ['as' => 'admin']);
 Route::get('factores/data/data', array('as' => 'admin.factores.data', 'uses' => 'FactorController@data'));
 
+//Institución
+Route::resource('institucion', 'InstitucionController', ['as' => 'admin']);
+Route::get('institucion/data/data', array('as' => 'admin.institucion.data', 'uses' => 'InstitucionController@data'));
+
 //Caracateristicas
 Route::resource('caracteristicas', 'CaracteristicasController', ['as' => 'admin']);
 Route::get(

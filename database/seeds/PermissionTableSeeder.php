@@ -119,6 +119,13 @@ class PermissionTableSeeder extends Seeder
         Permission::create(['name' => 'CREAR_FECHA_CORTE']);
         Permission::create(['name' => 'MODIFICAR_FECHA_CORTE']);
         Permission::create(['name' => 'ELIMINAR_FECHA_CORTE']);
+        //Permisos para Institucion
+        Permission::create(['name' => 'ACCEDER_INSTITUCION']);
+        Permission::create(['name' => 'VER_INSTITUCION']);
+        Permission::create(['name' => 'CREAR_INSTITUCION']);
+        Permission::create(['name' => 'MODIFICAR_INSTITUCION']);
+        Permission::create(['name' => 'ELIMINAR_INSTITUCION']);
+
         //Permisos para valorizacion de caracteristicas 
         Permission::create(['name' => 'ACCEDER_VALORIZACION_CARACTERISTICAS']);
         Permission::create(['name' => 'VER_VALORIZACION_CARACTERISTICAS']);

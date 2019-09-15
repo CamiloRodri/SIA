@@ -24,7 +24,7 @@
     <ul class="nav child_menu">
         @can('ACCEDER_INSTITUCION')    
             <li>
-                <a href="{{ route('admin.sedes.index')}}"><i class="fa fa-university"></i> Institución</a>
+                <a href="{{ route('admin.institucion.index')}}"><i class="fa fa-university"></i> Institución</a>
             </li>
         @endcan
         @can('ACCEDER_SEDES')
