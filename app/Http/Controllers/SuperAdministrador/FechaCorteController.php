@@ -141,9 +141,20 @@ class FechaCorteController extends Controller
     /**
      * Esta funcion edita las fechas de corte
      */
-    public function update(FechaCortesRequest $request)
+    public function update($id, FechasCorteRequest $request)
     {
-        
+        $fecha = Carbon::createFromFormat('d/m/Y', $request->get('FCO_Fecha'));
+
+        $fechacorte = FechaCorte::findOrFail($id);
+        $fechacorte->FCO_Fecha = $fecha;
+        $fechacorte->FK_FCO_Proceso = $request->get('PK_PCS_Id');
+        $fechacorte->update();
+
+        return response([
+            'msg' => 'La fecha de corte ha sido modificada exitosamente.',
+            'title' => 'Fecha de Corte Modificada!',
+        ], 200) // 200 Status Code: Standard response for successful HTTP request
+        ->header('Content-Type', 'application/json');
     }
 
     /**

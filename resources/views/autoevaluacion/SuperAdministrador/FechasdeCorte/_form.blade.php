@@ -33,7 +33,7 @@
 <br>
 
 <div class="form-group">
-    {!! Form::label('FCO_Fecha','Inicio', ['class'=>'control-label col-md-3 col-sm-3 col-xs-12']) !!}
+    {!! Form::label('FCO_Fecha','Fecha', ['class'=>'control-label col-md-3 col-sm-3 col-xs-12']) !!}
     <div class="col-md-6 col-sm-6 col-xs-12">
         {!! Form::text('FCO_Fecha', 
         old('FCO_Fecha', isset($fechacorte)?(string)$fechacorte->FCO_Fecha->format('d/m/Y'):''), 
