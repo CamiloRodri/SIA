@@ -168,6 +168,13 @@ class FechaCorteController extends Controller
      */
     public function destroy($id)
     {
+        $sede = FechaCorte::findOrFail($id);
+        $sede->delete();
 
+        return response([
+            'msg' => 'La fecha de corte ha sido eliminada exitosamente.',
+            'title' => '¡Fecha de corte Eliminada!',
+        ], 200) // 200 Status Code: Standard response for successful HTTP request
+        ->header('Content-Type', 'application/json');
     }
 }
