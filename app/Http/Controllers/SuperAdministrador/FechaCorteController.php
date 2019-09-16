@@ -94,9 +94,10 @@ class FechaCorteController extends Controller
      */
     public function store(FechasCorteRequest $request)
     {
-        $fecha = Carbon::createFromFormat('d/m/Y', $request->get('FCO_Fecha'));
+        //$fecha = Carbon::createFromFormat('d/m/Y', $request->get('FCO_Fecha'));
      	$fechacorte = new FechaCorte();
-        $fechacorte->FCO_Fecha = $fecha;
+        // $fechacorte->FCO_Fecha = $fecha;
+        $fechacorte->FCO_Fecha = $request->get('FCO_Fecha');
         $fechacorte->FK_FCO_Proceso = $request->get('PK_PCS_Id');
         $fechacorte->save();
 
@@ -143,10 +144,10 @@ class FechaCorteController extends Controller
      */
     public function update($id, FechasCorteRequest $request)
     {
-        $fecha = Carbon::createFromFormat('d/m/Y', $request->get('FCO_Fecha'));
-
+        //$fecha = Carbon::createFromFormat('d/m/Y', $request->get('FCO_Fecha'));
         $fechacorte = FechaCorte::findOrFail($id);
-        $fechacorte->FCO_Fecha = $fecha;
+        //$fechacorte->FCO_Fecha = $fecha;
+        $fechacorte->FCO_Fecha =  $request->get('FCO_Fecha');
         $fechacorte->FK_FCO_Proceso = $request->get('PK_PCS_Id');
         $fechacorte->update();
 

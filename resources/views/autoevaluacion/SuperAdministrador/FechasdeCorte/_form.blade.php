@@ -32,7 +32,7 @@
 <br>
 <br>
 
-<div class="form-group">
+{{-- <div class="form-group">
     {!! Form::label('FCO_Fecha','Fecha', ['class'=>'control-label col-md-3 col-sm-3 col-xs-12']) !!}
     <div class="col-md-6 col-sm-6 col-xs-12">
         {!! Form::text('FCO_Fecha', 
@@ -41,6 +41,19 @@
             'class' => 'form-control col-md-6 col-sm-6 col-xs-12', 
             'required' => 'required',
             'id' => 'fecha'
+        ] ) !!}
+    </div>
+</div> --}}
+
+<div class="form-group">
+    {!! Form::label('FCO_Fecha','Fecha', ['class'=>'control-label col-md-3 col-sm-3 col-xs-12']) !!}
+    <div class="col-md-6 col-sm-6 col-xs-12">
+        {!! Form::date('FCO_Fecha', 
+        old('FCO_Fecha', isset($fechacorte)?(string)$fechacorte->FCO_Fecha->format('d/m/Y'):''), 
+        [ 
+            'class' => 'form-control col-md-6 col-sm-6 col-xs-12', 
+            'required' => 'required',
+            'id' => 'fechacorte'
         ] ) !!}
     </div>
 </div>
