@@ -46,6 +46,7 @@ class RoleTableSeeder extends Seeder
             'MODIFICAR_GRUPOS_INTERES',
             'ELIMINAR_GRUPOS_INTERES',
             'ACCEDER_RESPONSABLES',
+            'ACCESO_PLAN_MEJORAMIENTO',
             'VER_RESPONSABLES',
             'CREAR_RESPONSABLES',
             'MODIFICAR_RESPONSABLES',
@@ -55,11 +56,6 @@ class RoleTableSeeder extends Seeder
             'CREAR_ACTIVIDADES_MEJORAMIENTO',
             'MODIFICAR_ACTIVIDADES_MEJORAMIENTO',
             'ELIMINAR_ACTIVIDADES_MEJORAMIENTO',
-            'ACCEDER_INSTITUCION',
-            'VER_INSTITUCION',
-            'CREAR_INSTITUCION',
-            'MODIFICAR_INSTITUCION',
-            'ELIMINAR_INSTITUCION',
             'ACCEDER_VALORIZACION_CARACTERISTICAS',
             'VER_VALORIZACION_CARACTERISTICAS',
             'ACCEDER_ENCUESTAS',
@@ -131,6 +127,8 @@ class RoleTableSeeder extends Seeder
             'CREAR_DOCUMENTOS_INSTITUCIONALES',
             'MODIFICAR_DOCUMENTOS_INSTITUCIONALES',
             'ELIMINAR_DOCUMENTOS_INSTITUCIONALES',
+            'ACCEDER_CONSOLIDACION_FACTORES',
+            'ACCEDER_CALENDARIO_ACTIVIDADES'
         ]);
 
         //Crear y asignar permisos fuentes primarias

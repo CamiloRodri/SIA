@@ -103,12 +103,25 @@
                                     class="fa fa-line-chart"></i> Valorizacion de Caracteristicas</a>
                     </li>
                 @endcan
+                @can('ACCEDER_CONSOLIDACION_FACTORES')
+                    <li>
+                        <a href="{{ route('admin.caracteristicas_mejoramiento.index')}}"><i
+                                    class="fa fa-crosshairs"></i>Consolidación de Factores</a>
+                    </li>
+                @endcan
                 @can('ACCEDER_ACTIVIDADES_MEJORAMIENTO')
                     <li>
                         <a href="{{ route('admin.actividades_mejoramiento.index')}}"><i class="fa fa-bar-chart"></i>Actividades
                             de Mejoramiento</a>
                     </li>
                 @endcan
+                @can('ACCEDER_CALENDARIO_ACTIVIDADES')
+                    <li>
+                        <a href="{{ route('admin.caracteristicas_mejoramiento.index')}}"><i
+                                    class="fa fa-calendar"></i> Calendario de Actividades</a>
+                    </li>
+                @endcan
+
             </ul>
         </li>
         @endcan
