@@ -11,13 +11,6 @@
         'data-parsley-trigger'=>"change" ] ) !!}
     </div>
 </div> --}}
-<br>
-<br><br>
-<br>
-<br>
-<br>
-
-
 <div class="form-group">
     {!! Form::label('PK_PCS_Id', 'Proceso', ['class' => 'control-label col-md-3 col-sm-3 col-xs-12']) !!}
     <div class="col-md-6 col-sm-6 col-xs-12">
@@ -29,8 +22,6 @@
         !!}
     </div>
 </div>
-<br>
-<br>
 
 {{-- <div class="form-group">
     {!! Form::label('FCO_Fecha','Fecha', ['class'=>'control-label col-md-3 col-sm-3 col-xs-12']) !!}
@@ -53,7 +44,8 @@
         [ 
             'class' => 'form-control col-md-6 col-sm-6 col-xs-12', 
             'required' => 'required',
-            'id' => 'fechacorte'
+            'id' => 'fechacorte',
+            'min' => '2019-09-16'
         ] ) !!}
     </div>
 </div>
