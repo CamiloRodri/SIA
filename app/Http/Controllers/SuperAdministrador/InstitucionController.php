@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\SuperAdministrador;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Requests\InstitucionRequest;
+use App\Http\Requests\InstitucionRequest;
 use App\Models\Autoevaluacion\Institucion;
 use App\Models\Autoevaluacion\Estado;
 use App\Models\Autoevaluacion\Metodologia;
@@ -28,6 +28,13 @@ class InstitucionController extends Controller
         $this->middleware(['permission:MODIFICAR_INSTITUCION', 'permission:VER_INSTITUCION'], ['only' => ['edit', 'update']]);
         $this->middleware('permission:CREAR_INSTITUCION', ['only' => ['create', 'store']]);
         $this->middleware('permission:ELIMINAR_INSTITUCION', ['only' => ['destroy']]);
+    }
+    /**
+     * Funcion destinada a llenar el DDL de meses
+     */
+    public function meses()
+    {
+        
     }
     /**
      * Display a listing of the resource.
@@ -76,9 +83,23 @@ class InstitucionController extends Controller
      */
     public function create()
     {
+        $meses = [  'enero',
+                    'febrero',
+                    'marzo',
+                    'abril',
+                    'mayo',
+                    'junio',
+                    'julio',
+                    'agosto',
+                    'septiembre',
+                    'octubre',
+                    'noviembre',
+                    'diciembre'
+        ];
         $estados = Estado::pluck('ESD_Nombre', 'PK_ESD_Id');
         $metodologias = Metodologia::pluck('MTD_Nombre', 'PK_MTD_Id');
-        return view('autoevaluacion.SuperAdministrador.Instituciones.create', compact('estados', 'metodologias'));
+        return view('autoevaluacion.SuperAdministrador.Instituciones.create', 
+                    compact('estados', 'metodologias', 'meses'));
     }
 
     /**
@@ -87,7 +108,7 @@ class InstitucionController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(InstitucionRequest $request)
     {
         
         $institucion = new Institucion();
@@ -106,7 +127,8 @@ class InstitucionController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  int 
+     *  $id
      * @return \Illuminate\Http\Response
      */
     public function show($id)
@@ -122,7 +144,29 @@ class InstitucionController extends Controller
      */
     public function edit($id)
     {
-        //
+
+        $meses = [  'enero',
+                    'febrero',
+                    'marzo',
+                    'abril',
+                    'mayo',
+                    'junio',
+                    'julio',
+                    'agosto',
+                    'septiembre',
+                    'octubre',
+                    'noviembre',
+                    'diciembre'
+        ];
+
+        $institucion = Institucion::findOrFail($id);
+        $metodologias = Metodologia::pluck('MTD_Nombre', 'PK_MTD_Id');
+        $estados = Estado::pluck('ESD_Nombre', 'PK_ESD_Id');
+
+        return view(
+            'autoevaluacion.SuperAdministrador.Instituciones.edit',
+            compact('institucion', 'metodologias', 'estados', 'meses')
+        );
     }
 
     /**
@@ -132,9 +176,20 @@ class InstitucionController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(InstitucionRequest $request, $id)
     {
-        //
+        $institucion = Institucion::find($id);
+        $institucion->fill($request->all());
+        $institucion->FK_ITN_Estado = $request->get('FK_ITN_Estado');
+        $institucion->FK_ITN_Metodologia = $request->get('FK_ITN_Metodologia');
+
+        $institucion->update();
+
+        return response([
+            'msg' => 'La Institución ha sido modificado exitosamente.',
+            'title' => 'Institución Modificada!',
+        ], 200) // 200 Status Code: Standard response for successful HTTP request
+        ->header('Content-Type', 'application/json');
     }
 
     /**

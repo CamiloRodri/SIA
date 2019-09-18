@@ -66,16 +66,12 @@
 <div class="item form-group">
     {!! Form::label('metodologia','Metodología', [ 'class'=>'control-label col-md-3 col-sm-3 col-xs-12']) !!}
     <div class="col-md-6 col-sm-6 col-xs-12">
-        {{-- <select class="select2_user form-control" name="id_metodologia">
-            @foreach($metodologias as $metodologia)
-        <option selected="{{ isset($user)?  }}" value="{{  $metodologia->PK_MTD_Id }}">{{ $metodologia->MTD_Nombre }}</option>
-            @endforeach                                          
-        </select> --}}
-        {!! Form::select('FK_ITN_Metodologia', $metodologias, old('FK_ITN_Metodologia', isset($user)? $user->id_metodologia:''), [
+        {!! Form::select('FK_ITN_Metodologia', $metodologias, old('FK_ITN_Metodologia', isset($institucion)? $institucion->FK_ITN_Metodologia:''), [
             'placeholder' => 'Seleccione una Metodologia',
             'class' => 'select2_user form-control', 
-            'required']) !!}
-    </div>
+            'required']) 
+        !!}
+</div>
 </div>
 <div class="item form-group">
     {!! Form::label('ITN_Profesor_Planta','Planta', ['class'=>'control-label col-md-3 col-sm-3 col-xs-12']) !!}
@@ -168,26 +164,28 @@
 <div class="item form-group">
         {!! Form::label('estado','Estado', [ 'class'=>'control-label col-md-3 col-sm-3 col-xs-12']) !!}
         <div class="col-md-6 col-sm-6 col-xs-12">
-            {{-- <select class="select2_user form-control" name="id_metodologia">
-                @foreach($estado as $metodologia)
-            <option selected="{{ isset($user)?  }}" value="{{  $estado->PK_ESD_Id }}">{{ $estado->ESD_Nombre }}</option>
-                @endforeach                                          
-            </select> --}}
-            {!! Form::select('FK_ITN_Estado', $estados, old('FK_ITN_Estado', isset($user)? $user->id_estado:''), [
+            {!! Form::select('FK_ITN_Estado', $estados, old('FK_ITN_Estado', isset($Institucion)? $Institucion->FK_ITN_Estado:''), [
                 'placeholder' => 'Seleccione un estado',
                 'class' => 'select2_user form-control', 
-                'required']) !!}
+                'required']) 
+            !!}
         </div>
-    </div>
+</div>
 <div class="item form-group">
-    {!! Form::label('ITN_FuenteBoletinMes','Fuente Boletin Estadistico a: ', ['class'=>'control-label col-md-3 col-sm-3 col-xs-6'], ['placeholder'=>'Mes']) !!}
-    <div class="col-md-1 col-sm-1 col-xs-1">
-        {!! Form::text('ITN_FuenteBoletinMes', old('ITN_FuenteBoletinMes'),[ 'class' => 'form-control col-md-3 col-sm-3 col-xs-6', 'placeholder' => 'Mes',
+    {!! Form::label('ITN_FuenteBoletinMes','Fuente Boletín estadístico, datos actualizados a: ', ['class'=>'control-label col-md-3 col-sm-3 col-xs-6'], ['placeholder'=>'Mes']) !!}
+    <div class="col-md-3 col-sm-1 col-xs-1">
+        {{-- {!! Form::text('ITN_FuenteBoletinMes', old('ITN_FuenteBoletinMes'),[ 'class' => 'form-control col-md-3 col-sm-3 col-xs-6', 'placeholder' => 'Mes',
         'required' => 'required', 
         'data-parsley-pattern' => '^[a-zA-Z ][a-zA-Z0-9-_\., ]{1,25}$',
         'data-parsley-pattern-message' => 'Por favor escriba un mes válido',
         'data-parsley-length' => "[1, 50]", 
-        'data-parsley-trigger'=>"change"] ) !!}
+        'data-parsley-trigger'=>"change"] ) 
+        !!} --}}
+        {!! Form::select('ITN_FuenteBoletinMes', $meses, old('ITN_FuenteBoletinMes'), [
+            'placeholder' => 'Seleccione un mes',
+            'class' => 'select2_user form-control', 
+            'required']) 
+        !!}
     </div>
     {!! Form::label('ITN_FuenteBoletinAnio','del ', [ 'class'=>'control-label col-md-1 col-sm-1 col-xs-6'], ['placeholder' => 'Año']) !!}
     <div class="col-md-1 col-sm-1 col-xs-1">
