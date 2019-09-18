@@ -128,6 +128,7 @@ class PermissionTableSeeder extends Seeder
         Permission::create(['name' => 'ACCEDER_CALENDARIO_ACTIVIDADES']);
 
         // Permisos Fuentes primarias
+        Permission::create(['name' => 'ACCEDER_SIDEBAR_ENCUESTAS']);
         Permission::create(['name' => 'ACCEDER_ENCUESTAS']);
         Permission::create(['name' => 'VER_ENCUESTAS']);
         Permission::create(['name' => 'CREAR_ENCUESTAS']);

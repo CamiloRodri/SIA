@@ -28,9 +28,9 @@ class DatabaseUcundinamarcaSeeder extends Seeder
         {
             DB::statement('SET FOREIGN_KEY_CHECKS = 0;');
             foreach ($tables as $table)
-        {
-            DB::table($table)->truncate();
-        }
+            {
+                DB::table($table)->truncate();
+            }
 
         DB::statement('SET FOREIGN_KEY_CHECKS = 1;');
         }
