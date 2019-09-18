@@ -16,6 +16,7 @@ class DatabaseUcundinamarcaSeeder extends Seeder
             'TBL_Fechas_corte', 'TBL_Facultades', 'TBL_Programas_Academicos', 'TBL_Sedes', 'TBL_Procesos'
         ]);
 
+        $this->call(InstitucionSeeder::class);
         $this->call(SedesSeeder::class);
         $this->call(FacultadesSeeder::class);
         $this->call(ProgramasAcademicosSeeder::class);

@@ -9,6 +9,7 @@
             @if(isset($planMejoramiento))
                 @can('VER_ACTIVIDADES_MEJORAMIENTO')
                     <div class="col-md-12">
+                        Proxima Fecha de Corte
                         @component('admin.components.datatable', ['id' => 'actividades_mejoramiento_table_ajax']) @slot('columns', [
             'id','Factor','Caracteristica','Actividad', 'Descripcion', 'Fecha de Inicio', 'Fecha de Finalizacion', 'Responsable','Estado',
             'Acciones' => ['style' => 'width:85px;']]) @endcomponent

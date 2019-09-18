@@ -34,7 +34,9 @@ class InstitucionSeeder extends Seeder
         	'ITN_Mision' => '“La Universidad de Cundinamarca es una institución pública local y translocal del Siglo XXI, caracterizada por ser una organización social de conocimiento, democrática, autónoma, formadora, agente de la transmodernidad que incorpora los consensos mundiales de la humanidad y las buenas prácticas de gobernanza universitaria, cuya calidad se genera desde los procesos de enseñanza-aprendizaje, investigación e innovación, interacción universitaria, internacionalización y bienestar universitario”.',
         	'ITN_Vision' => '“La Universidad de Cundinamarca será reconocida por la sociedad, en el ámbito local, regional, nacional e internacional, como generadora de conocimiento relevante y pertinente, centrada en el cuidado de la vida, la naturaleza, el ambiente, la humanidad y la convivencia”.',
         	'ITN_Descripcion' => 'Extension Facatativá',
-        	'FK_ITN_Estado' => $estado
+        	'FK_ITN_Estado' => $estado,
+            'ITN_FuenteBoletinMes' => 'Junio',
+            'ITN_FuenteBoletinAnio' => '2019'
         ]);
     }
 }
