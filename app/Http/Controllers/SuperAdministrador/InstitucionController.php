@@ -76,7 +76,9 @@ class InstitucionController extends Controller
      */
     public function create()
     {
-        //
+        $estados = Estado::pluck('ESD_Nombre', 'PK_ESD_Id');
+        $metodologias = Metodologia::pluck('MTD_Nombre', 'PK_MTD_Id');
+        return view('autoevaluacion.SuperAdministrador.Instituciones.create', compact('estados', 'metodologias'));
     }
 
     /**
@@ -87,7 +89,18 @@ class InstitucionController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        
+        $institucion = new Institucion();
+        $institucion->fill($request->all());
+        $institucion->FK_ITN_Estado = $request->get('FK_ITN_Estado');
+        $institucion->FK_ITN_Metodologia = $request->get('FK_ITN_Metodologia');
+        $institucion->save();
+
+        return response(['msg' => 'Institución registrada correctamente.',
+            'title' => '¡Registro exitoso!',
+        ], 200) // 200 Status Code: Standard response for successful HTTP request
+        ->header('Content-Type', 'application/json');
+
     }
 
     /**
@@ -132,6 +145,12 @@ class InstitucionController extends Controller
      */
     public function destroy($id)
     {
-        //
+        Institucion::destroy($id);
+
+        return response([
+            'msg' => 'La Institución ha sido eliminada exitosamente.',
+            'title' => 'Institución Eliminada!',
+        ], 200) // 200 Status Code: Standard response for successful HTTP request
+        ->header('Content-Type', 'application/json');
     }
 }
