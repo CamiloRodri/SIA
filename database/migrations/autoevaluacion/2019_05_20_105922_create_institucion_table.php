@@ -32,7 +32,7 @@ class CreateInstitucionTable extends Migration
             $table->mediumText("ITN_Descripcion")->nullable();
             $table->integer("FK_ITN_Estado")->unsigned();
             $table->string("ITN_FuenteBoletinMes");
-            $table->string("ITN_FuenteBoletinAnio");
+            $table->int("ITN_FuenteBoletinAnio");
             $table->timestamps();
             $table->foreign("FK_ITN_Estado")->references("PK_ESD_Id")->on("TBL_Estados")->onDelete('cascade');
             $table->foreign("FK_ITN_Metodologia")->references("PK_MTD_Id")->on("TBL_Metodologias")->onDelete('cascade');
