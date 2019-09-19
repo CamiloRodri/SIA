@@ -7,6 +7,7 @@ use App\Http\Requests\InstitucionRequest;
 use App\Models\Autoevaluacion\Institucion;
 use App\Models\Autoevaluacion\Estado;
 use App\Models\Autoevaluacion\Metodologia;
+use app\Models\Autoevaluacion\FrenteEstrategico;
 use Yajra\DataTables\DataTables;
 use Illuminate\Http\Request;
 
@@ -77,6 +78,7 @@ class InstitucionController extends Controller
     {
         $estados = Estado::pluck('ESD_Nombre', 'PK_ESD_Id');
         $metodologias = Metodologia::pluck('MTD_Nombre', 'PK_MTD_Id');
+        //$frenteEstrategicos = FrenteEstrategico;
         return view('autoevaluacion.SuperAdministrador.Instituciones.create', 
                     compact('estados', 'metodologias'));
     }
