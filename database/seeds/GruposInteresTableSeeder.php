@@ -21,6 +21,9 @@ class GruposInteresTableSeeder extends Seeder
             ['GIT_Nombre' => 'EMPLEADORES', 'FK_GIT_Estado' => '1', 'GIT_Slug' => 'empleadores'],
             ['GIT_Nombre' => 'EQUIPO DEL PROGRAMA', 'FK_GIT_Estado' => '1', 'GIT_Slug' => 'equipo_del_programa'],
             ['GIT_Nombre' => 'EQUIPO INSTITUCIONAL', 'FK_GIT_Estado' => '1', 'GIT_Slug' => 'equipo_institucional'],
+
+            ['GIT_Nombre' => 'ESTUDIANTES_1', 'FK_GIT_Estado' => '1', 'GIT_Slug' => 'estudiantes_1'],
+            ['GIT_Nombre' => 'ESTUDIANTES_2', 'FK_GIT_Estado' => '1', 'GIT_Slug' => 'estudiantes_2']
         ]);
     }
 }
