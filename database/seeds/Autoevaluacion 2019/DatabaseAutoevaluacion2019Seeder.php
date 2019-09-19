@@ -2,7 +2,7 @@
 
 use Illuminate\Database\Seeder;
 
-class DatabaseEncuestasSeeder extends Seeder
+class DatabaseAutoevaluacion2019Seeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -12,12 +12,10 @@ class DatabaseEncuestasSeeder extends Seeder
     public function run()
     {
         $this->truncateTables([
-            'TBL_Tipo_Respuestas', 'TBL_Ponderacion_Respuestas', 'TBL_Banco_Encuestas', 'TBL_Preguntas',
-            'TBL_Respuestas_Preguntas'
+            'TBL_Banco_Encuestas'
         ]);
-        $this->call(TipoRespuestasTablaSeeder::class);
-        $this->call(PonderacionRespuestaTableSeeder::class);
-        $this->call(PreguntasSeeder::class);
+
+        $this->call(BancoEncuestasTableSeeder::class);
     }
 
     protected function truncateTables(array $tables)
