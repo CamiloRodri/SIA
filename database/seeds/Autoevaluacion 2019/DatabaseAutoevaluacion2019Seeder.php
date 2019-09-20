@@ -12,10 +12,11 @@ class DatabaseAutoevaluacion2019Seeder extends Seeder
     public function run()
     {
         $this->truncateTables([
-            'TBL_Banco_Encuestas'
+            'TBL_Banco_Encuestas', 'TBL_Encuestas'
         ]);
 
         $this->call(BancoEncuestasTableSeeder::class);
+        $this->call(EncuestasTableSeeder::class);
     }
 
     protected function truncateTables(array $tables)

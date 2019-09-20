@@ -7,6 +7,7 @@ use App\Http\Requests\InstitucionRequest;
 use App\Models\Autoevaluacion\Institucion;
 use App\Models\Autoevaluacion\Estado;
 use App\Models\Autoevaluacion\Metodologia;
+use app\Models\Autoevaluacion\FrenteEstrategico;
 use Yajra\DataTables\DataTables;
 use Illuminate\Http\Request;
 
@@ -30,13 +31,6 @@ class InstitucionController extends Controller
         $this->middleware('permission:ELIMINAR_INSTITUCION', ['only' => ['destroy']]);
     }
     /**
-     * Funcion destinada a llenar el DDL de meses
-     */
-    public function meses()
-    {
-        
-    }
-    /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
@@ -54,8 +48,7 @@ class InstitucionController extends Controller
      * @return \Illuminate\Http\JsonResponse
      */
     /**
-     * Esta funcion muestra en el datatable todos los usuarios
-     * depende de si eres administrador
+     * Esta funcion muestra en el datatable todas las instituciones
      */
     public function data(Request $request)
     {
@@ -83,23 +76,11 @@ class InstitucionController extends Controller
      */
     public function create()
     {
-        $meses = [  'enero',
-                    'febrero',
-                    'marzo',
-                    'abril',
-                    'mayo',
-                    'junio',
-                    'julio',
-                    'agosto',
-                    'septiembre',
-                    'octubre',
-                    'noviembre',
-                    'diciembre'
-        ];
         $estados = Estado::pluck('ESD_Nombre', 'PK_ESD_Id');
         $metodologias = Metodologia::pluck('MTD_Nombre', 'PK_MTD_Id');
+        //$frenteEstrategicos = FrenteEstrategico;
         return view('autoevaluacion.SuperAdministrador.Instituciones.create', 
-                    compact('estados', 'metodologias', 'meses'));
+                    compact('estados', 'metodologias'));
     }
 
     /**
@@ -145,27 +126,13 @@ class InstitucionController extends Controller
     public function edit($id)
     {
 
-        $meses = [  'enero',
-                    'febrero',
-                    'marzo',
-                    'abril',
-                    'mayo',
-                    'junio',
-                    'julio',
-                    'agosto',
-                    'septiembre',
-                    'octubre',
-                    'noviembre',
-                    'diciembre'
-        ];
-
         $institucion = Institucion::findOrFail($id);
         $metodologias = Metodologia::pluck('MTD_Nombre', 'PK_MTD_Id');
         $estados = Estado::pluck('ESD_Nombre', 'PK_ESD_Id');
 
         return view(
             'autoevaluacion.SuperAdministrador.Instituciones.edit',
-            compact('institucion', 'metodologias', 'estados', 'meses')
+            compact('institucion', 'metodologias', 'estados')
         );
     }
 
