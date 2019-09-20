@@ -188,7 +188,7 @@ class AspectosTableSeeder extends Seeder
         	'ASP_Descripcion' => 'Apreciación de los estudiantes sobre la calidad de los espacios y estrategias que ofrece el programa, de acuerdo con la naturaleza y orientación de éste, para la participación en grupos o centros de estudio, proyectos de experimentación o de desarrollo empresarial y demás actividades académicas y culturales distintas de la docencia que contribuyan a su formación integral.',
         	'ASP_Identificador' => 'b',
         	'FK_ASP_Caracteristica' => $caracteristica,
-		])
+		]);
 		;Aspecto::create([
         	'ASP_Nombre' => 'Estudiantes que participan efectivamente en grupos o centros de estudio, proyectos de experimentación o de desarrollo empresarial o en las demás actividades académicas y culturales distintas de la docencia que brinda la institución o el programa para contribuir a la formación integral.',
         	'ASP_Descripcion' => 'Estudiantes que participan efectivamente en grupos o centros de estudio, proyectos de experimentación o de desarrollo empresarial o en las demás actividades académicas y culturales distintas de la docencia que brinda la institución o el programa para contribuir a la formación integral.',

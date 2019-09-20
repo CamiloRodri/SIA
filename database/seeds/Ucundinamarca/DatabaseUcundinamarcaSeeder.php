@@ -13,7 +13,7 @@ class DatabaseUcundinamarcaSeeder extends Seeder
     public function run()
     {
         $this->truncateTables([
-            'TBL_Fechas_corte', 'TBL_Facultades', 'TBL_Programas_Academicos', 'TBL_Sedes', 'TBL_Procesos'
+            'TBL_Fechas_corte', 'TBL_Facultades', 'TBL_Programas_Academicos', 'TBL_Sedes', 'TBL_Procesos', 'TBL_Instituciones'
         ]);
 
         $this->call(InstitucionSeeder::class);
