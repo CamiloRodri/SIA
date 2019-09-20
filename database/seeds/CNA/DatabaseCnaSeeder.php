@@ -16,13 +16,14 @@ class DatabaseCnaSeeder extends Seeder
         ]);
 
     	$this->truncateTables([
-            'TBL_Lineamientos', 'TBL_Factores', 'TBL_Ambitos_Responsabilidad', 'TBL_Caracteristicas'
+            'TBL_Lineamientos', 'TBL_Factores', 'TBL_Ambitos_Responsabilidad', 'TBL_Caracteristicas', 'TBL_Aspectos'
         ]);
 
         $this->call(LineamientosTableSeeder::class);
         $this->call(FactoresTableSeeder::class);
         $this->call(AmbitosTableSeeder::class);
         $this->call(CaracteristicasTableSeeder::class);
+        $this->call(AspectosTableSeeder::class);
     }
 
     protected function truncateTables(array $tables)

@@ -86,7 +86,7 @@ class CaracteristicasTableSeeder extends Seeder
         ]);
 
         Caracteristica::create([
-            'CRT_Nombre' => 'RAGLAMENTOS ESTUDIANTIL Y ACADÉMICO',
+            'CRT_Nombre' => 'REGLAMENTOS ESTUDIANTIL Y ACADÉMICO',
             'CRT_Descripcion' => 'RAGLAMENTOS ESTUDIANTIL Y ACADÉMICO',
             'CRT_Identificador' => '7',
             'FK_CRT_Factor' => $factorestudiantes,
