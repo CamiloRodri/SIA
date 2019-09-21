@@ -14,7 +14,7 @@ class CreateFrenteestrategicosTable extends Migration
     public function up()
     {
         Schema::create('TBL_Frentes_Estrategicos', function (Blueprint $table) {
-            $table->increments('PK_FES_id');
+            $table->increments('PK_FES_Id');
             $table->string('FES_Nombre');
             $table->integer("FK_FES_Institucion")->unsigned();
             $table->mediumText('FES_Descripcion');

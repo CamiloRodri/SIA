@@ -8,31 +8,30 @@
     <div class="col-md-12">
         @can('CREAR_FRENTE_ESTRATEGICO')
             <div class="actions">
-                <a id="crear_ambitos" href="#" class="btn btn-info" data-toggle="modal" data-target="#modal_ambito">
-                    <i class="fa fa-plus"></i> Agregar Ambitos</a></div>
+                <a id="crear_frentes_estrategicos" href="#" class="btn btn-info" data-toggle="modal" data-target="#modal_frente_estrategico">
+                    <i class="fa fa-plus"></i> Agregar Frente Estrategico</a></div>
     @endcan
     <!-- Modal-->
-        <div class="modal fade" id="modal_ambito" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal fade" id="modal_frente_estrategico" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span></button>
-                        <h4 class="modal-title" id="modal_titulo">Crear Ambito</h4>
+                        <h4 class="modal-title" id="modal_titulo">Crear Frente Estrategico</h4>
                     </div>
                     <div class="modal-body">
 
-                        {!! Form::open([ 'route' => 'admin.ambito.store',
-                        'method' => 'POST', 'id' => 'form_ambito', 'class' => 'form-horizontal
+                        {!! Form::open([ 'route' => 'admin.frente_estrategico.store',
+                        'method' => 'POST', 'id' => 'form_frente_estrategico', 'class' => 'form-horizontal
                             form-label-lef', 'novalidate' ])!!}
-                        @include('autoevaluacion.SuperAdministrador.Ambito._form')
+                        @include('autoevaluacion.SuperAdministrador.FrentesEstrategicos._form')
 
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                        {!! Form::submit('Crear
-                        Ambito', ['class' => 'btn btn-success', 'id' => 'accion']) !!}
-
+                        {!! Form::submit('Crear Frente Estrategico', ['class' => 'btn btn-success', 'id' => 'accion']) 
+                        !!}
                     </div>
                     {!! Form::close() !!}
                 </div>
@@ -41,14 +40,14 @@
         <!--FIN Modal CREAR-->
 
     </div>
-    @can('VER_AMBITOS')
+    @can('VER_FRENTE_ESTRATEGICO')
         <br>
         <br>
         <br>
         <div class="col-md-12">
             @component('admin.components.datatable',
-            ['id' => 'ambito_table_ajax'])
-                @slot('columns', [ 'id', 'Nombre','Acciones' =>
+            ['id' => 'frente_estrategico_table_ajax'])
+                @slot('columns', [ 'id', 'Nombre','Descripcion','Institucion','Acciones' =>
                 ['style' => 'width:85px;'] ])
             @endcomponent
 
@@ -86,21 +85,23 @@
     <script type="text/javascript">
         $(document).ready(function () {
 
-            var formCreate = $('#form_ambito');
-            $('#crear_ambitos').click(function () {
+            var formCreate = $('#form_frente_estrategico');
+            $('#crear_frentes_estrategicos').click(function () {
                 $(formCreate)[0].reset();
-                $('.modal-title').text("Crear Ambitos");
+                $('.modal-title').text("Crear Frente Estrategico");
                 $('#accion').val("Crear");
                 $('#accion').removeClass('modificar')
             });
             var data, routeDatatable;
             data = [
-                {data: 'PK_AMB_Id', name: 'id', "visible": false},
-                {data: 'AMB_Nombre', name: 'Nombre', className: "min-table-p"},
+                {data: 'PK_FES_Id', name: 'id', "visible": false},
+                {data: 'FES_Nombre', name: 'Nombre', className: "min-table-p"},
+                {data: 'FES_Descripcion', name: 'Descripcion', className: "min-table-p"},
+                {data: 'FK_FES_Institucion', name: 'Institucion', className: "min-table-p"},
                 {
                     defaultContent:
-                        '@can('ELIMINAR_AMBITOS')<a href="javascript:;" class="btn btn-simple btn-danger btn-sm remove" data-toggle="confirmation"><i class="fa fa-trash"></i></a>@endcan' +
-                        '@can('MODIFICAR_AMBITOS')<a href="javascript:;" class="btn btn-simple btn-info btn-sm edit" data-toggle="confirmation"><i class="fa fa-pencil"></i></a>@endcan',
+                        '@can('ELIMINAR_FRENTE_ESTRATEGICO')<a href="javascript:;" class="btn btn-simple btn-danger btn-sm remove" data-toggle="confirmation"><i class="fa fa-trash"></i></a>@endcan' +
+                        '@can('MODIFICAR_FRENTE_ESTRATEGICO')<a href="javascript:;" class="btn btn-simple btn-info btn-sm edit" data-toggle="confirmation"><i class="fa fa-pencil"></i></a>@endcan',
                     data: 'action',
                     name: 'action',
                     title: 'Acciones',
@@ -113,8 +114,8 @@
                     responsivePriority: 2
                 }
             ];
-            routeDatatable = "{{ route('admin.ambito.data') }}";
-            table = $('#ambito_table_ajax').DataTable({
+            routeDatatable = "{{ route('admin.frente_estrategico.data') }}";
+            table = $('#frente_estrategico_table_ajax').DataTable({
                 processing: true,
                 serverSide: false,
                 stateSave: true,
@@ -151,6 +152,7 @@
             $(formCreate).parsley({
                 trigger: 'change',
                 successClass: "has-success",
+
                 errorClass: "has-error",
                 classHandler: function (el) {
                     return el.$element.closest('.form-group');
@@ -158,13 +160,13 @@
                 errorsWrapper: '<p class="help-block help-block-error"></p>',
                 errorTemplate: '<span></span>',
             });
-            $(document).on('submit', '#form_ambito', function (e) {
+            $(document).on('submit', '#form_frente_estrategico', function (e) {
                 e.preventDefault();
                 let route = formCreate.attr('action');
                 let method = formCreate.attr('method');
                 let data = formCreate.serialize();
                 if ($('#accion').hasClass('modificar')) {
-                    route = '{{ url('admin/ambito') }}' + '/' + $('#PK_AMB_Id').val();
+                    route = '{{ url('admin/frente_estrategico') }}' + '/' + $('#PK_FES_Id').val();
                     method = "PUT";
                 }
                 $.ajax({
@@ -175,7 +177,7 @@
                     success: function (response, NULL, jqXHR) {
                         $(formCreate)[0].reset();
                         $(formCreate).parsley().reset();
-                        $('#modal_ambito').modal('hide');
+                        $('#modal_frente_estrategico').modal('hide');
                         new PNotify({
                             title: response.title,
                             text: response.msg,
@@ -203,18 +205,20 @@
                 e.preventDefault();
                 $tr = $(this).closest('tr');
                 var dataTable = table.row($tr).data();
-                var route = '{{ url('admin/ambito') }}' + '/' + dataTable.PK_AMB_Id;
+                var route = '{{ url('admin/frente_estrategico') }}' + '/' + dataTable.PK_FES_Id;
                 var type = 'DELETE';
                 dataType: "JSON",
-                    SwalDelete(dataTable.PK_AMB_Id, route);
+                    SwalDelete(dataTable.PK_FES_Id, route);
             });
             table.on('click', '.edit', function (e) {
                 $tr = $(this).closest('tr');
                 var dataTable = table.row($tr).data();
-                $('#AMB_Nombre').val(dataTable.AMB_Nombre);
-                $('#PK_AMB_Id').val(dataTable.PK_AMB_Id);
-                $('#modal_ambito').modal('show');
-                $('.modal-title').text("Modificar ambito");
+                $('#FES_Nombre').val(dataTable.FES_Nombre);
+                $('#PK_FES_id').val(dataTable.PK_FES_Id);
+                $('#FES_Descripcion').val(dataTable.FES_Descripcion);
+                $('#FK_FES_Institucion').val(dataTable.FK_FES_Institucion);
+                $('#modal_frente_estrategico').modal('show');
+                $('.modal-title').text("Modificar frente estrategico");
                 $('#accion').val("Modificar");
                 $('#accion').addClass('modificar');
             });
@@ -223,7 +227,7 @@
         function SwalDelete(id, route) {
             swal({
                 title: 'Esta seguro?',
-                text: "Se eliminara el ambito permanentemente!",
+                text: "Se eliminara el frente estrategicio permanentemente!",
                 type: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',
@@ -250,7 +254,7 @@
                             }
                         })
                             .done(function (response) {
-                                swal('Eliminada exitosamente!', response.message, response.status);
+                                swal('Eliminado exitosamente!', response.message, response.status);
                             })
                             .fail(function () {
                                 swal('Oops...', 'Algo salio mal !', 'error');

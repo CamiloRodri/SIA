@@ -119,6 +119,7 @@ class PermissionTableSeeder extends Seeder
         Permission::create(['name' => 'CREAR_INSTITUCION']);
         Permission::create(['name' => 'MODIFICAR_INSTITUCION']);
         Permission::create(['name' => 'ELIMINAR_INSTITUCION']);
+        Permission::create(['name' => 'ASIGNAR_FRENTE_ESTRATEGICO_INSTITUCION']);
         //Permisos para Institucion
         Permission::create(['name' => 'ACCEDER_FRENTE_ESTRATEGICO']);
         Permission::create(['name' => 'VER_FRENTE_ESTRATEGICO']);

@@ -26,6 +26,7 @@ class InstitucionController extends Controller
     public function __construct()
     {
         $this->middleware('permission:ACCEDER_INSTITUCION')->except('show');
+        $this->middleware('permission:ASIGNAR_FRENTE_ESTRATEGICO_INSTITUCION')->except('show');
         $this->middleware(['permission:MODIFICAR_INSTITUCION', 'permission:VER_INSTITUCION'], ['only' => ['edit', 'update']]);
         $this->middleware('permission:CREAR_INSTITUCION', ['only' => ['create', 'store']]);
         $this->middleware('permission:ELIMINAR_INSTITUCION', ['only' => ['destroy']]);

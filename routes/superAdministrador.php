@@ -44,6 +44,19 @@ Route::get('factores/data/data', array('as' => 'admin.factores.data', 'uses' => 
 Route::resource('institucion', 'InstitucionController', ['as' => 'admin']);
 Route::get('institucion/data/data', array('as' => 'admin.institucion.data', 'uses' => 'InstitucionController@data'));
 
+//Frente Estrategico
+Route::resource('frente_estrategico', 'FrenteEstrategicoController', ['as' => 'admin']);
+Route::get('frente_estrategico/data/data', array('as' => 'admin.frente_estrategico.data', 'uses' => 'FrenteEstrategicoController@data'));
+
+// Route::get('frente_estrategico/{id}', array(
+//     'as' => 'admin.frente_estrategico.index',
+//     'uses' => 'FrenteEstrategicoController@index'
+// ));
+// Route::get('frente_estrategico/{id}', array(
+//     'as' => 'admin.frente_estrategico.store',
+//     'uses' => 'FrenteEstrategicoController@store'
+// ));
+
 //Caracateristicas
 Route::resource('caracteristicas', 'CaracteristicasController', ['as' => 'admin']);
 Route::get(

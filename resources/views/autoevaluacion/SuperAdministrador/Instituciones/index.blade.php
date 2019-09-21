@@ -26,7 +26,7 @@
                     'Metodología',
                     'Domicilio', 
                     'Estado', 
-                    'Acciones' => ['style' => 'width:85px;']])
+                    'Acciones' => ['style' => 'width:125px;']])
                 @endcomponent
             </div>
         @endcomponent
@@ -88,7 +88,8 @@
                     {
                         defaultContent:
                             '@can('ELIMINAR_INSTITUCION')<a href="javascript:;" class="btn btn-simple btn-danger btn-sm remove" data-toggle="confirmation"><i class="fa fa-trash"></i></a>@endcan' +
-                            '@can('MODIFICAR_INSTITUCION')<a href="javascript:;" class="btn btn-simple btn-info btn-sm edit" data-toggle="confirmation"><i class="fa fa-pencil"></i></a>@endcan',
+                            '@can('MODIFICAR_INSTITUCION')<a href="javascript:;" class="btn btn-simple btn-info btn-sm edit" data-toggle="confirmation"><i class="fa fa-pencil"></i></a>@endcan' +
+                            '@can('ASIGNAR_FRENTE_ESTRATEGICO_INSTITUCION')<a data-toggle="tooltip" title="Asignar Frente Estrategico" href="javascript:;" class="btn btn-simple btn-info btn-sm asignar"><i class="fa fa-plus"></i></a>@endcan',
                         data: 'action',
                         name: 'action',
                         title: 'Acciones',
@@ -164,8 +165,14 @@
                 var dataTable = table.row($tr).data();
                 var route = '{{ url('admin/institucion/') }}' + '/' + dataTable.PK_ITN_Id + '/edit';
                 window.location.href = route;
+            });
 
-
+            table.on('click', '.asignar', function (e) {
+                e.preventDefault();
+                $tr = $(this).closest('tr');
+                var dataTable = table.row($tr).data();
+                var route = '{{ url('admin/frente_estrategico') }}' + '/' + dataTable.PK_ITN_Id;
+                window.location.href = route;
             });
 
         });

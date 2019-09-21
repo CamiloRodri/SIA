@@ -38,4 +38,9 @@ class FrenteEstrategico extends Model
      */
     protected $guarded = ['PK_FES_Id', 'created_at', 'updated_at'];
 
+    public function frente_estrategico()
+    {
+        return $this->belongsTo(Institucion::class, 'FK_FES_Institucion', 'PK_ITN_Id');
+    }
+
 }
