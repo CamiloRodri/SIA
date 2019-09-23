@@ -26,8 +26,8 @@ class ProcesosProgramasSeeder extends Seeder
 
         Proceso::create([
         	'PCS_Nombre' => 'Autoevaluación 2019',
-        	'PCS_FechaInicio' => '2019-05-10',
-        	'PCS_FechaFin' => $todayDate,
+        	'PCS_FechaInicio' => $todayDate,
+        	'PCS_FechaFin' => '2019-12-10',
         	'PCS_Institucional' => false,
         	'FK_PCS_Programa' => $programa,
         	'FK_PCS_Fase' => $fase,

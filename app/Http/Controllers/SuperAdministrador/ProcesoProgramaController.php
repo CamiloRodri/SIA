@@ -11,6 +11,7 @@ use App\Models\Autoevaluacion\PlanMejoramiento;
 use App\Models\Autoevaluacion\Proceso;
 use App\Models\Autoevaluacion\ProgramaAcademico;
 use App\Models\Autoevaluacion\Sede;
+use App\Models\Autoevaluacion\FechaCorte;
 use Carbon\Carbon;
 use DataTables;
 use Illuminate\Http\Request;
@@ -147,7 +148,7 @@ class ProcesoProgramaController extends Controller
     {
         $fechaInicio = Carbon::createFromFormat('d/m/Y', $request->get('PCS_FechaInicio'));
         $fechaFin = Carbon::createFromFormat('d/m/Y', $request->get('PCS_FechaFin'));
-
+        
         $proceso = new Proceso();
         $proceso->fill($request->only(['PCS_Nombre']));
         $proceso->PCS_FechaInicio = $fechaInicio;
@@ -165,6 +166,14 @@ class ProcesoProgramaController extends Controller
         $proceso->FK_PCS_Lineamiento = $request->get('PK_LNM_Id');
         $proceso->save();
 
+        $proceso = Proceso::where('PCS_Nombre', $request->only(['PCS_Nombre']))->value('PK_PCS_Id');
+
+        $fechadeCorte = $fechaFin->subDays('10');
+
+        $fechacorte = new FechaCorte();
+        $fechacorte->FCO_Fecha = $fechadeCorte;
+        $fechacorte->FK_FCO_Proceso = $proceso;
+        $fechacorte->save();
         return response([
             'msg' => 'Proceso registrado correctamente.',
             'title' => '¡Registro exitoso!',
