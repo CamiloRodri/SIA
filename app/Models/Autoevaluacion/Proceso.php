@@ -123,5 +123,14 @@ class Proceso extends Model
     {
         return $this->hasMany(DocumentoAutoevaluacion::class, 'FK_DOA_Proceso', 'PK_PCS_Id');
     }
+    /**
+     * Relacion uno a muchos con la tabla fechas de corte, un proceso puede tener
+     * muchas fechas de corte, y muchas fecha de corte pueden pertenecer a un proceso.
+     *
+     */
+    public function fechascorte()
+    {
+        return $this->hasMany(FechaCorte::class, 'FK_FCO_Proceso', 'PK_PCS_Id');
+    }
 
 }

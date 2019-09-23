@@ -8,6 +8,7 @@ use App\Http\Requests\ModificarActividadesRequest;
 use App\Models\Autoevaluacion\ActividadesMejoramiento;
 use App\Models\Autoevaluacion\PlanMejoramiento;
 use App\Models\Autoevaluacion\Responsable;
+use App\Models\Autoevaluacion\FechaCorte;
 use Carbon\Carbon;
 use DataTables;
 use Illuminate\Http\Request;
@@ -42,7 +43,15 @@ class ActividadesMejoramientoController extends Controller
     {
         $planMejoramiento = PlanMejoramiento::where('FK_PDM_Proceso', '=', session()->get('id_proceso'))
             ->first();
-        return view('autoevaluacion.SuperAdministrador.ActividadesMejoramiento.index', compact('planMejoramiento'));
+        $fechascorte = FechaCorte::where('FK_FCO_Proceso', '=', session()->get('id_proceso')) 
+                    ->orderBy('FCO_Fecha')
+                    ->get();
+        $fechahoy = Carbon::now()->format('Y-m-d');
+        $fechacorte = FechaCorte::whereDate('FCO_Fecha', '>=', Carbon::now()->format('Y-m-d'))
+                    ->where('FK_FCO_Proceso', '=', session()->get('id_proceso'))
+                    ->get()
+                    ->first();
+        return view('autoevaluacion.SuperAdministrador.ActividadesMejoramiento.index', compact('planMejoramiento', 'fechacorte', 'fechascorte', 'fechahoy'));
     }
 
     public function data(Request $request)
@@ -192,7 +201,7 @@ class ActividadesMejoramientoController extends Controller
         $actividades->ACM_Descripcion = $request->get('ACM_Descripcion');
         $actividades->FK_ACM_Responsable = $request->get('PK_RPS_Id');
         $actividades->update();
-        return response(['msg' => 'La actividad de mejoramiento de ha moficado.',
+        return response(['msg' => 'La actividad de mejoramiento se ha moficado.',
             'title' => 'Actividad de Mejoramiento Modificada!',
         ], 200) // 200 Status Code: Standard response for successful HTTP request
         ->header('Content-Type', 'application/json');
