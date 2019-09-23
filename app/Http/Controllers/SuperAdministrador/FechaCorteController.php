@@ -41,12 +41,11 @@ class FechaCorteController extends Controller
      */
     public function index()
     {
-        $fechahoy = Carbon::now();
-        $fechahoy = $fechahoy->format('d-m-Y');
+
+        $fechahoy = Carbon::now()->format('Y-m-d');
     	$estados = Estado::pluck('ESD_Nombre', 'PK_ESD_Id');
     	$procesos = Proceso::pluck('PCS_Nombre', 'PK_PCS_Id');
         return view('autoevaluacion.SuperAdministrador.FechasdeCorte.index', compact('estados','procesos', 'fechahoy'));
-        //return view('autoevaluacion.SuperAdministrador.FechasdeCorte.index', compact('procesos'));
     }
 
     /**
