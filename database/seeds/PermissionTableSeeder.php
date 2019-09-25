@@ -240,13 +240,13 @@ class PermissionTableSeeder extends Seeder
         Permission::create(['name' => 'CREAR_DOCUMENTOS_AUTOEVALUACION']);
         Permission::create(['name' => 'MODIFICAR_DOCUMENTOS_AUTOEVALUACION']);
         Permission::create(['name' => 'ELIMINAR_DOCUMENTOS_AUTOEVALUACION']);
+        Permission::create(['name' => 'EVALUAR_DOCUMENTOS_AUTOEVALUACION']);
         //Permisos para documentos institucionales
         Permission::create(['name' => 'ACCEDER_DOCUMENTOS_INSTITUCIONALES']);
         Permission::create(['name' => 'VER_DOCUMENTOS_INSTITUCIONALES']);
         Permission::create(['name' => 'CREAR_DOCUMENTOS_INSTITUCIONALES']);
         Permission::create(['name' => 'MODIFICAR_DOCUMENTOS_INSTITUCIONALES']);
         Permission::create(['name' => 'ELIMINAR_DOCUMENTOS_INSTITUCIONALES']);
-        Permission::create(['name' => 'EVALUAR_DOCUMENTOS_AUTOEVALUACION']);
         //Permisos para Informes
         Permission::create(['name' => 'ACCEDER_INFORMES_FUENTES_SECUNDARIAS']);
         Permission::create(['name' => 'ACCEDER_INFORMES_DOCUMENTOS_AUTOEVALUACION']);

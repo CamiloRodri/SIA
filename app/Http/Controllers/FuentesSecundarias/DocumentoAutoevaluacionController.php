@@ -257,10 +257,12 @@ class DocumentoAutoevaluacionController extends Controller
         return view('autoevaluacion.FuentesSecundarias.DocumentosAutoevaluacion.evaluar', 
         compact('documento'));
     }
+
     public function evaluarFormulario(Request $request, $id_documento)
     {
         $documento = DocumentoAutoevaluacion::findOrFail($id_documento);
-        $documento->DOA_Observaciones = $request->get('DOA_Observaciones');
+        $documento->DOA_Observaciones_Calificacion = $request->get('DOA_Observaciones_Calificacion');
+        $documento->DOA_Calificacion = $request->get('DOA_Calificacion');
         $documento->update();
         return response([
             'msg' => 'El Indicador documental ha sido modificado exitosamente.',

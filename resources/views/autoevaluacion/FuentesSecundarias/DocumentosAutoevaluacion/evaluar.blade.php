@@ -6,10 +6,14 @@
 @section('content')
     @component('admin.components.panel')
         @slot('title', 'Evaluar Documento autoevaluación')
+        <div>
+            Puntuación para Calificar: 
+            <img src="{{ asset('titan\assets\images\calificacion.png') }}" class="img-responsive" alt=""> </div>
+        </div>
         <div class="panel panel-default">
             <!-- Default panel contents -->
             <div class="panel-heading">Evaluar</div>
-
+                
                 <table class="table table-bordered">
                     <tr>
                         <th>Factor:</th>
@@ -63,15 +67,39 @@
                         <td>{{ $documento[0]->DOA_ContenidoEspecifico ?? 'Ningún contenido adicional guardado' }}</td>
                     </tr>
                     <tr>
-                        <th>Observación:</th>
-                        <td>
-                        <form action="{{ route('documental.documentos_autoevaluacion.evaluar.post', request()->route()->parameter('id_documento')) }}" method="post" id="evaluar_documento">
-                            @csrf    
+                        <th>Observación Documento:</th>
+                        <td>{{ $documento[0]->DOA_Observacion ?? 'Ningún contenido adicional guardado' }}</td>
+                    </tr>
+                    <form action="{{ route('documental.documentos_autoevaluacion.evaluar.post', request()->route()->parameter('id_documento')) }}" method="post" id="evaluar_documento">
+                    @csrf
+                    <tr>
+                        <th>Calificación:</th>
+                        <td>  
+                            <div class="row">
+                                    <div class="item form-group">
+                                        {!! Form::label('DOA_Calificacion','Calificación de 1.0 a 5.0', ['class'=>'control-label col-md-3 col-sm-3 col-xs-12']) !!}
+                                        <div class="col-md-6 col-sm-6 col-xs-12">
+                                            {!! Form::text('DOA_Calificacion', old('DOA_Calificacion',  $documento[0]->DOA_Calificacion ?? ''),
+                                            [ 'class' => 'form-control col-md-6 col-sm-6 col-xs-12',
+                                            'required'=> 'required', 
+                                            'data-parsley-pattern' => '^[0-9.]+$',
+                                            'data-parsley-pattern-message' => 'Error en el texto',
+                                            'data-parsley-length' => "[3, 50]",
+                                            'data-parsley-trigger'=>"change" ] ) !!}
+                                        </div>
+                                    </div>
+                                </div>                        
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Observación Calificación:</th>
+                        <td>       
                             <div class="row">
                                     <div class="form-group">
-                                        {!! Form::label('DOA_Observaciones','Observaciones', ['class'=>'control-label col-md-3 col-sm-3 col-xs-12']) !!}
+                                        {!! Form::label('DOA_Observaciones_Calificacion','Observaciones', ['class'=>'control-label col-md-3 col-sm-3 col-xs-12']) !!}
                                         <div class="col-md-6 col-sm-6 col-xs-12">
-                                            {!! Form::textarea('DOA_Observaciones', old('DOA_Observaciones', $documento[0]->DOA_Observaciones ?? ''), [ 'class' => 'form-control col-md-6 col-sm-6 col-xs-12',
+                                            {!! Form::textarea('DOA_Observaciones_Calificacion', old('DOA_Observaciones_Calificacion', $documento[0]->DOA_Observaciones_Calificacion ?? ''), 
+                                            [ 'class' => 'form-control col-md-6 col-sm-6 col-xs-12',
                                             "style"=>"height: 88px;" ] ) !!}
                                         </div>
                                     </div>
@@ -79,9 +107,10 @@
                                 <div class="row">
                                     <button class="btn-xs btn-info pull-right" type="submit">Guardar</button>
                                 </div>
-                        </form>
+                        
                         </td>
                     </tr>
+                    </form>
                 </table>
         </div>
         
@@ -95,6 +124,8 @@
     <link href="{{ asset('gentella/vendors/pnotify/dist/pnotify.css') }}" rel="stylesheet">
     <link href="{{ asset('gentella/vendors/pnotify/dist/pnotify.buttons.css') }}" rel="stylesheet">
     <link href="{{ asset('gentella/vendors/pnotify/dist/pnotify.nonblock.css') }}" rel="stylesheet">
+
+    <link href="{{ asset('gentella/vendors/select2/dist/css/select2.min.css')}}" rel="stylesheet">
 @endpush
 
 {{-- Scripts necesarios para el formulario --}}
@@ -106,6 +137,8 @@
     <script src="{{ asset('gentella/vendors/pnotify/dist/pnotify.js') }}"></script>
     <script src="{{ asset('gentella/vendors/pnotify/dist/pnotify.buttons.js') }}"></script>
     <script src="{{ asset('gentella/vendors/pnotify/dist/pnotify.nonblock.js') }}"></script>
+
+    <script src="{{ asset('gentella/vendors/select2/dist/js/select2.full.min.js') }}"></script>
 @endpush
 
 {{-- Funciones necesarias por el formulario --}}

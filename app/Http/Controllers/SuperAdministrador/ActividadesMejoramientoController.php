@@ -50,7 +50,7 @@ class ActividadesMejoramientoController extends Controller
         $fechacorte = FechaCorte::whereDate('FCO_Fecha', '>=', Carbon::now()->format('Y-m-d'))
                     ->where('FK_FCO_Proceso', '=', session()->get('id_proceso'))
                     ->get()
-                    ->first();
+                    ->last();
         return view('autoevaluacion.SuperAdministrador.ActividadesMejoramiento.index', compact('planMejoramiento', 'fechacorte', 'fechascorte', 'fechahoy'));
     }
 

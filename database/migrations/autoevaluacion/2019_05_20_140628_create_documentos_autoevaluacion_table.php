@@ -27,6 +27,8 @@ class CreateDocumentosAutoevaluacionTable extends Migration
             $table->mediumText("DOA_ContenidoEspecifico")->nullable();
             $table->mediumText("DOA_ContenidoAdicional")->nullable();
             $table->mediumText("DOA_Observaciones")->nullable();
+            $table->double("DOA_Calificacion")->nullable();
+            $table->mediumText("DOA_Observaciones_Calificacion")->nullable();
             $table->integer("FK_DOA_Archivo")->unsigned()->nullable();
             $table->integer("FK_DOA_IndicadorDocumental")->unsigned();
             $table->integer("FK_DOA_TipoDocumento")->unsigned();

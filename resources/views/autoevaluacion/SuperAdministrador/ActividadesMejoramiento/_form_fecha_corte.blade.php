@@ -27,40 +27,44 @@
                         <h4 class="modal-title" id="modal_titulo">Fechas de Corte</h4>
                     </div>
                     <div class="modal-body">
-
-                    @foreach($fechascorte as $feco)
                         <div class="item form-group">
-                            <div class="col-md-6 col-sm-6 col-xs-12">
-                                {!! Form::text('FCO_FechaC',$feco->FCO_Fecha,
-                                    [ 'class' => 'form-control col-md-2 col-sm-6 col-xs-6', 
-                                      'readonly'=>'readonly'
-                                ] ) !!}
-                            </div>
+                            @foreach($fechascorte as $feco)
+                                <br>
+                                <div class="col-md-1 col-sm-6 col-xs-2">
+                                </div>
+                                <div >
+                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                        {!! Form::text('FCO_FechaC',$feco->FCO_Fecha,
+                                            [ 'class' => 'form-control col-md-2 col-sm-6 col-xs-6', 
+                                              'readonly'=>'readonly'
+                                        ] ) !!}
+                                    </div>
+                                </div>
+                                @if($feco->FCO_Fecha == $fechahoy)
+                                    <div class="col-md-5 col-sm-6 col-xs-12">
+                                        <h4> <span class='label label-sm label-danger'><i class="fa fa-exclamation-triangle"></i>&nbsp&nbsp&nbspSe cumple hoy</span> </h4>
+                                    </div>
+                                @endif
+                                @if($feco->FCO_Fecha < $fechahoy)
+                                    <div class="col-md-5 col-sm-6 col-xs-12">
+                                        <h4><span class='label label-sm label-success'><i class="fa fa-check"></i>&nbsp&nbsp&nbspFecha de Corte Cumplida</span> </h4>
+                                        {{-- <a href="#" class="btn btn-success" ><i class="fa fa-check"></i> Fecha de Corte Cumplida</a> --}}
+                                    </div>
+                                @endif
+                                @if($feco->FCO_Fecha > $fechahoy)
+                                    <div class="col-md-5 col-sm-6 col-xs-12">
+                                        <h4> <span class='label label-sm label-info'><i class="fa fa-circle-o"></i>&nbsp&nbsp&nbspFecha de Corte por cumplir</span> </h4>
+                                    </div>
+                                @endif
+                                {{-- class='label label-sm label-danger'
+                                     class='label label-sm label-warning'
+                                     class='label label-sm label-info'
+                                     class='label label-sm label-success'
+                                 --}}
+                                <br>
+                                <br>
+                            @endforeach
                         </div>
-                        @if($feco->FCO_Fecha == $fechahoy)
-                            <div class="col-md-5 col-sm-6 col-xs-12">
-                                <span class='label label-sm label-warning'>Se cumple hoy</span>
-                            </div>
-                        @endif
-                        @if($feco->FCO_Fecha < $fechahoy)
-                            <div class="col-md-5 col-sm-6 col-xs-12">
-                                <span class='label label-sm label-danger'>Termino</span>
-                            </div>
-                        @endif
-                        @if($feco->FCO_Fecha > $fechahoy)
-                            <div class="col-md-5 col-sm-6 col-xs-12">
-                                <span class='label label-sm label-success'>Por venir</span>
-                            </div>
-                        @endif
-                        {{-- class='label label-sm label-danger'
-                             class='label label-sm label-warning'
-                             class='label label-sm label-info'
-                             class='label label-sm label-success'
-                         --}}
-                        <br>
-                        <br>
-                    @endforeach
-
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
