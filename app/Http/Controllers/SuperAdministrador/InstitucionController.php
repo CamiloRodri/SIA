@@ -4,12 +4,15 @@ namespace App\Http\Controllers\SuperAdministrador;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\InstitucionRequest;
+use App\Models\Autoevaluacion\FrenteEstrategico;
 use App\Models\Autoevaluacion\Institucion;
 use App\Models\Autoevaluacion\Estado;
 use App\Models\Autoevaluacion\Metodologia;
-use app\Models\Autoevaluacion\FrenteEstrategico;
 use Yajra\DataTables\DataTables;
 use Illuminate\Http\Request;
+use Barryvdh\Debugbar;
+
+
 
 class InstitucionController extends Controller
 {
@@ -79,9 +82,9 @@ class InstitucionController extends Controller
     {
         $estados = Estado::pluck('ESD_Nombre', 'PK_ESD_Id');
         $metodologias = Metodologia::pluck('MTD_Nombre', 'PK_MTD_Id');
-        //$frenteEstrategicos = FrenteEstrategico;
+        $frenteEstrategicos = [ '1','2','3','4','5','6','7','8'];
         return view('autoevaluacion.SuperAdministrador.Instituciones.create', 
-                    compact('estados', 'metodologias'));
+                    compact('estados', 'metodologias','frenteEstrategicos'));
     }
 
     /**
@@ -94,11 +97,37 @@ class InstitucionController extends Controller
     {
         
         $institucion = new Institucion();
-        $institucion->fill($request->all());
+        $institucion->ITN_Nombre = $request->get('ITN_Nombre');
+        $institucion->ITN_Domicilio = $request->get('ITN_Domicilio');
+        $institucion->ITN_Caracter = $request->get('ITN_Caracter');
+        $institucion->ITN_CodigoSNIES = $request->get('ITN_CodigoSNIES');
+        $institucion->ITN_Norma_Creacion = $request->get('ITN_Norma_Creacion');
+        $institucion->ITN_Estudiantes = $request->get('ITN_Estudiantes');
+        $institucion->ITN_Profesor_Planta = $request->get('ITN_Profesor_Planta');
+        $institucion->ITN_Profesor_TCompleto = $request->get('ITN_Profesor_TCompleto');
+        $institucion->ITN_Profesor_TMedio = $request->get('ITN_Profesor_TMedio');
+        $institucion->ITN_Profesor_Catedra = $request->get('ITN_Profesor_Catedra');
+        $institucion->ITN_Graduados = $request->get('ITN_Graduados');
+        $institucion->ITN_Mision = $request->get('ITN_Mision');
+        $institucion->ITN_Vision = $request->get('ITN_Vision');
+        $institucion->ITN_FuenteBoletinMes = $request->get('ITN_FuenteBoletinMes');
+        $institucion->ITN_FuenteBoletinAnio = $request->get('ITN_FuenteBoletinAnio');
+
         $institucion->FK_ITN_Estado = $request->get('FK_ITN_Estado');
         $institucion->FK_ITN_Metodologia = $request->get('FK_ITN_Metodologia');
+        
         $institucion->save();
 
+        $cantInstituciones = Institucion::count();
+
+        for ($i = 1; $i <= $cantInstituciones; $i++) {
+            $frenteEstrategico = new FrenteEstrategico();
+            $frenteEstrategico->FES_Nombre = $request->get('Nombre_' . $i);
+            $frenteEstrategico->FES_Descripcion = $request->get('Descripcion_' . $i);
+            \Debugbar::info($frenteEstrategico);
+            $frenteEstrategico->FK_FES_Institucion = $institucion->PK_ITN_Id;
+            $frenteEstrategico->save();
+        }
         return response(['msg' => 'Institución registrada correctamente.',
             'title' => '¡Registro exitoso!',
         ], 200) // 200 Status Code: Standard response for successful HTTP request
@@ -126,14 +155,15 @@ class InstitucionController extends Controller
      */
     public function edit($id)
     {
-
         $institucion = Institucion::findOrFail($id);
         $metodologias = Metodologia::pluck('MTD_Nombre', 'PK_MTD_Id');
         $estados = Estado::pluck('ESD_Nombre', 'PK_ESD_Id');
 
+        $frenteEstrategicos = FrenteEstrategico::where('FK_FES_Institucion', $id)->get();
+
         return view(
             'autoevaluacion.SuperAdministrador.Instituciones.edit',
-            compact('institucion', 'metodologias', 'estados')
+            compact('institucion', 'metodologias', 'estados', 'frenteEstrategicos')
         );
     }
 
@@ -147,11 +177,37 @@ class InstitucionController extends Controller
     public function update(InstitucionRequest $request, $id)
     {
         $institucion = Institucion::find($id);
-        $institucion->fill($request->all());
+        $institucion->ITN_Nombre = $request->get('FK_ITN_Estado');
+        $institucion->ITN_Domicilio = $request->get('ITN_Domicilio');
+        $institucion->ITN_Caracter = $request->get('ITN_Caracter');
+        $institucion->ITN_CodigoSNIES = $request->get('ITN_CodigoSNIES');
+        $institucion->ITN_Norma_Creacion = $request->get('ITN_Norma_Creacion');
+        $institucion->ITN_Estudiantes = $request->get('ITN_Estudiantes');
+        $institucion->ITN_Profesor_Planta = $request->get('ITN_Profesor_Planta');
+        $institucion->ITN_Profesor_TCompleto = $request->get('ITN_Profesor_TCompleto');
+        $institucion->ITN_Profesor_TMedio = $request->get('ITN_Profesor_TMedio');
+        $institucion->ITN_Profesor_Catedra = $request->get('ITN_Profesor_Catedra');
+        $institucion->ITN_Graduados = $request->get('ITN_Graduados');
+        $institucion->ITN_Mision = $request->get('ITN_Mision');
+        $institucion->ITN_Vision = $request->get('ITN_Vision');
+        $institucion->ITN_FuenteBoletinMes = $request->get('ITN_FuenteBoletinMes');
+        $institucion->ITN_FuenteBoletinAnio = $request->get('ITN_FuenteBoletinAnio');
+
         $institucion->FK_ITN_Estado = $request->get('FK_ITN_Estado');
         $institucion->FK_ITN_Metodologia = $request->get('FK_ITN_Metodologia');
 
         $institucion->update();
+
+        $cantInstituciones = Institucion::count();
+
+        for ($i = 1; $i <= $cantInstituciones; $i++) {
+            $frenteEstrategicos = new FrenteEstrategico();
+            $frenteEstrategicos->FES_Nombre = $request->get('PK_FES_Nombre');
+            $frenteEstrategicos->FES_Descripcion = $request->get('PK_FES_Descripcion');
+            // \Debugbar::info($frenteEstrategico->FES_Descripcion);
+            // $frenteEstrategico->FK_FES_Institucion = $institucion->PK_ITN_Id;
+            $frenteEstrategicos->update();
+        }
 
         return response([
             'msg' => 'La Institución ha sido modificado exitosamente.',

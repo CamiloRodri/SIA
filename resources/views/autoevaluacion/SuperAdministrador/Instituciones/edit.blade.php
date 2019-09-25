@@ -14,7 +14,7 @@
                 'class' => 'form-horizontal form-label-lef', 'novalidate' 
                 ])
         !!}
-        @include('autoevaluacion.SuperAdministrador.Instituciones._form')
+        @include('autoevaluacion.SuperAdministrador.Instituciones.form')
         <div class="ln_solid"></div>
         <div class="form-group">
             <div class="col-md-6 col-md-offset-3">

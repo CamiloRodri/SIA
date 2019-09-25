@@ -24,8 +24,9 @@ class InstitucionRequest extends FormRequest
      */
     public function rules()
     {
+        $id = $this->route()->parameter('institucion');
         return [
-            'ITN_Nombre' => 'required|string',
+            'ITN_Nombre' => 'required|string|max:60' . Rule::unique('TBL_Institucion')->ignore($id, 'PK_ITN_Id'),
             'ITN_Domicilio' => 'required',
             'ITN_Caracter' => 'required',
             'ITN_CodigoSNIES' => 'required',
@@ -42,8 +43,8 @@ class InstitucionRequest extends FormRequest
             'ITN_Descripcion' => 'required',
             'FK_ITN_Estado' => 'exists:TBL_Estados,PK_ESD_Id',
             'ITN_FuenteBoletinMes' => 'required|in:[enero,febrero,marzo,abril,mayo,junio,julio,agosto,septiembre,octubre,noviembre,diciembre]',
-            'ITN_FuenteBoletinAnio' => 'required|numeric'
-
+            'ITN_FuenteBoletinAnio' => 'required|numeric',
+            'PK_TRP_Id' => 'numeric'
         ];
     }
 
@@ -55,6 +56,7 @@ class InstitucionRequest extends FormRequest
     public function messages()
     {
         return [
+            'ITN_Nombre.unique' => 'esta institución ya ha sido registrada.',
             'ITN_Nombre.required' => 'el campo nombre requerido.',
             'ITN_Domicilio.required' => 'el campo es requerido',
             'ITN_Caracter.required' => 'el campo es requerido',
@@ -77,4 +79,23 @@ class InstitucionRequest extends FormRequest
             'FK_ITN_Estado.exists' => 'El Estado no se encuentra en nuestros registros'
         ];
     }
+
+    // public function withValidator($validator)
+    // {
+    //     $validator->after(function ($validator) {
+    //         $frenteEstrategico = FrenteEstrategico::select('TRP_TotalPonderacion', 'TRP_CantidadRespuestas')
+    //             ->where('PK_TRP_Id', $this->request->get('PK_TRP_Id'))
+    //             ->first();
+    //         $sumatoria = 0;
+    //         for ($i = 1; $i <= $frenteEstrategico->TRP_CantidadRespuestas; $i++) {
+    //             $ponderacion = PonderacionRespuesta::select('PRT_Ponderacion')
+    //                 ->where('PK_PRT_Id', $this->request->get('Ponderacion_' . $i))
+    //                 ->first();
+    //             $sumatoria = $sumatoria + $ponderacion->PRT_Ponderacion;
+    //         }
+    //         if ($sumatoria != $frenteEstrategico->TRP_TotalPonderacion) {
+    //             $validator->errors()->add('Seleccione un proceso', 'Las ponderaciones no coinciden!');
+    //         }
+    //     });
+    // }
 }

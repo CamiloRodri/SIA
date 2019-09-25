@@ -1,9 +1,7 @@
 {{-- Titulo de la pagina --}}
 @section('title', 'Institución')
-
 {{-- Contenido principal --}}
 @extends('admin.layouts.app')
-
 @section('content')
     @component('admin.components.panel')
         @slot('title', 'Crear Institución')
@@ -25,6 +23,7 @@
         {!! Form::close() !!}
     @endcomponent
 @endsection
+
 {{-- Scripts necesarios para el formulario --}}
 @push('styles')
     <!-- PNotify -->
@@ -53,7 +52,38 @@
         $(document).ready(function () {
             $('#metodologia').select2();
             $('#estado').select2();
-
+            $('#tipo').select2();
+            // selectDinamico("#lineamiento", "#factor", "{{url('admin/factores')}}", ['#caracteristica']);
+            // selectDinamico("#factor", "#caracteristica", "{{url('admin/caracteristicas')}}");
+            $('#tipo').change(function (e) {
+                e.preventDefault();
+                var number = $("#tipo option:selected").text();
+                var id = $("#tipo option:selected").val();
+                var container = document.getElementById("container");
+                while (container.hasChildNodes()) {
+                    container.removeChild(container.lastChild);
+                }
+                for (i = 1; i <= number; i++) {
+                    var nombre = document.createElement("TEXTAREA");
+                    nombre.name = "Nombre_" + i;
+                    nombre.maxLength = 500;
+                    nombre.required = true;
+                    nombre.style = "margin: 0px;width: 360px;height: 40px";
+                    container.innerHTML += '<br>';
+                    container.appendChild(document.createTextNode("Nombre Frente Estrategico"));
+                    container.appendChild(nombre);
+                    container.innerHTML += '<br>';
+                    container.innerHTML += '<br>';
+                    container.appendChild(document.createTextNode(" Descripción del Frente Estrategico"));
+                    container.innerHTML += '<br>';
+                    var descripcion = document.createElement("TEXTAREA");
+                    descripcion.name = "Descripcion_" + i;
+                    descripcion.style = "margin: 0px;width: 324px;height: 214px";                    
+                    container.appendChild(descripcion);
+                    container.appendChild(document.createElement("br"));
+                    container.appendChild(document.createElement("br"));
+                }
+            });
             var form = $('#form_crear_institucion');
             $(form).parsley({
                 trigger: 'change',
