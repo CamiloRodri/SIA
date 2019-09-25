@@ -11,23 +11,20 @@ class DatabaseAutoevaluacion2019Seeder extends Seeder
      */
     public function run()
     {
-        $this->truncateTables([
-            'TBL_Banco_Encuestas', 'TBL_Encuestas'
-        ]);
+        //Documentacion
+        $this->call(DatabaseDocumentosAutoevaluacionSeeder::class);
 
-        $this->call(BancoEncuestasTableSeeder::class);
-        $this->call(EncuestasTableSeeder::class);
+        //Fase Construccion
+        $this->call(DatabaseConstruccionSeeder::class);
+
+        //Fase Captura de Datos
+        //$this->call(DatabaseCapturaDatosSeeder::class);
+
+        //Fase Consolidacion
+        $this->call(DatabaseConsolidacionSeeder::class);
+
+        //Fase Plan de Mejoramiento
+        //$this->call(DatabasePlanMejoramientoSeeder::class);
+
     }
-
-    protected function truncateTables(array $tables)
-    {
-        DB::statement('SET FOREIGN_KEY_CHECKS = 0;');
-    	foreach ($tables as $table)
-        {
-            DB::table($table)->truncate();
-        }
-
-        DB::statement('SET FOREIGN_KEY_CHECKS = 1;');
-    }	
-
 }

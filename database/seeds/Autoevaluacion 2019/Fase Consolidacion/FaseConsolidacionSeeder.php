@@ -8,7 +8,7 @@ use App\Models\Autoevaluacion\Lineamiento;
 use App\Models\Autoevaluacion\PlanMejoramiento;
 use Carbon\Carbon;
 
-class FaseProcesosSeeder extends Seeder
+class FaseConsolidacionSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -26,7 +26,7 @@ class FaseProcesosSeeder extends Seeder
         *plan de mejoramiento
         */
         $programa = ProgramaAcademico::where('PAC_Nombre', 'Ingenieria de Sistemas')->value('PK_PAC_Id');
-        $fase = Fase::where('FSS_Nombre', 'plan de mejoramiento')->value('PK_FSS_Id');
+        $fase = Fase::where('FSS_Nombre', 'consolidacion')->value('PK_FSS_Id');
         $lineamiento = Lineamiento::where('LNM_Nombre', 'PREGADO')->value('PK_LNM_Id');
         $todayDate = Carbon::now();
         $todayDate = $todayDate->format('Y-m-d');	

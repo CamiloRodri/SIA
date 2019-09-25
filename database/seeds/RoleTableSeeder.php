@@ -180,6 +180,7 @@ class RoleTableSeeder extends Seeder
             'CREAR_RESPUESTAS',
             'ACCEDER_RESULTADOS',
             'VER_RESULTADOS',
+            'ACCEDER_SIDEBAR_ENCUESTAS'
         ]);
 
         //Crear y asignar permisos fuentes secundarias
@@ -231,6 +232,7 @@ class RoleTableSeeder extends Seeder
             'ACCESO_MODULO_EVALUADOR',
             'ACCEDER_DOCUMENTOS_AUTOEVALUACION',
             'VER_DOCUMENTOS_AUTOEVALUACION',
+            'ACCEDER_SIDEBAR_ENCUESTAS',
             'EVALUAR_DOCUMENTOS_AUTOEVALUACION',
             'ACCEDER_INFORMES_FUENTES_SECUNDARIAS',
             'ACCEDER_INFORMES_DOCUMENTOS_AUTOEVALUACION',
