@@ -10,9 +10,6 @@ use App\Models\Autoevaluacion\Estado;
 use App\Models\Autoevaluacion\Metodologia;
 use Yajra\DataTables\DataTables;
 use Illuminate\Http\Request;
-use Barryvdh\Debugbar;
-
-
 
 class InstitucionController extends Controller
 {
@@ -67,7 +64,6 @@ class InstitucionController extends Controller
                 ->removeColumn('created_at')
                 ->removeColumn('updated_at')
                 ->make(true);
-
         }
     }
     /**
@@ -124,7 +120,6 @@ class InstitucionController extends Controller
             $frenteEstrategico = new FrenteEstrategico();
             $frenteEstrategico->FES_Nombre = $request->get('Nombre_' . $i);
             $frenteEstrategico->FES_Descripcion = $request->get('Descripcion_' . $i);
-            \Debugbar::info($frenteEstrategico);
             $frenteEstrategico->FK_FES_Institucion = $institucion->PK_ITN_Id;
             $frenteEstrategico->save();
         }

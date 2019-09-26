@@ -22,6 +22,17 @@
     </div>
 </div>
 <div class="form-group">
+    {!! Form::label('PK_ITN_Id', 'Institucion', ['class' => 'control-label col-md-3 col-sm-3 col-xs-12']) !!}
+    <div class="col-md-6 col-sm-6 col-xs-12">
+        {!! Form::select('fgfdgfd', $instituciones, old('fgfdgfd'), ['class' => 'select2 form-control',
+        
+        'required' => '', 'id' => 'institucion',
+        'style' => 'width:100%'
+        ])
+        !!}
+    </div>
+</div>
+<div class="form-group">
     {!! Form::label('PK_ESD_Id', 'Estado', ['class' => 'control-label col-md-3 col-sm-3 col-xs-12']) !!}
     <div class="col-md-6 col-sm-6 col-xs-12">
         {!! Form::select('PK_ESD_Id', $estados, old('PK_ESD_Id'), ['class' => 'select2 form-control',

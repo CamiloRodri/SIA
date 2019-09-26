@@ -5,8 +5,9 @@ namespace App\Http\Controllers\SuperAdministrador;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\SedesRequest;
 use App\Models\Autoevaluacion\Estado;
+use App\Models\Autoevaluacion\Institucion;
 use App\Models\Autoevaluacion\Sede;
-use DataTables;
+use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Http\Request;
 
 class SedeController extends Controller
@@ -36,8 +37,9 @@ class SedeController extends Controller
      */
     public function index()
     {
+        $instituciones = Institucion::pluck('ITN_Nombre', 'PK_ITN_Id');
         $estados = Estado::pluck('ESD_Nombre', 'PK_ESD_Id');
-        return view('autoevaluacion.SuperAdministrador.Sedes.index', compact('estados'));
+        return view('autoevaluacion.SuperAdministrador.Sedes.index', compact('estados', 'instituciones'));
     }
 
     /**
@@ -50,11 +52,25 @@ class SedeController extends Controller
      */
     public function data(Request $request)
     {
-        if ($request->ajax() && $request->isMethod('GET')) {
-            $sedes = Sede::with('estado')->get();
-            return Datatables::of($sedes)
-                ->make(true);
+        // if ($request->ajax() && $request->isMethod('GET')) {
+        //     $sedes = Sede::with('estado')->get();
+        //     // $sedes = Sede::with('institucion')->get();
+        //     \Debugbar::info($sedes);
+        //     return Datatables::of($sedes)
+        //         ->make(true);
 
+        // }
+        if ($request->ajax() && $request->isMethod('GET')) {
+            $sedes = Sede::with(['estado' => function ($query) {
+                    return $query->select('PK_ESD_Id', 'ESD_Nombre');
+                }])
+                ->with(['institucion' => function($query){
+                    return $query->select('PK_ITN_Id', 'ITN_Nombre');
+                }])->get();
+            return DataTables::of($sedes)
+                ->removeColumn('created_at')
+                ->removeColumn('updated_at')
+                ->make(true);
         }
     }
 
@@ -80,7 +96,9 @@ class SedeController extends Controller
     {
         $sede = new Sede();
         $sede->fill($request->only(['SDS_Nombre', 'SDS_Descripcion']));
+        $sede->FK_SDS_Institucion = 2;
         $sede->FK_SDS_Estado = $request->get('PK_ESD_Id');
+        \Debugbar::info($sede);
         $sede->save();
 
         return response([
@@ -126,6 +144,7 @@ class SedeController extends Controller
         $sede = Sede::findOrFail($id);
         $sede->fill($request->only(['SDS_Nombre', 'SDS_Descripcion']));
         $sede->FK_SDS_Estado = $request->get('PK_ESD_Id');
+        $sede->FK_SDS_Institucion = 2;
         $sede->update();
         return response([
             'msg' => 'La sede ha sido modificada exitosamente.',

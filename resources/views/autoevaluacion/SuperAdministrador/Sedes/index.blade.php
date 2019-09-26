@@ -46,7 +46,7 @@
         <br>
         <div class="col-md-12">
             @component('admin.components.datatable',
-            ['id' => 'sedes_table_ajax']) @slot('columns', [ 'id', 'Nombre', 'Descripción','Estado', 'Acciones' =>
+            ['id' => 'sedes_table_ajax']) @slot('columns', [ 'id', 'Nombre', 'Institución', 'Descripción','Estado', 'Acciones' =>
     ['style' => 'width:85px;'] ]) @endcomponent
 
         </div>
@@ -84,6 +84,7 @@
     <script type="text/javascript">
         $(document).ready(function () {
             $('#estado').select2();
+            $('#institucion').select2();
             var formCreate = $('#form_sedes');
             $('#crear_sede').click(function () {
                 $(formCreate)[0].reset();
@@ -96,6 +97,7 @@
             data = [
                 {data: 'PK_SDS_Id', name: 'id', "visible": false},
                 {data: 'SDS_Nombre', name: 'Nombre', className: "min-table-p"},
+                {data: 'institucion.ITN_Nombre', name: 'Institucion', className: "all"},
                 {data: 'SDS_Descripcion', name: 'Descripcion', className: "desktop"},
                 {data: 'estado.ESD_Nombre', name: 'Estado', className: "all"},
                 {
@@ -222,6 +224,7 @@
                 $('#SDS_Descripcion').val(dataTable.SDS_Descripcion);
                 $('#PK_SDS_Id').val(dataTable.PK_SDS_Id);
                 $("#estado").val(dataTable.estado.PK_ESD_Id).change();
+                $("#institucion").val(dataTable.institucion.PK_ITN_Id).change();
                 $('#modal_sedes').modal('show');
                 $('.modal-title').text("Modificar Sedes");
                 $('#accion').val("Modificar");

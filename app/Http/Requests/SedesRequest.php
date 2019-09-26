@@ -30,7 +30,8 @@ class SedesRequest extends FormRequest
         return [
             'SDS_Nombre' => 'required|max:60|' . Rule::unique('TBL_Sedes')->ignore($id, 'PK_SDS_Id'),
             'SDS_Descripcion' => 'required',
-            'PK_ESD_Id' => 'exists:TBL_Estados|numeric'
+            'PK_ESD_Id' => 'exists:TBL_Estados|numeric',
+            'PK_ITN_Id' => 'exists:TBL_Estados|numeric'
         ];
     }
 
@@ -47,6 +48,9 @@ class SedesRequest extends FormRequest
             'PK_ESD_Id.required' => 'El estado es requerido',
             'PK_ESD_Id.numeric' => 'Estado invalido.',
             'PK_ESD_Id.exists' => 'Este estado no existe en nuestros registros.',
+            'PK_ITN_Id.required' => 'La institución es requerida',
+            'PK_ITN_Id.numeric' => 'Institución invalida.',
+            'PK_ITN_Id.exists' => 'Esta institución no existe en nuestros registros.'
         ];
     }
 }

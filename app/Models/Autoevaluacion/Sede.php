@@ -56,4 +56,9 @@ class Sede extends Model
     {
         return $this->belongsTo(Estado::class, 'FK_SDS_Estado', 'PK_ESD_Id');
     }
+
+    public function institucion()
+    {
+        return $this->belongsTo(Institucion::class, 'FK_SDS_Institucion', 'PK_ITN_Id');
+    }
 }
