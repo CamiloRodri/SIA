@@ -12,10 +12,11 @@ class DatabaseConsolidacionSeeder extends Seeder
     public function run()
     {
         $this->truncateTables([
-            
+            'TBL_Consolidaciones'
         ]);
 
         $this->call(FaseConsolidacionSeeder::class);
+        $this->call(ConsolidacionTableSeeder::class);
     }
 
     protected function truncateTables(array $tables)

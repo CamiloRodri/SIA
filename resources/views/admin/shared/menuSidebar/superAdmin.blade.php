@@ -105,7 +105,7 @@
                 @endcan
                 @can('ACCEDER_CONSOLIDACION_FACTORES')
                     <li>
-                        <a href="{{ route('admin.caracteristicas_mejoramiento.index')}}"><i
+                        <a href="{{ route('admin.consolidacion_factores.index')}}"><i
                                     class="fa fa-crosshairs"></i>Consolidación de Factores</a>
                     </li>
                 @endcan

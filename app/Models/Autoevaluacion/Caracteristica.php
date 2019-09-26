@@ -111,5 +111,14 @@ class Caracteristica extends Model
         return $this->hasMany(Pregunta::class, 'FK_PGT_Caracteristica', 'PK_CRT_Id');
     }
 
+    /**
+     * Relacion de muchos a uno de la tabla consolidacion
+     * Una caracteristia tiene muchos consolidaciones
+     * y un consolidacion una sola caracteristica
+     */
+    public function consolidacion()
+    {
+        return $this->hasMany(Consolidacion::class, 'FK_CNS_Caracteristica', 'PK_CRT_Id');
+    }
 
 }

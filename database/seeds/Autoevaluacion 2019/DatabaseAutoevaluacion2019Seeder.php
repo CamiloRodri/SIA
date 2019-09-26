@@ -21,7 +21,7 @@ class DatabaseAutoevaluacion2019Seeder extends Seeder
         //$this->call(DatabaseCapturaDatosSeeder::class);
 
         //Fase Consolidacion
-        $this->call(DatabaseConsolidacionSeeder::class);
+        //$this->call(DatabaseConsolidacionSeeder::class);
 
         //Fase Plan de Mejoramiento
         //$this->call(DatabasePlanMejoramientoSeeder::class);
