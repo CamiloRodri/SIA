@@ -10,6 +10,7 @@ use App\Models\Autoevaluacion\Estado;
 use App\Models\Autoevaluacion\Metodologia;
 use Yajra\DataTables\DataTables;
 use Illuminate\Http\Request;
+use Barryvdh\Debugbar;
 
 class InstitucionController extends Controller
 {
@@ -106,6 +107,7 @@ class InstitucionController extends Controller
         $institucion->ITN_Graduados = $request->get('ITN_Graduados');
         $institucion->ITN_Mision = $request->get('ITN_Mision');
         $institucion->ITN_Vision = $request->get('ITN_Vision');
+        $institucion->ITN_Descripcion = $request->get('ITN_Descripcion');
         $institucion->ITN_FuenteBoletinMes = $request->get('ITN_FuenteBoletinMes');
         $institucion->ITN_FuenteBoletinAnio = $request->get('ITN_FuenteBoletinAnio');
 
@@ -114,9 +116,9 @@ class InstitucionController extends Controller
         
         $institucion->save();
 
-        $cantInstituciones = Institucion::count();
+        $cantInstituciones = $request->get('created_at');
 
-        for ($i = 1; $i <= $cantInstituciones; $i++) {
+        for ($i = 1; $i <= $cantInstituciones+1; $i++) {
             $frenteEstrategico = new FrenteEstrategico();
             $frenteEstrategico->FES_Nombre = $request->get('Nombre_' . $i);
             $frenteEstrategico->FES_Descripcion = $request->get('Descripcion_' . $i);
@@ -172,7 +174,7 @@ class InstitucionController extends Controller
     public function update(InstitucionRequest $request, $id)
     {
         $institucion = Institucion::find($id);
-        $institucion->ITN_Nombre = $request->get('FK_ITN_Estado');
+        $institucion->ITN_Nombre = $request->get('ITN_Nombre');
         $institucion->ITN_Domicilio = $request->get('ITN_Domicilio');
         $institucion->ITN_Caracter = $request->get('ITN_Caracter');
         $institucion->ITN_CodigoSNIES = $request->get('ITN_CodigoSNIES');
@@ -185,6 +187,7 @@ class InstitucionController extends Controller
         $institucion->ITN_Graduados = $request->get('ITN_Graduados');
         $institucion->ITN_Mision = $request->get('ITN_Mision');
         $institucion->ITN_Vision = $request->get('ITN_Vision');
+        $institucion->ITN_Descripcion = $request->get('ITN_Descripcion');
         $institucion->ITN_FuenteBoletinMes = $request->get('ITN_FuenteBoletinMes');
         $institucion->ITN_FuenteBoletinAnio = $request->get('ITN_FuenteBoletinAnio');
 
@@ -193,13 +196,14 @@ class InstitucionController extends Controller
 
         $institucion->update();
 
-        $cantInstituciones = Institucion::count();
+        $cantFrentes = FrenteEstrategico::where('FK_FES_Institucion', $id)->count();
+        \Debugbar::info($cantFrentes);
 
-        for ($i = 1; $i <= $cantInstituciones; $i++) {
+        for ($i = 1; $i <= $cantFrentes+1; $i++) {
             $frenteEstrategicos = new FrenteEstrategico();
             $frenteEstrategicos->FES_Nombre = $request->get('PK_FES_Nombre');
             $frenteEstrategicos->FES_Descripcion = $request->get('PK_FES_Descripcion');
-            // \Debugbar::info($frenteEstrategico->FES_Descripcion);
+            \Debugbar::info($frenteEstrategicos->FES_Descripcion);
             // $frenteEstrategico->FK_FES_Institucion = $institucion->PK_ITN_Id;
             $frenteEstrategicos->update();
         }

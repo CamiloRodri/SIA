@@ -26,7 +26,7 @@ class InstitucionRequest extends FormRequest
     {
         $id = $this->route()->parameter('institucion');
         return [
-            'ITN_Nombre' => 'required|string|max:60' . Rule::unique('TBL_Institucion')->ignore($id, 'PK_ITN_Id'),
+            'ITN_Nombre' => 'required|max:60|' . Rule::unique('TBL_Instituciones')->ignore($id, 'PK_ITN_Id'),
             'ITN_Domicilio' => 'required',
             'ITN_Caracter' => 'required',
             'ITN_CodigoSNIES' => 'required',
@@ -56,25 +56,25 @@ class InstitucionRequest extends FormRequest
     public function messages()
     {
         return [
-            'ITN_Nombre.unique' => 'esta institución ya ha sido registrada.',
-            'ITN_Nombre.required' => 'el campo nombre requerido.',
-            'ITN_Domicilio.required' => 'el campo es requerido',
-            'ITN_Caracter.required' => 'el campo es requerido',
-            'ITN_CodigoSNIES.required' => 'el campo es requerido',
-            'ITN_Norma_Creacion.required' => 'el campo es requerido',
-            'ITN_Estudiantes.required' => 'el campo es requerido',
-            'ITN_Estudiantes' => 'el campo debe ser unb numero',
-            'ITN_Profesor_Planta.required' => 'el campo es requerido',
-            'ITN_Profesor_TCompleto.required' => 'el campo es requerido',
-            'ITN_Profesor_TMedio.required' => 'el campo es requerido',
-            'ITN_Profesor_Catedra.required' => 'el campo es requerido',
-            'ITN_Graduados.required' => 'el campo es requerido',
-            'ITN_Mision.required' => 'el campo es requerido',
-            'ITN_Vision.required' => 'el campo es requerido',
-            'ITN_Descripcion.required' => 'el campo es requerido',
-            'ITN_FuenteBoletinMes.required' => 'el campo es requerido',
+            'ITN_Nombre.unique' => 'Esta institución ya ha sido registrada.',
+            'ITN_Nombre.required' => 'El campo nombre requerido.',
+            'ITN_Domicilio.required' => 'El campo es requerido',
+            'ITN_Caracter.required' => 'El campo es requerido',
+            'ITN_CodigoSNIES.required' => 'El campo es requerido',
+            'ITN_Norma_Creacion.required' => 'El campo es requerido',
+            'ITN_Estudiantes.required' => 'El campo es requerido',
+            'ITN_Estudiantes' => 'El campo debe ser unb numero',
+            'ITN_Profesor_Planta.required' => 'El campo es requerido',
+            'ITN_Profesor_TCompleto.required' => 'El campo es requerido',
+            'ITN_Profesor_TMedio.required' => 'El campo es requerido',
+            'ITN_Profesor_Catedra.required' => 'El campo es requerido',
+            'ITN_Graduados.required' => 'El campo es requerido',
+            'ITN_Mision.required' => 'El campo es requerido',
+            'ITN_Vision.required' => 'El campo es requerido',
+            'ITN_Descripcion.required' => 'El campo es requerido',
+            'ITN_FuenteBoletinMes.required' => 'El campo es requerido',
             'ITN_FuenteBoletinMes.in' => 'Digite un mes válido para Fuente boletín estadístico',
-            'ITN_FuenteBoletinAnio.required' => 'el campo es requerido',
+            'ITN_FuenteBoletinAnio.required' => 'El campo es requerido',
             'FK_ITN_Metodologia.exists' => 'La Metodología no se encuentra en nuestros registros',
             'FK_ITN_Estado.exists' => 'El Estado no se encuentra en nuestros registros'
         ];

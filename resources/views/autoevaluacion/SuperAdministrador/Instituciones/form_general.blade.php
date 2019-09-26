@@ -164,7 +164,7 @@
 <div class="item form-group">
         {!! Form::label('estado','Estado', [ 'class'=>'control-label col-md-3 col-sm-3 col-xs-12']) !!}
         <div class="col-md-6 col-sm-6 col-xs-12">
-            {!! Form::select('FK_ITN_Estado', $estados, old('FK_ITN_Estado', isset($Institucion)? $Institucion->FK_ITN_Estado:''), [
+            {!! Form::select('FK_ITN_Estado', $estados, old('FK_ITN_Estado', isset($institucion)? $institucion->FK_ITN_Estado:''), [
                 'placeholder' => 'Seleccione un estado',
                 'class' => 'select2_user form-control', 
                 'required']) 

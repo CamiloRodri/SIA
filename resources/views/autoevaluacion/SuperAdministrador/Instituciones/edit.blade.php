@@ -27,21 +27,6 @@
     @endcomponent
 @endsection
 
-{{-- @section('content') @component('admin.components.panel') @slot('title', 'Modificar Institución')
-{!! Form::model($institucion, [ 'route' => ['admin.institucion.update', $institucion], 'method' => 'PUT', 'id' => 'form_modificar_Institucion',
-'class' => 'form-horizontal form-label-lef', 'novalidate' ])!!}
-@include('autoevaluacion.SuperAdministrador.Institucion._form')
-<div class="ln_solid"></div>
-<div class="form-group">
-    <div class="col-md-6 col-md-offset-3">
-
-        {{ link_to_route('admin.institucion.index',"Cancelar", [], ['class' => 'btn btn-info']) }} {!! Form::submit('Modificar Institución',
-        ['class' => 'btn btn-success']) !!}
-    </div>
-</div>
-{!! Form::close() !!} @endcomponent
-@endsection --}}
-
 {{-- Estilos necesarios para el formulario --}}
 @push('styles')
     <!-- PNotify -->
