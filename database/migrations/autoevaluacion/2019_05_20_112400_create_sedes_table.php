@@ -19,10 +19,11 @@ class CreateSedesTable extends Migration
         Schema::connection('autoevaluacion')->create('TBL_Sedes', function (Blueprint $table) {
             $table->increments('PK_SDS_Id');
             $table->string("SDS_Nombre");
+            $table->integer("FK_SDS_Institucion")->unsigned();
             $table->mediumText("SDS_Descripcion")->nullable();
             $table->integer("FK_SDS_Estado")->unsigned();
             $table->timestamps();
-
+            $table->foreign("FK_SDS_Institucion")->references("PK_ITN_Id")->on("TBL_Instituciones")->onDelete('cascade');
             $table->foreign("FK_SDS_Estado")->references("PK_ESD_Id")->on("TBL_Estados")->onDelete('cascade');
 
         });
