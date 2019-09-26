@@ -209,3 +209,5 @@ Route::get('fechacorte/data/data', array('as' => 'admin.fechacorte.data',
 Route::resource('consolidacion_factores', 'ConsolidacionController', ['as' => 'admin']);
 Route::get('consolidacion_factores/data/data', array('as' => 'admin.consolidacion_factores.data', 
     'uses' => 'ConsolidacionController@data'));
+
+Route::get('calendario', array('as' => 'admin.calendario', 'uses' => 'ActividadesMejoramientoController@calendario'));

@@ -117,7 +117,7 @@
                 @endcan
                 @can('ACCEDER_CALENDARIO_ACTIVIDADES')
                     <li>
-                        <a href="{{ route('admin.caracteristicas_mejoramiento.index')}}"><i
+                        <a href="{{ route('admin.calendario')}}"><i
                                     class="fa fa-calendar"></i> Calendario de Actividades</a>
                     </li>
                 @endcan

@@ -1,11 +1,11 @@
 {{-- Titulo de la pagina --}}
-@section('title', 'Consolidacion de Factores')
+@section('title', 'Consolidación de Factores')
 
 {{-- Contenido principal --}}
 @extends('admin.layouts.app')
 @section('content') 
     @component('admin.components.panel')
-        @slot('title', 'Consolidacion de Factores')
+        @slot('title', 'Consolidación de Factores')
 
         @if(session()->get('id_proceso'))
             @if(isset($consolidacion))   
