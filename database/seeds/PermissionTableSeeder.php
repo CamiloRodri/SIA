@@ -131,6 +131,10 @@ class PermissionTableSeeder extends Seeder
         Permission::create(['name' => 'VER_VALORIZACION_CARACTERISTICAS']);
         //Permisos para Consolidacion de Factores
         Permission::create(['name' => 'ACCEDER_CONSOLIDACION_FACTORES']);
+        Permission::create(['name' => 'VER_CONSOLIDACION_FACTORES']);
+        Permission::create(['name' => 'CREAR_CONSOLIDACION_FACTORES']);
+        Permission::create(['name' => 'MODIFICAR_CONSOLIDACION_FACTORES']);
+        Permission::create(['name' => 'ELIMINAR_CONSOLIDACION_FACTORES']);
         //Permisos para Calendario de Actividades
         Permission::create(['name' => 'ACCEDER_CALENDARIO_ACTIVIDADES']);
 

@@ -105,7 +105,7 @@
                 @endcan
                 @can('ACCEDER_CONSOLIDACION_FACTORES')
                     <li>
-                        <a href="{{ route('admin.caracteristicas_mejoramiento.index')}}"><i
+                        <a href="{{ route('admin.consolidacion_factores.index')}}"><i
                                     class="fa fa-crosshairs"></i>Consolidación de Factores</a>
                     </li>
                 @endcan
@@ -117,7 +117,7 @@
                 @endcan
                 @can('ACCEDER_CALENDARIO_ACTIVIDADES')
                     <li>
-                        <a href="{{ route('admin.caracteristicas_mejoramiento.index')}}"><i
+                        <a href="{{ route('admin.calendario')}}"><i
                                     class="fa fa-calendar"></i> Calendario de Actividades</a>
                     </li>
                 @endcan

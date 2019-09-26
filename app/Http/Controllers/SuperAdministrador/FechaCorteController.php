@@ -1,17 +1,16 @@
 <?php
 
 namespace App\Http\Controllers\SuperAdministrador;
+
+use App\Http\Controllers\Controller;
 use App\Models\Autoevaluacion\FechaCorte;
 use App\Models\Autoevaluacion\Proceso;
-
-use App\Http\Requests\FechasCorteRequest;
 use App\Models\Autoevaluacion\Sede;
 use App\Models\Autoevaluacion\Estado;
 
+use App\Http\Requests\FechasCorteRequest;
 use Illuminate\Http\Request;
 use DataTables;
-use App\Http\Controllers\Controller;
-
 use Carbon\Carbon;
 
 class FechaCorteController extends Controller
@@ -41,7 +40,6 @@ class FechaCorteController extends Controller
      */
     public function index()
     {
-
         $fechahoy = Carbon::now()->format('Y-m-d');
     	$estados = Estado::pluck('ESD_Nombre', 'PK_ESD_Id');
     	$procesos = Proceso::pluck('PCS_Nombre', 'PK_PCS_Id');
@@ -170,8 +168,8 @@ class FechaCorteController extends Controller
      */
     public function destroy($id)
     {
-        $sede = FechaCorte::findOrFail($id);
-        $sede->delete();
+        $fechacorte = FechaCorte::findOrFail($id);
+        $fechacorte->delete();
 
         return response([
             'msg' => 'La fecha de corte ha sido eliminada exitosamente.',

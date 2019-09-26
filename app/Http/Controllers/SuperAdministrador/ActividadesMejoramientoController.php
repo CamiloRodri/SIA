@@ -254,4 +254,9 @@ class ActividadesMejoramientoController extends Controller
             return redirect()->back()->with('status','Mensaje Enviado');
         } 
     }
+
+    public function calendario()
+    {
+        return view('autoevaluacion.SuperAdministrador.CalendarioPlanMejoramiento.index');
+    }
 }
