@@ -24,8 +24,8 @@
 <div class="form-group">
     {!! Form::label('PK_ITN_Id', 'Institucion', ['class' => 'control-label col-md-3 col-sm-3 col-xs-12']) !!}
     <div class="col-md-6 col-sm-6 col-xs-12">
-        {!! Form::select('fgfdgfd', $instituciones, old('fgfdgfd'), ['class' => 'select2 form-control',
-        
+        {!! Form::select('ITN_Nombre', $instituciones, old('ITN_Nombre'), ['class' => 'select2 form-control',
+        'placeholder' => 'Seleccione una institución',
         'required' => '', 'id' => 'institucion',
         'style' => 'width:100%'
         ])
@@ -36,7 +36,7 @@
     {!! Form::label('PK_ESD_Id', 'Estado', ['class' => 'control-label col-md-3 col-sm-3 col-xs-12']) !!}
     <div class="col-md-6 col-sm-6 col-xs-12">
         {!! Form::select('PK_ESD_Id', $estados, old('PK_ESD_Id'), ['class' => 'select2 form-control',
-        
+        'placeholder' => 'Seleccione un estado',
         'required' => '', 'id' => 'estado',
         'style' => 'width:100%'
         ])

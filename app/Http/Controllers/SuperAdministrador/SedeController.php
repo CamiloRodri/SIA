@@ -96,7 +96,7 @@ class SedeController extends Controller
     {
         $sede = new Sede();
         $sede->fill($request->only(['SDS_Nombre', 'SDS_Descripcion']));
-        $sede->FK_SDS_Institucion = 2;
+        $sede->FK_SDS_Institucion = $request->get('ITN_Nombre');
         $sede->FK_SDS_Estado = $request->get('PK_ESD_Id');
         \Debugbar::info($sede);
         $sede->save();
@@ -144,7 +144,7 @@ class SedeController extends Controller
         $sede = Sede::findOrFail($id);
         $sede->fill($request->only(['SDS_Nombre', 'SDS_Descripcion']));
         $sede->FK_SDS_Estado = $request->get('PK_ESD_Id');
-        $sede->FK_SDS_Institucion = 2;
+        $sede->FK_SDS_Institucion = $request->get('ITN_Nombre');
         $sede->update();
         return response([
             'msg' => 'La sede ha sido modificada exitosamente.',
