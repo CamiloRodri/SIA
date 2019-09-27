@@ -77,4 +77,14 @@ class ProgramaAcademico extends Model
     {
         return $this->belongsTo(Estado::class, 'FK_PAC_Estado', 'PK_ESD_Id');
     }
+
+    /**
+     * Relación de uno a muchos de la tabla estado
+     * Una metodología tiene muchas instituciones
+     * y una intitución tiene una metodología
+     */
+    public function metodologia()
+    {
+        return $this->belongsTo(Metodologia::class, 'FK_ITN_Metodologia', 'PK_MTD_Id');
+    }
 }
