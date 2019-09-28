@@ -51,6 +51,7 @@
             $('#sede').select2();
             $('#facultad').select2();
             $('#estado').select2();
+            $('#metodologia').select2();
 
             var form = $('#form_modificar_programaAcademico');
             $(form).parsley({

@@ -55,6 +55,7 @@
             $('#sede').select2();
             $('#facultad').select2();
             $('#estado').select2();
+            $('#metodologia').select2();
 
             var form = $('#form_crear_programas_academicos');
             $(form).parsley({
@@ -81,6 +82,7 @@
                         $("#sede").select2({allowClear: true});
                         $("#estado").select2({allowClear: true});
                         $("#facultad").select2({allowClear: true});
+                        $("#metodologia").select2({allowClear: true});
                         new PNotify({
                             title: response.title,
                             text: response.msg,

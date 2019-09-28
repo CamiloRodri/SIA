@@ -8,6 +8,7 @@ use App\Models\Autoevaluacion\Estado;
 use App\Models\Autoevaluacion\Facultad;
 use App\Models\Autoevaluacion\ProgramaAcademico;
 use App\Models\Autoevaluacion\Sede;
+use App\Models\Autoevaluacion\Metodologia;
 use DataTables;
 use Illuminate\Http\Request;
 
@@ -63,6 +64,9 @@ class ProgramaAcademicoController extends Controller
                 ->with(['estado' => function ($query) {
                     return $query->select('PK_ESD_Id', 'ESD_Nombre');
                 }])
+                ->with(['metodologia' => function ($query) {
+                    return $query->select('PK_MTD_Id', 'MTD_Nombre');
+                }])
                 ->get();
             return DataTables::of($programasAcademicos)
                 ->removeColumn('created_at')
@@ -85,10 +89,11 @@ class ProgramaAcademicoController extends Controller
         $sedes = Sede::pluck('SDS_Nombre', 'PK_SDS_Id');
         $estados = Estado::pluck('ESD_Nombre', 'PK_ESD_Id');
         $facultades = Facultad::pluck('FCD_Nombre', 'PK_FCD_Id');
+        $metodologias = Metodologia::pluck('MTD_Nombre', 'PK_MTD_Id');
 
         return view(
             'autoevaluacion.SuperAdministrador.ProgramasAcademicos.create',
-            compact('sedes', 'facultades', 'estados')
+            compact('sedes', 'facultades', 'estados', 'metodologias')
         );
     }
 
@@ -104,10 +109,26 @@ class ProgramaAcademicoController extends Controller
     public function store(ProgramasAcademicosRequest $request)
     {
         $programaAcademico = new ProgramaAcademico();
-        $programaAcademico->fill($request->only(['PAC_Nombre', 'PAC_Descripcion']));
+        $programaAcademico->fill($request->only([   'PAC_Nombre', 'PAC_Nombre',
+                                                    'PAC_Nivel_Formacion', 'PAC_Nivel_Formacion',
+                                                    'PAC_Titutlo_Otorga', 'PAC_Titutlo_Otorga',
+                                                    'PAC_Situacion_Programa', 'PAC_Situacion_Programa',
+                                                    'PAC_Anio_Inicio_Actividades', 'PAC_Anio_Inicio_Actividades',
+                                                    'PAC_Descripcion', 'PAC_Descripcion',
+                                                    'PAC_Anio_Inicio_Programa', 'PAC_Anio_Inicio_Programa',
+                                                    'PAC_Lugar_Funcionamiento', 'PAC_Lugar_Funcionamiento',
+                                                    'PAC_Norma_Interna', 'PAC_Norma_Interna',
+                                                    'PAC_Resolucion_Registro', 'PAC_Resolucion_Registro',
+                                                    'PAC_Codigo_SNIES', 'PAC_Codigo_SNIES',
+                                                    'PAC_Numero_Creditos', 'PAC_Numero_Creditos',
+                                                    'PAC_Duracion', 'PAC_Duracion',
+                                                    'PAC_Jornada', 'PAC_Jornada',
+                                                    'PAC_Duracion_Semestre', 'PAC_Duracion_Semestre'
+                                                ]));
         $programaAcademico->FK_PAC_Sede = $request->get('PK_SDS_Id');
         $programaAcademico->FK_PAC_Estado = $request->get('PK_ESD_Id');
         $programaAcademico->FK_PAC_Facultad = $request->get('PK_FCD_Id');
+        $programaAcademico->FK_PAC_Metodologia = $request->get('PK_MTD_Id');
         $programaAcademico->save();
 
         return response([
@@ -142,10 +163,11 @@ class ProgramaAcademicoController extends Controller
         $sedes = Sede::pluck('SDS_Nombre', 'PK_SDS_Id');
         $estados = Estado::pluck('ESD_Nombre', 'PK_ESD_Id');
         $facultades = Facultad::pluck('FCD_Nombre', 'PK_FCD_Id');
+        $metodologias = Metodologia::pluck('MTD_Nombre', 'PK_MTD_Id');
 
         return view(
             'autoevaluacion.SuperAdministrador.ProgramasAcademicos.edit',
-            compact('programaAcademico', 'sedes', 'estados', 'facultades')
+            compact('programaAcademico', 'sedes', 'estados', 'facultades', 'metodologias')
         );
     }
 
@@ -162,7 +184,22 @@ class ProgramaAcademicoController extends Controller
     public function update(ProgramasAcademicosRequest $request, $id)
     {
         $programaAcademico = ProgramaAcademico::find($id);
-        $programaAcademico->fill($request->only(['PAC_Nombre', 'PAC_Descripcion']));
+        $programaAcademico->fill($request->only([   'PAC_Nombre', 'PAC_Nombre',
+                                                    'PAC_Nivel_Formacion', 'PAC_Nivel_Formacion',
+                                                    'PAC_Titutlo_Otorga', 'PAC_Titutlo_Otorga',
+                                                    'PAC_Situacion_Programa', 'PAC_Situacion_Programa',
+                                                    'PAC_Anio_Inicio_Actividades', 'PAC_Anio_Inicio_Actividades',
+                                                    'PAC_Descripcion', 'PAC_Descripcion',
+                                                    'PAC_Anio_Inicio_Programa', 'PAC_Anio_Inicio_Programa',
+                                                    'PAC_Lugar_Funcionamiento', 'PAC_Lugar_Funcionamiento',
+                                                    'PAC_Norma_Interna', 'PAC_Norma_Interna',
+                                                    'PAC_Resolucion_Registro', 'PAC_Resolucion_Registro',
+                                                    'PAC_Codigo_SNIES', 'PAC_Codigo_SNIES',
+                                                    'PAC_Numero_Creditos', 'PAC_Numero_Creditos',
+                                                    'PAC_Duracion', 'PAC_Duracion',
+                                                    'PAC_Jornada', 'PAC_Jornada',
+                                                    'PAC_Duracion_Semestre', 'PAC_Duracion_Semestre'
+                                                ]));
         $programaAcademico->FK_PAC_Sede = $request->get('PK_SDS_Id');
         $programaAcademico->FK_PAC_Estado = $request->get('PK_ESD_Id');
         $programaAcademico->FK_PAC_Facultad = $request->get('PK_FCD_Id');
