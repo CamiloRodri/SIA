@@ -4,11 +4,15 @@ namespace App\Http\Controllers\SuperAdministrador;
 
 use App\Http\Controllers\Controller;
 
+use App\Models\Autoevaluacion\Consolidacion;
 use App\Models\Autoevaluacion\Factor;
+use App\Models\Autoevaluacion\Caracteristica;
 use App\Models\Autoevaluacion\Estado;
 use App\Models\Autoevaluacion\Fase;
-use App\Models\Autoevaluacion\Consolidacion;
 use App\Models\Autoevaluacion\Proceso;
+use App\Models\Autoevaluacion\IndicadorDocumental;
+use App\Models\Autoevaluacion\Lineamiento;
+use App\Models\Autoevaluacion\DocumentoAutoevaluacion;
 
 use App\Http\Requests\ConsolidacionesRequest;
 use Illuminate\Http\Request;
@@ -65,19 +69,24 @@ class ConsolidacionController extends Controller
     	// app('debugbar')->addMessage('H');
         if ($request->ajax() && $request->isMethod('GET')) {
             $consolidaciones=Consolidacion::where('FK_CNS_Proceso', '=', session()->get('id_proceso'))
-            	->with(['caracteristica' => function ($query) {
-                    return $query->select('PK_CRT_Id', 'CRT_Nombre');
-                }])
+            	->with('caracteristica.factor')
             ->get();
+
             return DataTables::of($consolidaciones)
                 ->removeColumn('created_at')
                 ->removeColumn('updated_at')
                 ->addColumn('nombre_caracteristica', function ($consolidaciones) {
                     return $consolidaciones->caracteristica->nombre_caracteristica;
                 })
-                // ->addColumn('nombre_factor', function ($consolidaciones) {
-                //     return $consolidaciones->caracteristica->factor->nombre_factor;
-                // })
+                ->addColumn('nombre_factor', function ($consolidaciones) {
+                    return $consolidaciones->caracteristica->factor->nombre_factor;
+                })
+                ->addColumn('id_factor', function ($consolidaciones) {
+                    return $consolidaciones->caracteristica->factor->PK_FCT_Id;
+                })
+                ->addColumn('id_caracteristica', function ($consolidaciones) {
+                    return $consolidaciones->caracteristica->PK_CRT_Id;
+                })
                 ->make(true);
         }
     }
@@ -113,7 +122,6 @@ class ConsolidacionController extends Controller
         $consolidacion->FK_CNS_Proceso = session()->get('id_proceso');
         $consolidacion->save();
 
-
         return response([
             'msg' => 'Consolidacion de Factores registrado correctamente.',
             'title' => '¡Registro exitoso!',
@@ -142,7 +150,17 @@ class ConsolidacionController extends Controller
      */
     public function edit($id)
     {
+        $consolidacion = Consolidacion::findorFail($id);        
+        $factores = Factor::pluck('FCT_Nombre', 'PK_FCT_Id');
 
+        $caracteristica = new Caracteristica();
+        $idCaracteristica = $consolidacion->caracteristica->factor()->pluck('PK_FCT_Id')[0];
+        $caracteristicas = $caracteristica->where('FK_CRT_Factor', $idCaracteristica)->get()->pluck('nombre_caracteristica', 'PK_CRT_Id');
+
+        return view(
+            'autoevaluacion.SuperAdministrador.ConsolidacionFactores.edit',
+            compact('consolidacion',  'factores', 'caracteristicas')
+        );
     }
 
     /**

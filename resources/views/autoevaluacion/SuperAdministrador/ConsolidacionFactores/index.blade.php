@@ -54,7 +54,7 @@
                         @component('admin.components.datatable',['id' => 'consolidacion_table_ajax']) 
                             @slot('columns', [ 
                                     'id', 
-                                    {{-- 'Factor', --}}
+                                    'Factor',
                                     'Caracteristica', 
                                     'Fortaleza', 
                                     'Debilidad', 
@@ -110,6 +110,9 @@
             $('#factor').select2();
             $('#caracteristica').select2();
             selectDinamico("#factor", "#caracteristica", "{{url('admin/caracteristicas')}}");
+
+            $('#factor').prop('disabled', false);
+            $('#caracteristica').prop('disabled', false);
             var formCreate = $('#form_consolidacion');
             $('#crear_consolidacion').click(function () {
                 $(formCreate)[0].reset();
@@ -121,8 +124,8 @@
             var data, routeDatatable;
             data = [
                 {data: 'PK_CNS_Id', name: 'id', "visible": false},
-                // {data: 'nombre_caracteristica', name: 'Factor', className: "all"},
-                {data: 'caracteristica.CRT_Nombre', name: 'Caracteristica', className: "min-phone-l"},
+                {data: 'nombre_factor', name: 'Factor', className: "all"},
+                {data: 'nombre_caracteristica', name: 'Caracteristica', className: "min-phone-l"},
                 {data: 'CNS_Fortaleza', name: 'Fortaleza', className: "desktop"},
                 {data: 'CNS_Debilidad', name: 'Debilidad', className: "desktop"},
                 {
@@ -243,17 +246,24 @@
                     SwalDelete(dataTable.PK_CNS_Id, route);
             });
             table.on('click', '.edit', function (e) {
+                e.preventDefault();
                 $tr = $(this).closest('tr');
                 var dataTable = table.row($tr).data();
-                $('#CNS_Debilidad').val(dataTable.CNS_Debilidad);
-                $('#CNS_Fortaleza').val(dataTable.CNS_Fortaleza);
-                $('#PK_CNS_Id').val(dataTable.PK_CNS_Id);
-                // $("#factor").val(dataTable.factor.PK_FCT_Id).change();
-                // $("#caracteristica").val(dataTable.caracteristica.PK_CRT_Id).change();
-                $('#modal_consolidacion').modal('show');
-                $('.modal-title').text("Modificar Consolidacion");
-                $('#accion').val("Modificar");
-                $('#accion').addClass('modificar');
+
+                
+                // $('#CNS_Debilidad').val(dataTable.CNS_Debilidad);
+                // $('#CNS_Fortaleza').val(dataTable.CNS_Fortaleza);
+                // $('#PK_CNS_Id').val(dataTable.PK_CNS_Id);
+                // $("#factor").val(dataTable.id_factor).change();
+                // $("#caracteristica").val(dataTable.id_caracteristica).change();
+                // $('#modal_consolidacion').modal('show');
+                // $('.modal-title').text("Modificar Consolidacion");
+                // $('#accion').val("Modificar");
+                // $('#accion').addClass('modificar');
+
+
+                var route = '{{ url('admin/consolidacion_factores/') }}' + '/' + dataTable.PK_CNS_Id + '/edit';
+                window.location.href = route;
             });
 
         });
