@@ -34,6 +34,15 @@ class CreateProgramasAcademicosTable extends Migration
             $table->string("PAC_Duracion");
             $table->string("PAC_Jornada");
             $table->string("PAC_Duracion_Semestre");
+            $table->string("PAC_Periodicidad");
+            $table->string("PAC_Adscrito");
+            $table->string("PAC_Area_Conocimiento");
+            $table->string("PAC_Nucleo");
+            $table->string("PAC_Area_Formacion");
+            $table->integer("PAC_Estudiantes");
+            $table->integer("PAC_Egresados");
+            $table->integer("PAC_Valor_Matricula");
+
             $table->integer("FK_PAC_Estado")->unsigned();
             $table->integer("FK_PAC_Facultad")->unsigned();
             $table->integer("FK_PAC_Sede")->unsigned();
