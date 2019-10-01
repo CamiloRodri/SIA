@@ -57,6 +57,14 @@ Route::get('frente_estrategico/data/data', array('as' => 'admin.frente_estrategi
 //     'uses' => 'FrenteEstrategicoController@store'
 // ));
 
+//Evidencia (Acticidad de Mejoramiento)
+// Route::resource('evidencia', 'EvidenciaController', ['as' => 'admin']);
+// // Route::get('evidencia/data/data', array('as' => 'admin.evidencia.data', 'uses' => 'EvidenciaController@data'));
+Route::get('evidencia/{id}', array(
+    'as' => 'admin.evidencia.index',
+    'uses' => 'EvidenciaController@index'
+));
+
 //Caracateristicas
 Route::resource('caracteristicas', 'CaracteristicasController', ['as' => 'admin']);
 Route::get(

@@ -126,6 +126,12 @@ class PermissionTableSeeder extends Seeder
         Permission::create(['name' => 'CREAR_FRENTE_ESTRATEGICO']);
         Permission::create(['name' => 'MODIFICAR_FRENTE_ESTRATEGICO']);
         Permission::create(['name' => 'ELIMINAR_FRENTE_ESTRATEGICO']);
+        //Permisos para Institucion
+        Permission::create(['name' => 'ACCEDER_EVIDENCIA']);
+        Permission::create(['name' => 'VER_EVIDENCIA']);
+        Permission::create(['name' => 'CREAR_EVIDENCIA']);
+        Permission::create(['name' => 'MODIFICAR_EVIDENCIA']);
+        Permission::create(['name' => 'ELIMINAR_EVIDENCIA']);
         //Permisos para valorizacion de caracteristicas 
         Permission::create(['name' => 'ACCEDER_VALORIZACION_CARACTERISTICAS']);
         Permission::create(['name' => 'VER_VALORIZACION_CARACTERISTICAS']);

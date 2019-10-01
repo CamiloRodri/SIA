@@ -76,7 +76,7 @@
             'class' => 'select2_user form-control', 
             'required']) 
         !!}
-</div>
+    </div>
 </div>
 <div class="item form-group">
     {!! Form::label('ITN_Profesor_Planta','Planta', ['class'=>'control-label col-md-3 col-sm-3 col-xs-12']) !!}
