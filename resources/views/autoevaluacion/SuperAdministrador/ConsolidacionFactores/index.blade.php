@@ -65,7 +65,7 @@
                 @endcan
 
             @else
-                    Este proceso aun no esta en fase de Consolidacion.
+                    Este proceso no esta en fase de Consolidacion.
             @endif
         @else
             Por favor seleccione un proceso

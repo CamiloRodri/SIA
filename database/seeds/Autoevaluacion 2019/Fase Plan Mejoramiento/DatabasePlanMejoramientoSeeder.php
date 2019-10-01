@@ -15,7 +15,7 @@ class DatabasePlanMejoramientoSeeder extends Seeder
             
         ]);
 
-        $this->call(FasePlanMejoramientoSeeder::class);
+        $this->call(FasePlanMejoramientoProcesosSeeder::class);
     }
     
     protected function truncateTables(array $tables)
