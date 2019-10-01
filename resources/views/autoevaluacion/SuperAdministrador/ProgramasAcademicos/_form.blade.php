@@ -1,22 +1,20 @@
-<div class="row">
-    <div class="form-group col-sm">
-        {!! Form::label('PK_SDS_Id', 'Sede', ['class' => 'control-label col-md-3 col-sm-3 col-xs-12']) !!}
-        <div class="col-md-6 col-sm-6 col-xs-12">
-            {!! Form::select('PK_SDS_Id', $sedes, old('PK_SDS_Id', 
-                isset($programaAcademico)? $programaAcademico->FK_PAC_Sede: ''), [ 'placeholder' => 'Seleccione una sede',
-                'class' => 'select2 form-control', 'required' => '', 'id' => 'sede'])
-            !!}
-        </div>
+<div class="form-group col-sm">
+    {!! Form::label('PK_SDS_Id', 'Sede', ['class' => 'control-label col-md-3 col-sm-3 col-xs-12']) !!}
+    <div class="col-md-6 col-sm-6 col-xs-12">
+        {!! Form::select('PK_SDS_Id', $sedes, old('PK_SDS_Id', 
+            isset($programaAcademico)? $programaAcademico->FK_PAC_Sede: ''), [ 'placeholder' => 'Seleccione una sede',
+            'class' => 'select2 form-control', 'required' => '', 'id' => 'sede'])
+        !!}
     </div>
-    <div class="form-group col-sm">
-        {!! Form::label('PK_FCD_Id', 'Facultad', ['class' => 'control-label col-md-3 col-sm-3 col-xs-12']) !!}
-        <div class="col-md-6 col-sm-6 col-xs-12">
-            {!! Form::select('PK_FCD_Id', $facultades, 
-                old('PK_FCD_Id', isset($programaAcademico)? $programaAcademico->FK_PAC_Facultad: ''), 
-                ['class' => 'select2 form-control','placeholder' => 'Seleccione una facultad', 'required'
-                => '', 'id' => 'facultad']) 
-            !!}
-        </div>
+</div>
+<div class="form-group col-sm">
+    {!! Form::label('PK_FCD_Id', 'Facultad', ['class' => 'control-label col-md-3 col-sm-3 col-xs-12']) !!}
+    <div class="col-md-6 col-sm-6 col-xs-12">
+        {!! Form::select('PK_FCD_Id', $facultades, 
+            old('PK_FCD_Id', isset($programaAcademico)? $programaAcademico->FK_PAC_Facultad: ''), 
+            ['class' => 'select2 form-control','placeholder' => 'Seleccione una facultad', 'required'
+            => '', 'id' => 'facultad']) 
+        !!}
     </div>
 </div>
 <div class="form-group">
@@ -30,7 +28,7 @@
     </div>
 </div>
 <div class="form-group">
-    {!! Form::label('PAC_Nombre','Nombre fdgdg', ['class'=>'control-label col-md-3 col-sm-3 col-xs-12']) !!}
+    {!! Form::label('PAC_Nombre','Nombre', ['class'=>'control-label col-md-3 col-sm-3 col-xs-12']) !!}
     <div class="col-md-6 col-sm-6 col-xs-12">
         {!! Form::text('PAC_Nombre', old('PAC_Nombre'),
             [ 'class' => 'form-control col-md-6 col-sm-6 col-xs-12', 'required' => 'required',
@@ -205,5 +203,88 @@
         'data-parsley-pattern' => '^[a-zA-Z0-9-_\.,;:()ñÑáéíóúÁÉÍÓÚ ]+$',
         'data-parsley-pattern-message' => 'Error en el texto',
         'data-parsley-length'=>'[5,50]', 'data-parsley-trigger'=>"change" ] ) !!}
+    </div>
+</div>
+<div class="form-group">
+    {!! Form::label('PAC_Periodicidad','Periodicidad de la admisión', ['class'=>'control-label col-md-3 col-sm-3 col-xs-12']) !!}
+    <div class="col-md-6 col-sm-6 col-xs-12">
+        {!! Form::text('PAC_Periodicidad', old('PAC_Periodicidad'),
+        [ 'class' => 'form-control col-md-6 col-sm-6 col-xs-12', 'required' => 'required',
+        'data-parsley-pattern' => '^[a-zA-Z0-9-_\.,;:()ñÑáéíóúÁÉÍÓÚ ]+$',
+        'data-parsley-pattern-message' => 'Error en el texto',
+        'data-parsley-length'=>'[5,20]', 'data-parsley-trigger'=>"change" ] ) !!}
+    </div>
+</div>
+<div class="form-group">
+    {!! Form::label('PAC_Adscrito','Adscrito', ['class'=>'control-label col-md-3 col-sm-3 col-xs-12']) !!}
+    <div class="col-md-6 col-sm-6 col-xs-12">
+        {!! Form::text('PAC_Adscrito', old('PAC_Adscrito'),
+        [ 'class' => 'form-control col-md-6 col-sm-6 col-xs-12', 'required' => 'required',
+        'data-parsley-pattern' => '^[a-zA-Z0-9-_\.,;:()ñÑáéíóúÁÉÍÓÚ ]+$',
+        'data-parsley-pattern-message' => 'Error en el texto',
+        'data-parsley-length'=>'[5,50]', 'data-parsley-trigger'=>"change" ] ) !!}
+    </div>
+</div>
+<div class="form-group">
+    {!! Form::label('PAC_Area_Conocimiento','Área del conocimiento', ['class'=>'control-label col-md-3 col-sm-3 col-xs-12']) !!}
+    <div class="col-md-6 col-sm-6 col-xs-12">
+        {!! Form::text('PAC_Area_Conocimiento', old('PAC_Area_Conocimiento'),
+        [ 'class' => 'form-control col-md-6 col-sm-6 col-xs-12', 'required' => 'required',
+        'data-parsley-pattern' => '^[a-zA-Z0-9-_\.,;:()ñÑáéíóúÁÉÍÓÚ ]+$',
+        'data-parsley-pattern-message' => 'Error en el texto',
+        'data-parsley-length'=>'[5,100]', 'data-parsley-trigger'=>"change" ] ) !!}
+    </div>
+</div>
+<div class="form-group">
+    {!! Form::label('PAC_Nucleo','Nucleo básico del conocimiento', ['class'=>'control-label col-md-3 col-sm-3 col-xs-12']) !!}
+    <div class="col-md-6 col-sm-6 col-xs-12">
+        {!! Form::text('PAC_Nucleo', old('PAC_Nucleo'),
+        [ 'class' => 'form-control col-md-6 col-sm-6 col-xs-12', 'required' => 'required',
+        'data-parsley-pattern' => '^[a-zA-Z0-9-_\.,;:()ñÑáéíóúÁÉÍÓÚ ]+$',
+        'data-parsley-pattern-message' => 'Error en el texto',
+        'data-parsley-length'=>'[5,100]', 'data-parsley-trigger'=>"change" ] ) !!}
+    </div>
+</div>
+<div class="form-group">
+    {!! Form::label('PAC_Area_Formacion','Área de formación', ['class'=>'control-label col-md-3 col-sm-3 col-xs-12']) !!}
+    <div class="col-md-6 col-sm-6 col-xs-12">
+        {!! Form::text('PAC_Area_Formacion', old('PAC_Area_Formacion'),
+        [ 'class' => 'form-control col-md-6 col-sm-6 col-xs-12', 'required' => 'required',
+        'data-parsley-pattern' => '^[a-zA-Z0-9-_\.,;:()ñÑáéíóúÁÉÍÓÚ ]+$',
+        'data-parsley-pattern-message' => 'Error en el texto',
+        'data-parsley-length'=>'[5,100]', 'data-parsley-trigger'=>"change" ] ) !!}
+    </div>
+</div>
+<div class="form-group">
+    {!! Form::label('PAC_Estudiantes','Número actual de estudiantes', ['class'=>'control-label col-md-3 col-sm-3 col-xs-12']) !!}
+    <div class="col-md-6 col-sm-6 col-xs-12">
+        {!! Form::text('PAC_Estudiantes', old('PAC_Estudiantes'),
+            [ 'class' => 'form-control col-md-6 col-sm-6 col-xs-12', 'required' => 'required',
+            'data-parsley-type'=>"number",
+            'data-parsley-length' => "[2, 10]",
+            'data-parsley-trigger'=>"change"])
+        !!}
+    </div>
+</div>
+<div class="form-group">
+    {!! Form::label('PAC_Egresados','Número de egresados', ['class'=>'control-label col-md-3 col-sm-3 col-xs-12']) !!}
+    <div class="col-md-6 col-sm-6 col-xs-12">
+        {!! Form::text('PAC_Egresados', old('PAC_Egresados'),
+        [ 'class' => 'form-control col-md-6 col-sm-6 col-xs-12', 'required' => 'required', 
+            'data-parsley-type'=>"number",
+            'data-parsley-length' => "[2, 10]",
+            'data-parsley-trigger'=>"change"])
+        !!}
+    </div>
+</div>
+<div class="form-group">
+    {!! Form::label('PAC_Valor_Matricula','Valor de la matricula', ['class'=>'control-label col-md-3 col-sm-3 col-xs-12']) !!}
+    <div class="col-md-6 col-sm-6 col-xs-12">
+        {!! Form::text('PAC_Valor_Matricula', old('PAC_Valor_Matricula'),
+        [ 'class' => 'form-control col-md-6 col-sm-6 col-xs-12', 'required' => 'required', 'placeholder' => 'Número de SMLV',
+            'data-parsley-type'=>"number",
+            'data-parsley-length' => "[1, 2]",
+            'data-parsley-trigger'=>"change"])
+        !!}
     </div>
 </div>

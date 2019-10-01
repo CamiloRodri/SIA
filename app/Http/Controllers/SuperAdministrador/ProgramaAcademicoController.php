@@ -123,7 +123,15 @@ class ProgramaAcademicoController extends Controller
                                                     'PAC_Numero_Creditos', 'PAC_Numero_Creditos',
                                                     'PAC_Duracion', 'PAC_Duracion',
                                                     'PAC_Jornada', 'PAC_Jornada',
-                                                    'PAC_Duracion_Semestre', 'PAC_Duracion_Semestre'
+                                                    'PAC_Duracion_Semestre', 'PAC_Duracion_Semestre',
+                                                    'PAC_Periodicidad', 'PAC_Periodicidad',
+                                                    'PAC_Adscrito', 'PAC_Adscrito',
+                                                    'PAC_Area_Conocimiento', 'PAC_Area_Conocimiento',
+                                                    'PAC_Nucleo', 'PAC_Nucleo',
+                                                    'PAC_Area_Formacion', 'PAC_Area_Formacion',
+                                                    'PAC_Estudiantes', 'PAC_Estudiantes',
+                                                    'PAC_Egresados', 'PAC_Egresados',
+                                                    'PAC_Valor_Matricula', 'PAC_Valor_Matricula'
                                                 ]));
         $programaAcademico->FK_PAC_Sede = $request->get('PK_SDS_Id');
         $programaAcademico->FK_PAC_Estado = $request->get('PK_ESD_Id');
@@ -198,7 +206,15 @@ class ProgramaAcademicoController extends Controller
                                                     'PAC_Numero_Creditos', 'PAC_Numero_Creditos',
                                                     'PAC_Duracion', 'PAC_Duracion',
                                                     'PAC_Jornada', 'PAC_Jornada',
-                                                    'PAC_Duracion_Semestre', 'PAC_Duracion_Semestre'
+                                                    'PAC_Duracion_Semestre', 'PAC_Duracion_Semestre',
+                                                    'PAC_Periodicidad', 'PAC_Periodicidad',
+                                                    'PAC_Adscrito', 'PAC_Adscrito',
+                                                    'PAC_Area_Conocimiento', 'PAC_Area_Conocimiento',
+                                                    'PAC_Nucleo', 'PAC_Nucleo',
+                                                    'PAC_Area_Formacion', 'PAC_Area_Formacion',
+                                                    'PAC_Estudiantes', 'PAC_Estudiantes',
+                                                    'PAC_Egresados', 'PAC_Egresados',
+                                                    'PAC_Valor_Matricula', 'PAC_Valor_Matricula'
                                                 ]));
         $programaAcademico->FK_PAC_Sede = $request->get('PK_SDS_Id');
         $programaAcademico->FK_PAC_Estado = $request->get('PK_ESD_Id');
