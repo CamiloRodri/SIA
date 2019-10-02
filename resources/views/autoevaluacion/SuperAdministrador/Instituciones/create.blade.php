@@ -2,6 +2,7 @@
 @section('title', 'Institución')
 {{-- Contenido principal --}}
 @extends('admin.layouts.app')
+
 @section('content')
     @component('admin.components.panel')
         @slot('title', 'Crear Institución')
@@ -16,7 +17,8 @@
         <div class="ln_solid"></div>
         <div class="form-group">
             <div class="col-md-6 col-md-offset-3">
-                {{ link_to_route('admin.institucion.index',"Cancelar", [], ['class' => 'btn btn-info']) }}
+                {{ link_to_route('admin.institucion.index',"Cancelar", [], 
+                ['class' => 'btn btn-info']) }}
                 {!! Form::submit('Crear Institución', ['class' => 'btn btn-success']) !!}
             </div>
         </div>

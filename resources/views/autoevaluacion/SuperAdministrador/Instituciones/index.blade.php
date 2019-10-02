@@ -6,19 +6,21 @@
 @section('content') 
     @component('admin.components.panel')
         @slot('title', 'Institución')
-        <div class="col-md-12">
         @can('CREAR_INSTITUCION')
-            <div class="actions">
-                <a href="{{ route('admin.institucion.create')}}" class="btn btn-info">
-                    <i class="fa fa-plus"></i> Agregar Institución</a>
+            <div class="col-md-12">
+                <div class="actions">
+                    <a href="{{ route('admin.institucion.create')}}" class="btn btn-info">
+                        <i class="fa fa-plus"></i> Agregar Institución</a>
                 </div>
-                <br>
-                <br>
-                <br>
+            </div>
+            <br>
+            <br>
+            <br>
         @endcan
         @can('VER_INSTITUCION')
             <div class="col-md-12">
-                @component('admin.components.datatable', ['id' => 'institucion_table_ajax'])
+                @component('admin.components.datatable', 
+                ['id' => 'institucion_table_ajax'])
                     @slot('columns', 
                     ['id', 
                     'Nombre', 
@@ -29,7 +31,7 @@
                     'Acciones' => ['style' => 'width:125px;']])
                 @endcomponent
             </div>
-        @endcomponent
+            @endcomponent
         @endcan
 @endsection
 {{-- Scripts necesarios para el formulario --}}
