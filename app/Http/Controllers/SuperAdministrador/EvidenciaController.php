@@ -5,6 +5,10 @@ namespace App\Http\Controllers\SuperAdministrador;
 use Illuminate\Http\Request;
 use App\Models\Autoevaluacion\ActividadesMejoramiento;
 use App\Http\Controllers\Controller;
+use App\Models\Autoevaluacion\Evidencia;
+use Yajra\DataTables\DataTables;
+use Carbon\Carbon;
+use Barryvdh\Debugbar;
 
 class EvidenciaController extends Controller
 {
@@ -22,6 +26,25 @@ class EvidenciaController extends Controller
         $this->middleware('permission:ELIMINAR_EVIDENCIA', ['only' => ['destroy']]);
     }
 
+    public function datos(Request $request, $id)
+    {
+        // \Debugbar::info($id);
+        // if ($request->ajax() && $request->isMethod('GET')) {
+            $evidencia = Evidencia::all()->where('FK_EVD_Actividad_Mejoramiento', $id);
+            return Datatables::of($evidencia)
+                ->make(true);
+        // }
+    }
+
+    public function data(Request $request)
+    {
+        if ($request->ajax() && $request->isMethod('GET')) {
+            $evidencia = Evidencia::all();
+            return Datatables::of($evidencia)
+                ->make(true);
+        }
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -29,8 +52,8 @@ class EvidenciaController extends Controller
      */
     public function index($id)
     {
-        $actividad = ActividadesMejoramiento::pluck('ACM_Nombre', $id);
-        return view('autoevaluacion.SuperAdministrador.Evidencia.index', compact('actividad'));
+        $actividad = ActividadesMejoramiento::find($id);
+        return view('autoevaluacion.SuperAdministrador.Evidencias.index', compact('actividad'));
     }
 
     /**
@@ -51,7 +74,20 @@ class EvidenciaController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $now = new \DateTime();
+        $now->format('d-m-Y H:i:s');
+        $evidencia = new Evidencia();
+        $evidencia->fill($request->only(['EVD_Nombre']));
+        $evidencia->fill($request->only(['EVD_Link']));
+        $evidencia->EVD_Fecha_Subido =  Carbon::now();
+        $evidencia->fill($request->only(['EVD_Descripcion_General']));
+        $evidencia->fill($request->only(['FK_EVD_Actividad_Mejoramiento']));
+        $evidencia->save();
+
+        return response(['msg' => 'Ambito registrado correctamente.',
+            'title' => '¡Registro exitoso!',
+        ], 200) // 200 Status Code: Standard response for successful HTTP request
+        ->header('Content-Type', 'application/json');
     }
 
     /**
@@ -85,7 +121,17 @@ class EvidenciaController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $evidencia = Evidencia::find($id);
+        $evidencia->fill($request->only(['EVD_Nombre']));
+        $evidencia->fill($request->only(['EVD_Link']));
+        $evidencia->EVD_Fecha_Subido =  Carbon::now();
+        $evidencia->fill($request->only(['EVD_Descripcion_General']));
+        $evidencia->fill($request->only(['FK_EVD_Actividad_Mejoramiento']));
+        $evidencia->update();
+        return response(['msg' => 'La Evidencia ha sido modificada exitosamente.',
+            'title' => 'Evidencia modificada :*!',
+        ], 200) // 200 Status Code: Standard response for successful HTTP request
+        ->header('Content-Type', 'application/json');
     }
 
     /**
@@ -96,11 +142,11 @@ class EvidenciaController extends Controller
      */
     public function destroy($id)
     {
-        //
-    }
+        Evidencia::destroy($id);
 
-    public function agregar($id)
-    {
-        //
+        return response(['msg' => 'La Evidencia ha sido eliminada exitosamente.',
+            'title' => '¡Evidencia Eliminada!',
+        ], 200) // 200 Status Code: Standard response for successful HTTP request
+        ->header('Content-Type', 'application/json');
     }
 }

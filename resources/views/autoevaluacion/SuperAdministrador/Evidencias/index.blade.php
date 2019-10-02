@@ -8,30 +8,32 @@
     <div class="col-md-12">
         @can('CREAR_EVIDENCIA')
             <div class="actions">
-                <a id="crear_ambitos" href="#" class="btn btn-info" data-toggle="modal" data-target="#modal_ambito">
-                    <i class="fa fa-plus"></i> Agregar Evidencia</a></div>
+                <a id="crear_evidencias" href="#" class="btn btn-info" data-toggle="modal" data-target="#modal_evidencia">
+                    <i class="fa fa-plus"></i> Agregar Evidencia{{$actividad->ACM_Nombre}}</a></div>
+                        <a class="btn btn-warning" href="{{ route('admin.actividades_mejoramiento.index') }}">
+                        <i class="fa fa-backward"></i> Regresar Actividades de Mejoramiento</a>
     @endcan
     <!-- Modal-->
-        <div class="modal fade" id="modal_ambito" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal fade" id="modal_evidencia" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span></button>
-                        <h4 class="modal-title" id="modal_titulo">Crear Ambito</h4>
+                        <h4 class="modal-title" id="modal_titulo">Crear Evidencia</h4>
                     </div>
                     <div class="modal-body">
 
-                        {!! Form::open([ 'route' => 'admin.ambito.store',
-                        'method' => 'POST', 'id' => 'form_ambito', 'class' => 'form-horizontal
+                        {!! Form::open([ 'route' => 'admin.evidencia.store',
+                        'method' => 'POST', 'id' => 'form_evidencia', 'class' => 'form-horizontal
                             form-label-lef', 'novalidate' ])!!}
-                        @include('autoevaluacion.SuperAdministrador.Ambito._form')
+                        @include('autoevaluacion.SuperAdministrador.Evidencias.form')
 
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                         {!! Form::submit('Crear
-                        Ambito', ['class' => 'btn btn-success', 'id' => 'accion']) !!}
+                        Evidencia', ['class' => 'btn btn-success', 'id' => 'accion']) !!}
 
                     </div>
                     {!! Form::close() !!}
@@ -41,14 +43,14 @@
         <!--FIN Modal CREAR-->
 
     </div>
-    @can('VER_AMBITOS')
+    @can('VER_EVIDENCIA')
         <br>
         <br>
         <br>
         <div class="col-md-12">
             @component('admin.components.datatable',
-            ['id' => 'ambito_table_ajax'])
-                @slot('columns', [ 'id', 'Nombre','Acciones' =>
+            ['id' => 'evidencia_table_ajax'])
+                @slot('columns', [ 'id', 'Nombre', 'Fecha', 'Link', 'Descripción General', 'Acciones' =>
                 ['style' => 'width:85px;'] ])
             @endcomponent
 
@@ -85,22 +87,25 @@
 @push('functions')
     <script type="text/javascript">
         $(document).ready(function () {
-
-            var formCreate = $('#form_ambito');
-            $('#crear_ambitos').click(function () {
+            var id;
+            var formCreate = $('#form_evidencia');
+            $('#crear_evidencias').click(function () {
                 $(formCreate)[0].reset();
-                $('.modal-title').text("Crear Ambitos");
+                $('.modal-title').text("Crear Evidencia");
                 $('#accion').val("Crear");
                 $('#accion').removeClass('modificar')
             });
             var data, routeDatatable;
             data = [
-                {data: 'PK_AMB_Id', name: 'id', "visible": false},
-                {data: 'AMB_Nombre', name: 'Nombre', className: "min-table-p"},
+                {data: 'PK_EVD_Id', name: 'id', "visible": false},
+                {data: 'EVD_Nombre', name: 'Nombre', className: "min-table-p"},
+                {data: 'EVD_Fecha_Subido', name: 'Fecha Subida', className: "min-table-p"},
+                {data: 'EVD_Link', name: 'Link', className: "min-table-p"},
+                {data: 'EVD_Descripcion_General', name: 'Descripción General', className: "min-table-p"},
                 {
                     defaultContent:
-                        '@can('ELIMINAR_AMBITOS')<a href="javascript:;" class="btn btn-simple btn-danger btn-sm remove" data-toggle="confirmation"><i class="fa fa-trash"></i></a>@endcan' +
-                        '@can('MODIFICAR_AMBITOS')<a href="javascript:;" class="btn btn-simple btn-info btn-sm edit" data-toggle="confirmation"><i class="fa fa-pencil"></i></a>@endcan',
+                        '@can('ELIMINAR_EVIDENCIA')<a href="javascript:;" class="btn btn-simple btn-danger btn-sm remove" data-toggle="confirmation"><i class="fa fa-trash"></i></a>@endcan' +
+                        '@can('MODIFICAR_EVIDENCIA')<a href="javascript:;" class="btn btn-simple btn-info btn-sm edit" data-toggle="confirmation"><i class="fa fa-pencil"></i></a>@endcan',
                     data: 'action',
                     name: 'action',
                     title: 'Acciones',
@@ -113,8 +118,10 @@
                     responsivePriority: 2
                 }
             ];
-            routeDatatable = "{{ route('admin.ambito.data') }}";
-            table = $('#ambito_table_ajax').DataTable({
+            // routeDatatable = "{{ route('admin.evidencia.data') }}";
+            routeDatatable = "{{ url('admin/evidencia/data/data') }}" + '/' + '{{$actividad->PK_ACM_Id}}';
+            console.log(routeDatatable);
+            table = $('#evidencia_table_ajax').DataTable({
                 processing: true,
                 serverSide: false,
                 stateSave: true,
@@ -158,13 +165,13 @@
                 errorsWrapper: '<p class="help-block help-block-error"></p>',
                 errorTemplate: '<span></span>',
             });
-            $(document).on('submit', '#form_ambito', function (e) {
+            $(document).on('submit', '#form_evidencia', function (e) {
                 e.preventDefault();
                 let route = formCreate.attr('action');
                 let method = formCreate.attr('method');
                 let data = formCreate.serialize();
                 if ($('#accion').hasClass('modificar')) {
-                    route = '{{ url('admin/ambito') }}' + '/' + $('#PK_AMB_Id').val();
+                    route = '{{ url('admin/evidencia') }}' + '/' + $('#PK_EVD_Id').val();
                     method = "PUT";
                 }
                 $.ajax({
@@ -175,7 +182,7 @@
                     success: function (response, NULL, jqXHR) {
                         $(formCreate)[0].reset();
                         $(formCreate).parsley().reset();
-                        $('#modal_ambito').modal('hide');
+                        $('#modal_evidencia').modal('hide');
                         new PNotify({
                             title: response.title,
                             text: response.msg,
@@ -203,18 +210,21 @@
                 e.preventDefault();
                 $tr = $(this).closest('tr');
                 var dataTable = table.row($tr).data();
-                var route = '{{ url('admin/ambito') }}' + '/' + dataTable.PK_AMB_Id;
+                var route = '{{ url('admin/evidencia') }}' + '/' + dataTable.PK_EVD_Id;
                 var type = 'DELETE';
                 dataType: "JSON",
-                    SwalDelete(dataTable.PK_AMB_Id, route);
+                    SwalDelete(dataTable.PK_EVD_Id, route);
             });
             table.on('click', '.edit', function (e) {
                 $tr = $(this).closest('tr');
                 var dataTable = table.row($tr).data();
-                $('#AMB_Nombre').val(dataTable.AMB_Nombre);
-                $('#PK_AMB_Id').val(dataTable.PK_AMB_Id);
-                $('#modal_ambito').modal('show');
-                $('.modal-title').text("Modificar ambito");
+                $('#EVD_Nombre').val(dataTable.EVD_Nombre);
+                $('#EVD_Link').val(dataTable.EVD_Link);
+                var img = $('#EVD_Descripcion_General').val(dataTable.EVD_Descripcion_General);
+                $('#PK_EVD_Id').val(dataTable.PK_EVD_Id);
+                console.log(img);
+                $('#modal_evidencia').modal('show');
+                $('.modal-title').text("Modificar evidencia");
                 $('#accion').val("Modificar");
                 $('#accion').addClass('modificar');
             });
@@ -223,7 +233,7 @@
         function SwalDelete(id, route) {
             swal({
                 title: 'Esta seguro?',
-                text: "Se eliminara el ambito permanentemente!",
+                text: "Se eliminara la evidencia permanentemente!",
                 type: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',

@@ -58,12 +58,34 @@ Route::get('frente_estrategico/data/data', array('as' => 'admin.frente_estrategi
 // ));
 
 //Evidencia (Acticidad de Mejoramiento)
-// Route::resource('evidencia', 'EvidenciaController', ['as' => 'admin']);
-// // Route::get('evidencia/data/data', array('as' => 'admin.evidencia.data', 'uses' => 'EvidenciaController@data'));
+//Sobreescribe la ruta, por ende se puede hacer el filtro el la tabla
+Route::get('evidencia/data/data/{id}', array(
+    'as' => 'admin.evidencia.datos', 
+    'uses' => 'EvidenciaController@datos'
+));
+Route::get('evidencia/data/data/', array(
+    'as' => 'admin.evidencia.data', 
+    'uses' => 'EvidenciaController@data'
+));
+
+//Rutas CRUD Evidencia  (Acticidad de Mejoramiento)
 Route::get('evidencia/{id}', array(
     'as' => 'admin.evidencia.index',
     'uses' => 'EvidenciaController@index'
 ));
+Route::post('evidencia', array(
+    'as' => 'admin.evidencia.store',
+    'uses' => 'EvidenciaController@store'
+));
+Route::put('evidencia/{evidencia}/update', array(
+    'as' => 'admin.evidencia.update',
+    'uses' => 'EvidenciaController@update'
+));
+Route::delete('evidencia/{evidencia}', array(
+    'as' => 'admin.evidencia.destroy',
+    'uses' => 'EvidenciaController@destroy'
+));
+
 
 //Caracateristicas
 Route::resource('caracteristicas', 'CaracteristicasController', ['as' => 'admin']);

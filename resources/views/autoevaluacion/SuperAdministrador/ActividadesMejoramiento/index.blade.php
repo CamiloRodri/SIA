@@ -79,7 +79,7 @@
                             defaultContent:
                                 '@can('ELIMINAR_ACTIVIDADES_MEJORAMIENTO')<a href="javascript:;" class="btn btn-simple btn-danger btn-sm remove" data-toggle="confirmation"><i class="fa fa-trash"></i></a>@endcan' +
                                 '@can('MODIFICAR_ACTIVIDADES_MEJORAMIENTO')<a href="javascript:;" class="btn btn-simple btn-info btn-sm edit" data-toggle="confirmation"><i class="fa fa-pencil"></i></a>@endcan' +
-                                '@can('MODIFICAR_ACTIVIDADES_MEJORAMIENTO')<a data-toggle="tooltip" title="Cambiar estado de actividad" href="javascript:;" class="btn btn-simple btn-primary btn-sm asignar"><i class="fa fa-exchange"></i></a>@endcan',
+                                '@can('MODIFICAR_ACTIVIDADES_MEJORAMIENTO')<a data-toggle="tooltip" title="Agregar Evidencia" href="javascript:;" class="btn btn-simple btn-primary btn-sm asignar"><i class="fa fa-plus"></i></a>@endcan',
                                 data: 'action',
                                 name: 'action',
                                 title: 'Acciones',
@@ -137,7 +137,7 @@
                     e.preventDefault();
                     $tr = $(this).closest('tr');
                     var dataTable = table.row($tr).data();
-                    var route = '{{ url('admin/estado_actividades/') }}' + '/' + dataTable.PK_ACM_Id;
+                    var route = '{{ url('admin/evidencia/') }}' + '/' + dataTable.PK_ACM_Id;
                     window.location.href = route;
                 });
 
