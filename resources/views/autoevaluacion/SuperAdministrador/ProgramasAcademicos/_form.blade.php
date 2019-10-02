@@ -72,10 +72,10 @@
     </div>
 </div>
 <div class="form-group">
-    {!! Form::label('PAC_Anio_Inicio_Actividades','Año de iniciación de actividades', ['class'=>'control-label col-md-3 col-sm-3 col-xs-12']) !!}
+    {!! Form::label('PAC_Anio_Inicio_Actividades','Fecha de iniciación de actividades', ['class'=>'control-label col-md-3 col-sm-3 col-xs-12']) !!}
     <div class="col-md-6 col-sm-6 col-xs-12">
         {!! Form::text('PAC_Anio_Inicio_Actividades', old('PAC_Anio_Inicio_Actividades'),
-            [ 'class' => 'form-control col-md-6 col-sm-6 col-xs-12', 'required' => 'required',
+            [ 'class' => 'form-control col-md-6 col-sm-6 col-xs-12', 'required' => 'required', 'placeholder' => 'Digitar mes y año',
             'data-parsley-pattern' => '^[a-zA-Z0-9-_\.,;:ñÑáéíóúÁÉÍÓÚ ]+$',
             'data-parsley-pattern-message' => 'Error en el texto',
             'data-parsley-length'=>'[5,50]', 'data-parsley-trigger'=>"change" ] ) 
@@ -170,7 +170,7 @@
             [ 'class' => 'form-control col-md-6 col-sm-6 col-xs-12', 'required' => 'required',
             'required' => 'required',
             'data-parsley-type'=>"number",
-            'data-parsley-length' => "[2, 10]",
+            'data-parsley-length' => "[1, 4]",
             'data-parsley-trigger'=>"change"])
         !!}
     </div>
@@ -179,7 +179,7 @@
     {!! Form::label('PAC_Duracion','Duración', ['class'=>'control-label col-md-3 col-sm-3 col-xs-12']) !!}
     <div class="col-md-6 col-sm-6 col-xs-12">
         {!! Form::text('PAC_Duracion', old('PAC_Duracion'),
-        [ 'class' => 'form-control col-md-6 col-sm-6 col-xs-12', 'required' => 'required',
+        [ 'class' => 'form-control col-md-6 col-sm-6 col-xs-12', 'required' => 'required', 'placeholder' => 'Digitar cantidad (letra y número) de Semestres',
         'data-parsley-pattern' => '^[a-zA-Z0-9-_\.,;:()ñÑáéíóúÁÉÍÓÚ ]+$',
         'data-parsley-pattern-message' => 'Error en el texto',
         'data-parsley-length'=>'[5,50]', 'data-parsley-trigger'=>"change" ] ) !!}
@@ -199,7 +199,7 @@
     {!! Form::label('PAC_Duracion_Semestre','Duración de c/semestre', ['class'=>'control-label col-md-3 col-sm-3 col-xs-12']) !!}
     <div class="col-md-6 col-sm-6 col-xs-12">
         {!! Form::text('PAC_Duracion_Semestre', old('PAC_Duracion_Semestre'),
-        [ 'class' => 'form-control col-md-6 col-sm-6 col-xs-12', 'required' => 'required',
+        [ 'class' => 'form-control col-md-6 col-sm-6 col-xs-12', 'required' => 'required', 'placeholder' => 'Digitar cantidad (letra y número) semanas',
         'data-parsley-pattern' => '^[a-zA-Z0-9-_\.,;:()ñÑáéíóúÁÉÍÓÚ ]+$',
         'data-parsley-pattern-message' => 'Error en el texto',
         'data-parsley-length'=>'[5,50]', 'data-parsley-trigger'=>"change" ] ) !!}
