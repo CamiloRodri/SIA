@@ -8,9 +8,11 @@ use App\Models\Autoevaluacion\Estado;
 use App\Models\Autoevaluacion\Facultad;
 use App\Models\Autoevaluacion\ProgramaAcademico;
 use App\Models\Autoevaluacion\Sede;
+use App\Models\Autoevaluacion\Institucion;
 use App\Models\Autoevaluacion\Metodologia;
-use DataTables;
+use Yajra\DataTables\DataTables;
 use Illuminate\Http\Request;
+use Barryvdh\Debugbar;
 
 class ProgramaAcademicoController extends Controller
 {
@@ -86,6 +88,7 @@ class ProgramaAcademicoController extends Controller
      */
     public function create()
     {
+        $instituciones = Institucion::pluck('ITN_nombre', 'PK_ITN_Id');
         $sedes = Sede::pluck('SDS_Nombre', 'PK_SDS_Id');
         $estados = Estado::pluck('ESD_Nombre', 'PK_ESD_Id');
         $facultades = Facultad::pluck('FCD_Nombre', 'PK_FCD_Id');
@@ -93,7 +96,7 @@ class ProgramaAcademicoController extends Controller
 
         return view(
             'autoevaluacion.SuperAdministrador.ProgramasAcademicos.create',
-            compact('sedes', 'facultades', 'estados', 'metodologias')
+            compact('sedes', 'facultades', 'estados', 'metodologias', 'instituciones')
         );
     }
 
@@ -154,6 +157,8 @@ class ProgramaAcademicoController extends Controller
      */
     public function show($id)
     {
+        $sedes = Sede::where('FK_SDS_Institucion', $id)->get()->pluck('SDS_Nombre', 'PK_SDS_Id');
+        return json_encode($sedes);
     }
 
     /**
@@ -168,14 +173,18 @@ class ProgramaAcademicoController extends Controller
     public function edit($id)
     {
         $programaAcademico = ProgramaAcademico::findOrFail($id);
+        $sede = Sede::findOrFail($programaAcademico->FK_PAC_Sede);
         $sedes = Sede::pluck('SDS_Nombre', 'PK_SDS_Id');
         $estados = Estado::pluck('ESD_Nombre', 'PK_ESD_Id');
         $facultades = Facultad::pluck('FCD_Nombre', 'PK_FCD_Id');
         $metodologias = Metodologia::pluck('MTD_Nombre', 'PK_MTD_Id');
+        $instituciones = Institucion::pluck('ITN_nombre', 'PK_ITN_Id');
+        $idInstitucion = $sede->FK_SDS_Institucion;
+        \Debugbar::info($sedes);
 
         return view(
             'autoevaluacion.SuperAdministrador.ProgramasAcademicos.edit',
-            compact('programaAcademico', 'sedes', 'estados', 'facultades', 'metodologias')
+            compact('programaAcademico', 'sedes', 'estados', 'facultades', 'metodologias', 'instituciones', 'idInstitucion')
         );
     }
 
@@ -247,5 +256,12 @@ class ProgramaAcademicoController extends Controller
             'title' => 'Programa academico Eliminado!',
         ], 200) // 200 Status Code: Standard response for successful HTTP request
         ->header('Content-Type', 'application/json');
+    }
+
+    public function institucion($id)
+    {
+        $instituciones = Institucion::where('FK_SDS_Institucion', $id)->get()
+            ->pluck('SDS_Nombre', 'PK_SDS_Id');
+        return json_encode($instituciones);
     }
 }

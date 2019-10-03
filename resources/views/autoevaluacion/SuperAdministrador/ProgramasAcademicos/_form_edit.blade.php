@@ -1,8 +1,7 @@
 <div class="form-group col-sm">
     {!! Form::label('PK_SDS_Id', 'Instituciones', ['class' => 'control-label col-md-3 col-sm-3 col-xs-12']) !!}
     <div class="col-md-6 col-sm-6 col-xs-12">
-        {!! Form::select('PK_ITNob_Id', $instituciones, old('PK_ITN_Id', 
-            isset($institucion)? $institucion->PK_ITN_Id: ''), [ 'placeholder' => 'Seleccione una institución',
+        {!! Form::select('PK_ITNob_Id', $instituciones, $idInstitucion, [ 'placeholder' => 'Seleccione una institución',
             'class' => 'select2 form-control', 'required' => '', 'id' => 'institucion'])
         !!}
     </div>

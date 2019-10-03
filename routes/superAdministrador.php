@@ -115,6 +115,11 @@ Route::get('facultades/data/data', array('as' => 'admin.facultades.data', 'uses'
 Route::resource('programas_academicos', 'ProgramaAcademicoController', ['as' => 'admin']);
 Route::get('programas_academicos/data/data', array('as' => 'admin.programas_academicos.data',
     'uses' => 'ProgramaAcademicoController@data'));
+    
+Route::get('programas_academicos/sedes/{id_institucion}', array(
+    'as' => 'admin.programas_academicos.obtener_sedes',
+    'uses' => 'ProgramaAcademicoController@ObtenerSedes'
+));
 
 //Procesos para programas
 Route::resource('procesos_programas', 'ProcesoProgramaController', ['as' => 'admin']);

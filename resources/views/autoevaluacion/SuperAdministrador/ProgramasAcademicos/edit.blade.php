@@ -10,7 +10,7 @@
         'method' => 'PUT', 'id' => 'form_modificar_programaAcademico',
         'class' => 'form-horizontal form-label-lef', 'novalidate' ])
         !!}
-        @include('autoevaluacion.SuperAdministrador.ProgramasAcademicos._form')
+        @include('autoevaluacion.SuperAdministrador.ProgramasAcademicos._form_edit')
         <div class="ln_solid"></div>
         <div class="form-group">
             <div class="col-md-6 col-md-offset-3">
@@ -48,10 +48,14 @@
 @push('functions')
     <script type="text/javascript">
         $(document).ready(function () {
+            $('#institucion').prop('disable', true);
+            $('#sede').prop('disable', true);
+            $('#institucion').select2();
             $('#sede').select2();
+            selectDinamico("#institucion", "#sede", "{{ url('admin/programas_academicos') }}");
+            
             $('#facultad').select2();
             $('#estado').select2();
-            $('#metodologia').select2();
 
             var form = $('#form_modificar_programaAcademico');
             $(form).parsley({

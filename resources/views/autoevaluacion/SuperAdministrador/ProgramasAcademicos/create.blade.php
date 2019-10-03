@@ -52,11 +52,14 @@
 @push('functions')
     <script type="text/javascript">
         $(document).ready(function () {
+            $('#institucion').select2();
             $('#sede').select2();
+            selectDinamico("#institucion", "#sede", "{{ url('admin/programas_academicos') }}");
+
+            $('#institucion').prop('disable', false);
+            $('#sede').prop('disable', false);
             $('#facultad').select2();
             $('#estado').select2();
-            $('#metodologia').select2();
-
             var form = $('#form_crear_programas_academicos');
             $(form).parsley({
                 trigger: 'change',
@@ -79,10 +82,15 @@
                     success: function (response, NULL, jqXHR) {
                         $(form)[0].reset();
                         $(form).parsley().reset();
-                        $("#sede").select2({allowClear: true});
+                        $("#institucion").select2({allowClear: true});
                         $("#estado").select2({allowClear: true});
                         $("#facultad").select2({allowClear: true});
                         $("#metodologia").select2({allowClear: true});
+
+                        $("#sede").select2({allowClear: true});
+                        $('#sede').prop('diasble', true);
+                        $('#sede').find('option').remove();
+                        $('#sede').append('<option value="">Seleccione una sede</option>');
                         new PNotify({
                             title: response.title,
                             text: response.msg,
