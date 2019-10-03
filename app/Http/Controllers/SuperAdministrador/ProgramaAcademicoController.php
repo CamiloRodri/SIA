@@ -12,7 +12,6 @@ use App\Models\Autoevaluacion\Institucion;
 use App\Models\Autoevaluacion\Metodologia;
 use Yajra\DataTables\DataTables;
 use Illuminate\Http\Request;
-use Barryvdh\Debugbar;
 
 class ProgramaAcademicoController extends Controller
 {
@@ -180,7 +179,6 @@ class ProgramaAcademicoController extends Controller
         $metodologias = Metodologia::pluck('MTD_Nombre', 'PK_MTD_Id');
         $instituciones = Institucion::pluck('ITN_nombre', 'PK_ITN_Id');
         $idInstitucion = $sede->FK_SDS_Institucion;
-        \Debugbar::info($sedes);
 
         return view(
             'autoevaluacion.SuperAdministrador.ProgramasAcademicos.edit',
@@ -225,7 +223,13 @@ class ProgramaAcademicoController extends Controller
                                                     'PAC_Egresados', 'PAC_Egresados',
                                                     'PAC_Valor_Matricula', 'PAC_Valor_Matricula'
                                                 ]));
-        $programaAcademico->FK_PAC_Sede = $request->get('PK_SDS_Id');
+        if($request->get('PK_SDS_Id') != ''){
+            $programaAcademico->FK_PAC_Sede = $request->get('PK_SDS_Id');
+        }
+        else{
+            $programas = ProgramaAcademico::find($programaAcademico->PK_PAC_Id);
+            $programaAcademico->FK_PAC_Sede = $programas->FK_PAC_Sede;
+        } 
         $programaAcademico->FK_PAC_Estado = $request->get('PK_ESD_Id');
         $programaAcademico->FK_PAC_Facultad = $request->get('PK_FCD_Id');
 

@@ -141,7 +141,8 @@ class InstitucionController extends Controller
      */
     public function show($id)
     {
-        //
+        $instituciones = Institucion::where('PK_ITN_Id', $id)->get()->pluck('ITN_Nombre', 'PK_ITN_Id');
+        return json_encode($instituciones);
     }
 
     /**
