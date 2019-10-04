@@ -12,6 +12,7 @@ use App\Models\Autoevaluacion\Proceso;
 use App\Models\Autoevaluacion\ProgramaAcademico;
 use App\Models\Autoevaluacion\Sede;
 use App\Models\Autoevaluacion\FechaCorte;
+use App\Models\Autoevaluacion\Institucion;
 use Carbon\Carbon;
 use DataTables;
 use Illuminate\Http\Request;
@@ -116,6 +117,7 @@ class ProcesoProgramaController extends Controller
      */
     public function create()
     {
+        $instituciones = Institucion::pluck('ITN_nombre', 'PK_ITN_Id');
         if (Gate::allows('SUPERADMINISTRADOR')) {
             $sedes = Sede::pluck('SDS_Nombre', 'PK_SDS_Id');
             $facultades = Facultad::pluck('FCD_Nombre', 'PK_FCD_Id');
@@ -131,7 +133,7 @@ class ProcesoProgramaController extends Controller
         }
         return view(
             'autoevaluacion.SuperAdministrador.ProcesosProgramas.create',
-            compact('sedes', 'facultades', 'lineamientos', 'fases')
+            compact('sedes', 'facultades', 'lineamientos', 'fases', 'instituciones')
         );
     }
 
@@ -202,11 +204,17 @@ class ProcesoProgramaController extends Controller
      */
     public function edit($id)
     {
+        $instituciones = Institucion::pluck('ITN_nombre', 'PK_ITN_Id');
         $proceso = Proceso::findOrFail($id);
+        
         $sedes = Sede::pluck('SDS_Nombre', 'PK_SDS_Id');
         $facultades = Facultad::pluck('FCD_Nombre', 'PK_FCD_Id');
         $lineamientos = Lineamiento::pluck('LNM_Nombre', 'PK_LNM_Id');
         $fases = Fase::pluck('FSS_Nombre', 'PK_FSS_Id');
+        
+        $sede = $proceso->programa->FK_PAC_Sede;
+        $obtenerInstitucion = Sede::where('PK_SDS_Id', $sede)->get()->first();
+        $idInstitucion = $obtenerInstitucion->FK_SDS_Institucion;
 
         $programas = new ProgramaAcademico();
         $programas = $programas::where('FK_PAC_Sede', '=', $proceso->programa->sede->PK_SDS_Id)
@@ -215,7 +223,8 @@ class ProcesoProgramaController extends Controller
 
         return view(
             'autoevaluacion.SuperAdministrador.ProcesosProgramas.edit',
-            compact('proceso', 'sedes', 'facultades', 'programas', 'lineamientos', 'fases')
+            compact('proceso', 'sedes', 'facultades', 'programas', 'lineamientos', 'fases', 
+                    'instituciones', 'idInstitucion')
         );
     }
 

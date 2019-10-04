@@ -59,6 +59,10 @@
 @push('functions')
     <script type="text/javascript">
         $(document).ready(function () {
+            $('#institucion').select2();
+            $('#sede').select2();
+            selectDinamico("#institucion", "#sede", "{{ url('admin/programas_academicos') }}");
+            
             $('#programa').prop('disabled', true);
             $('#fase').prop('disabled', true);
             $('#fase').val(3);

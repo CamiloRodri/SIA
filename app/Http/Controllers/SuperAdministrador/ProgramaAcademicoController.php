@@ -12,6 +12,7 @@ use App\Models\Autoevaluacion\Institucion;
 use App\Models\Autoevaluacion\Metodologia;
 use Yajra\DataTables\DataTables;
 use Illuminate\Http\Request;
+use Barryvdh\Debugbar;
 
 class ProgramaAcademicoController extends Controller
 {
@@ -172,13 +173,16 @@ class ProgramaAcademicoController extends Controller
     public function edit($id)
     {
         $programaAcademico = ProgramaAcademico::findOrFail($id);
-        $sede = Sede::findOrFail($programaAcademico->FK_PAC_Sede);
         $sedes = Sede::pluck('SDS_Nombre', 'PK_SDS_Id');
         $estados = Estado::pluck('ESD_Nombre', 'PK_ESD_Id');
         $facultades = Facultad::pluck('FCD_Nombre', 'PK_FCD_Id');
         $metodologias = Metodologia::pluck('MTD_Nombre', 'PK_MTD_Id');
         $instituciones = Institucion::pluck('ITN_nombre', 'PK_ITN_Id');
+
+        $sede = Sede::findOrFail($programaAcademico->FK_PAC_Sede);
         $idInstitucion = $sede->FK_SDS_Institucion;
+        \Debugbar::info($sede);
+        \Debugbar::info($idInstitucion);
 
         return view(
             'autoevaluacion.SuperAdministrador.ProgramasAcademicos.edit',

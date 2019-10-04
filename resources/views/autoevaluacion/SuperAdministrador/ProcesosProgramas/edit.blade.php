@@ -6,7 +6,7 @@
 @section('content') @component('admin.components.panel') @slot('title', 'Modificar Proceso')
 {!! Form::model($proceso, [ 'route' => ['admin.procesos_programas.update', $proceso], 'method' => 'PUT', 'id' => 'form_modificar_proceso',
 'class' => 'form-horizontal form-label-lef', 'novalidate' ]) !!}
-@include('autoevaluacion.SuperAdministrador.ProcesosProgramas._form')
+@include('autoevaluacion.SuperAdministrador.ProcesosProgramas._form_edit')
 <div class="ln_solid"></div>
 <div class="form-group">
     <div class="col-md-6 col-md-offset-3">
