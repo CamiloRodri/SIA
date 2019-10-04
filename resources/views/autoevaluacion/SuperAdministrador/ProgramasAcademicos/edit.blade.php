@@ -52,11 +52,10 @@
             $('#institucion').select2();
             $('#sede').select2();
             
-            // selectDinamico("#ins", "#institucion", "{{ url('admin/institucion') }}", ['#sede']);
             selectDinamico("#institucion", "#sede", "{{ url('admin/programas_academicos') }}");
-            console.log($('#institucion').select2());
             $('#institucion').prop('disable', true);
             $('#sede').prop('disable', true);
+            
             $('#facultad').select2();
             $('#estado').select2();
 
