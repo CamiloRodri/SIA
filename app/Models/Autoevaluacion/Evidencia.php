@@ -47,4 +47,19 @@ class Evidencia extends Model
         return $this->belongsTo(ActividadesMejoramiento::class, 'FK_EVD_Actividad_Mejoramiento', 'PK_ACM_Id');
     }
 
+    public static function boot()
+    {
+        parent::boot();
+        static::deleting(function ($model) {
+            if ($model->archivo) {
+                $ruta = str_replace('storage', 'public', $model->archivo->ruta);
+                Storage::delete($ruta);
+            }
+        });
+    }
+
+    public function archivo()
+    {
+        return $this->belongsTo(Archivo::class, 'FK_EVD_Archivo', 'PK_ACV_Id');
+    }
 }
