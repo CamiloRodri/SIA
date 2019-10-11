@@ -73,11 +73,15 @@ Route::get('evidencia/{id}', array(
     'as' => 'admin.evidencia.index',
     'uses' => 'EvidenciaController@index'
 ));
+Route::get('evidencia/create', array(
+    'as' => 'admin.evidencia.create',
+    'uses' => 'EvidenciaController@create'
+));
 Route::post('evidencia', array(
     'as' => 'admin.evidencia.store',
     'uses' => 'EvidenciaController@store'
 ));
-Route::put('evidencia/{evidencia}/update', array(
+Route::put('evidencia/{evidencia}', array(
     'as' => 'admin.evidencia.update',
     'uses' => 'EvidenciaController@update'
 ));

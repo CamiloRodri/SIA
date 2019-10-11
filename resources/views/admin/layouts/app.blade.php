@@ -31,7 +31,7 @@
                 <div class="page-title">
                     <div class="title_left">
                         <h3>SIA
-                            <small>Sistema de información para la autoevaluación V3.0</small>
+                            <small>Sistema de información para la autoevaluación V4.0</small>
                         </h3>
                     </div>
                     <div class="title_right">
