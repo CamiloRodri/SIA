@@ -1,68 +1,42 @@
 {{-- Titulo de la pagina --}}
-@section('title', 'Evidencia')
+@section('title', 'Evidencias')
+
 {{-- Contenido principal --}}
 @extends('admin.layouts.app')
 
-@section('content') @component('admin.components.panel')
-    @slot('title', 'Evidencia')
+@section('content')
+    @component('admin.components.panel') @slot('title', 'Documentos Institucionales')
+
+    <div class="col-md-6">
+        <div class="actions">
+            <a href="{{ route('admin.evidencia.create', $actividad->PK_ACM_Id) }}" class="btn btn-info">
+            <i class="fa fa-plus"></i> Agregar Evidencia {{ $actividad->ACM_Nombre }} </a></div>
+    </div>
+    <div class="col-md-6">
+        <div class="actions">
+            <a href="{{ route('admin.actividades_mejoramiento.index') }}" class="btn btn-warning">
+            <i class="fa fa-backward"></i> Regresar a las actividades </a></div>
+    </div>
+    <br>
+    <br>
+    <br>
     <div class="col-md-12">
-        @can('CREAR_EVIDENCIA')
-            <div class="actions">
-                <a id="crear_evidencias" href="#" class="btn btn-info" data-toggle="modal" data-target="#modal_evidencia">
-                    <i class="fa fa-plus"></i> Agregar Evidencia{{$actividad->ACM_Nombre}}</a></div>
-                        <a class="btn btn-warning" href="{{ route('admin.actividades_mejoramiento.index') }}">
-                        <i class="fa fa-backward"></i> Regresar Actividades de Mejoramiento</a>
-    @endcan
-    <!-- Modal-->
-        <div class="modal fade" id="modal_evidencia" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span></button>
-                        <h4 class="modal-title" id="modal_titulo">Crear Evidencia</h4>
-                    </div>
-                    <div class="modal-body">
-
-                        {!! Form::open([ 'route' => 'admin.evidencia.store',
-                        'method' => 'POST', 'id' => 'form_evidencia', 'class' => 'form-horizontal
-                            form-label-lef', 'novalidate' ])!!}
-                        @include('autoevaluacion.SuperAdministrador.Evidencias.form')
-
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                        {!! Form::submit('Crear
-                        Evidencia', ['class' => 'btn btn-success', 'id' => 'accion']) !!}
-
-                    </div>
-                    {!! Form::close() !!}
-                </div>
-            </div>
-        </div>
-        <!--FIN Modal CREAR-->
+        @component('admin.components.datatable', ['id' => 'evidencia_table_ajax'])
+            @slot('columns', [
+            'id',
+            'Nombre',
+            'Fecha Subida',
+            'Descripcion',
+            'Archivo',
+            'Acciones' => ['style'
+            => 'width:115px;']]) @endcomponent
 
     </div>
-    @can('VER_EVIDENCIA')
-        <br>
-        <br>
-        <br>
-        <div class="col-md-12">
-            @component('admin.components.datatable',
-            ['id' => 'evidencia_table_ajax'])
-                @slot('columns', [ 'id', 'Nombre', 'Fecha', 'Link', 'Descripción General', 'Acciones' =>
-                ['style' => 'width:85px;'] ])
-            @endcomponent
-
-        </div>
-        @endcomponent
-    @endcan
+    @endcomponent
 @endsection
+
 {{-- Scripts necesarios para el formulario --}}
 @push('scripts')
-    <!-- validator -->
-    <script src="{{ asset('gentella/vendors/parsleyjs/parsley.min.js') }}"></script>
-    <script src="{{ asset('gentella/vendors/parsleyjs/i18n/es.js') }}"></script>
     <!-- Datatables -->
     <script src="{{asset('gentella/vendors/DataTables/datatables.min.js') }}"></script>
     <script src="{{asset('gentella/vendors/sweetalert/sweetalert2.all.min.js') }}"></script>
@@ -74,6 +48,7 @@
 
 
 @endpush
+
 {{-- Estilos necesarios para el formulario --}}
 @push('styles')
     <!-- Datatables -->
@@ -82,54 +57,51 @@
     <link href="{{ asset('gentella/vendors/pnotify/dist/pnotify.css') }}" rel="stylesheet">
     <link href="{{ asset('gentella/vendors/pnotify/dist/pnotify.buttons.css') }}" rel="stylesheet">
     <link href="{{ asset('gentella/vendors/pnotify/dist/pnotify.nonblock.css') }}" rel="stylesheet">
-@endpush
-{{-- Funciones necesarias por el formulario --}}
-@push('functions')
+@endpush @push('functions')
     <script type="text/javascript">
         $(document).ready(function () {
-            var id;
-            var formCreate = $('#form_evidencia');
-            $('#crear_evidencias').click(function () {
-                $(formCreate)[0].reset();
-                $('.modal-title').text("Crear Evidencia");
-                $('#accion').val("Crear");
-                $('#accion').removeClass('modificar')
-            });
-            var data, routeDatatable;
-            data = [
-                {data: 'PK_EVD_Id', name: 'id', "visible": false},
-                {data: 'EVD_Nombre', name: 'Nombre', className: "min-table-p"},
-                {data: 'EVD_Fecha_Subido', name: 'Fecha Subida', className: "min-table-p"},
-                {data: 'EVD_Link', name: 'Link', className: "min-table-p"},
-                {data: 'EVD_Descripcion_General', name: 'Descripción General', className: "min-table-p"},
-                {
-                    defaultContent:
-                        '@can('ELIMINAR_EVIDENCIA')<a href="javascript:;" class="btn btn-simple btn-danger btn-sm remove" data-toggle="confirmation"><i class="fa fa-trash"></i></a>@endcan' +
-                        '@can('MODIFICAR_EVIDENCIA')<a href="javascript:;" class="btn btn-simple btn-info btn-sm edit" data-toggle="confirmation"><i class="fa fa-pencil"></i></a>@endcan',
-                    data: 'action',
-                    name: 'action',
-                    title: 'Acciones',
-                    orderable: false,
-                    searchable: false,
-                    exportable: false,
-                    printable: false,
-                    className: 'text-right',
-                    render: null,
-                    responsivePriority: 2
-                }
-            ];
-            // routeDatatable = "{{ route('admin.evidencia.data') }}";
-            routeDatatable = "{{ url('admin/evidencia/data/data') }}" + '/' + '{{$actividad->PK_ACM_Id}}';
-            console.log(routeDatatable);
+
+            let sesion = sessionStorage.getItem("update");
+            if (sesion != null) {
+                sessionStorage.clear();
+                new PNotify({
+                    title: "Evidencia Modificada!",
+                    text: sesion,
+                    type: 'success',
+                    styling: 'bootstrap3'
+                });
+            }
             table = $('#evidencia_table_ajax').DataTable({
                 processing: true,
                 serverSide: false,
-                stateSave: true,
-                keys: true,
+                stateSave: false,
                 dom: 'lBfrtip',
+                responsive: true,
                 buttons: ['copy', 'csv', 'excel', 'pdf', 'print'],
-                "ajax": routeDatatable,
-                "columns": data,
+                // = '{{ url('admin/permisos') }}' + '/' + $('#id').val();
+                "ajax": "{{ url('admin/evidencia/data/data') }}" + "/" + '{{ $actividad->PK_ACM_Id }}',
+                "columns": [
+                    {data: 'PK_EVD_Id', name: 'id', "visible": false},
+                    {data: 'EVD_Nombre', name: 'Nombre', className: "all"},
+                    {data: 'EVD_Fecha_Subido', name: 'Fecha Evidencia', className: "desktop"},
+                    {data: 'EVD_Descripcion_General', name: 'Descripción General', className: "min-tablet-l"},
+                    {data: 'archivo', name: 'Archivo', className: "ALL"},
+                    {
+                        defaultContent:
+                            '@can('ELIMINAR_EVIDENCIA')<a href="javascript:;" class="btn btn-simple btn-danger btn-sm remove" data-toggle="confirmation"><i class="fa fa-trash"></i></a>@endcan' +
+                            '@can('MODIFICAR_EVIDENCIA')<a href="javascript:;" class="btn btn-simple btn-info btn-sm edit" data-toggle="confirmation"><i class="fa fa-pencil"></i></a>@endcan',
+                        data: 'action',
+                        name: 'action',
+                        title: 'Acciones',
+                        orderable: false,
+                        searchable: false,
+                        exportable: false,
+                        printable: false,
+                        className: 'text-right',
+                        render: null,
+                        responsivePriority: 2
+                    }
+                ],
                 language: {
                     "sProcessing": "Procesando...",
                     "sLengthMenu": "Mostrar _MENU_ registros",
@@ -153,87 +125,53 @@
                         "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
                         "sSortDescending": ": Activar para ordenar la columna de manera descendente"
                     }
-                }
-            });
-            $(formCreate).parsley({
-                trigger: 'change',
-                successClass: "has-success",
-                errorClass: "has-error",
-                classHandler: function (el) {
-                    return el.$element.closest('.form-group');
                 },
-                errorsWrapper: '<p class="help-block help-block-error"></p>',
-                errorTemplate: '<span></span>',
-            });
-            $(document).on('submit', '#form_evidencia', function (e) {
-                e.preventDefault();
-                let route = formCreate.attr('action');
-                let method = formCreate.attr('method');
-                let data = formCreate.serialize();
-                if ($('#accion').hasClass('modificar')) {
-                    route = '{{ url('admin/evidencia') }}' + '/' + $('#PK_EVD_Id').val();
-                    method = "PUT";
+                initComplete: function () {
+                    this.api().columns([1, 3]).every(function () {
+                        var column = this;
+                        var select = $('<select style="width: 100px;"><option value=""></option></select>')
+                            .appendTo($(column.footer()).empty())
+                            .on('change', function () {
+                                var val = $.fn.dataTable.util.escapeRegex(
+                                    $(this).val()
+                                );
+
+                                column
+                                    .search(val ? '^' + val + '$' : '', true, false)
+                                    .draw();
+                            });
+
+                        column.data().unique().sort().each(function (d, j) {
+                            select.append('<option value="' + d + '">' + d + '</option>');
+                        });
+                    });
                 }
-                $.ajax({
-                    url: route,
-                    type: method,
-                    data: data,
-                    dataType: 'json',
-                    success: function (response, NULL, jqXHR) {
-                        $(formCreate)[0].reset();
-                        $(formCreate).parsley().reset();
-                        $('#modal_evidencia').modal('hide');
-                        new PNotify({
-                            title: response.title,
-                            text: response.msg,
-                            type: 'success',
-                            styling: 'bootstrap3'
-                        });
-                        table.ajax.reload();
-                    },
-                    error: function (data) {
-                        var errores = data.responseJSON.errors;
-                        var msg = '';
-                        $.each(errores, function (name, val) {
-                            msg += val + '<br>';
-                        });
-                        new PNotify({
-                            title: "Error!",
-                            text: msg,
-                            type: 'error',
-                            styling: 'bootstrap3'
-                        });
-                    }
-                });
+
             });
+
             table.on('click', '.remove', function (e) {
                 e.preventDefault();
                 $tr = $(this).closest('tr');
                 var dataTable = table.row($tr).data();
-                var route = '{{ url('admin/evidencia') }}' + '/' + dataTable.PK_EVD_Id;
+                var route = '{{ url('admin/documental/documentoinstitucional') }}' + '/' + dataTable.PK_DOI_Id;
                 var type = 'DELETE';
                 dataType: "JSON",
-                    SwalDelete(dataTable.PK_EVD_Id, route);
+                    SwalDelete(dataTable.PK_DOI_Id, route);
             });
             table.on('click', '.edit', function (e) {
+                e.preventDefault();
                 $tr = $(this).closest('tr');
                 var dataTable = table.row($tr).data();
-                $('#EVD_Nombre').val(dataTable.EVD_Nombre);
-                $('#EVD_Link').val(dataTable.EVD_Link);
-                var img = $('#EVD_Descripcion_General').val(dataTable.EVD_Descripcion_General);
-                $('#PK_EVD_Id').val(dataTable.PK_EVD_Id);
-                console.log(img);
-                $('#modal_evidencia').modal('show');
-                $('.modal-title').text("Modificar evidencia");
-                $('#accion').val("Modificar");
-                $('#accion').addClass('modificar');
+                var route = '{{ url('admin/documental/documentoinstitucional/') }}' + '/' + dataTable.PK_DOI_Id + '/edit';
+                window.location.href = route;
             });
+
         });
 
         function SwalDelete(id, route) {
             swal({
                 title: 'Esta seguro?',
-                text: "Se eliminara la evidencia permanentemente!",
+                text: "El Documento sera eliminado permanentemente!",
                 type: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',
@@ -243,6 +181,7 @@
                 cancelButtonText: "Cancelar",
                 preConfirm: function () {
                     return new Promise(function (resolve) {
+
                         $.ajax({
                             type: 'DELETE',
                             url: route,
@@ -260,16 +199,21 @@
                             }
                         })
                             .done(function (response) {
-                                swal('Eliminada exitosamente!', response.message, response.status);
+                                swal('Eliminado exitosamente!', response.message, response.status);
                             })
                             .fail(function () {
-                                swal('Oops...', 'Algo salio mal !', 'error');
+                                swal('Oops...', 'Something went wrong with ajax !', 'error');
                             });
                     });
                 },
                 allowOutsideClick: false
             });
+
         }
+
+
     </script>
+
+
 
 @endpush

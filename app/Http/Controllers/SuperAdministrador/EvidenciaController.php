@@ -6,9 +6,12 @@ use Illuminate\Http\Request;
 use App\Models\Autoevaluacion\ActividadesMejoramiento;
 use App\Http\Controllers\Controller;
 use App\Models\Autoevaluacion\Evidencia;
+use App\Models\Autoevaluacion\Archivo;
+use Illuminate\Support\Facades\Storage;
 use Yajra\DataTables\DataTables;
 use Carbon\Carbon;
 use Barryvdh\Debugbar;
+use App\Models\Autoevaluacion\DocumentoInstitucional;
 
 class EvidenciaController extends Controller
 {
@@ -28,22 +31,45 @@ class EvidenciaController extends Controller
 
     public function datos(Request $request, $id)
     {
-        // \Debugbar::info($id);
+        
         // if ($request->ajax() && $request->isMethod('GET')) {
-            $evidencia = Evidencia::all()->where('FK_EVD_Actividad_Mejoramiento', $id);
-            return Datatables::of($evidencia)
+            $docEvidencia = Evidencia::with('archivo')->where('FK_EVD_Actividad_Mejoramiento', $id)
+                ->get();
+                \Debugbar::info($docEvidencia);
+            return Datatables::of($docEvidencia)
+                ->addColumn('archivo', function ($docEvidencia) {
+                    /**
+                     * Si el documento tiene una archivo guardado en el servidor
+                     * Se obtiene el url y se coloca en un link, si no es asi es porque tiene
+                     * una url entonces también se le asignar a un botón tipo link.
+                     */
+                    if (!$docEvidencia->archivo) {
+                        return '<a class="btn btn-success btn-xs" href="' . $docEvidencia->EVD_Link .
+                            '"target="_blank" role="button">Enlace al documento</a>';
+                    } else {
+
+                        return '<a class="btn btn-success btn-xs" href="' . route('descargar') . '?archivo=' .
+                            $docEvidencia->archivo->ruta .
+                            '" target="_blank" role="button">' . $docEvidencia->archivo->ACV_Nombre . '</a>';
+
+
+                    }
+                })
+                ->rawColumns(['archivo'])
+                ->removeColumn('created_at')
+                ->removeColumn('updated_at')
                 ->make(true);
         // }
     }
 
-    public function data(Request $request)
-    {
-        if ($request->ajax() && $request->isMethod('GET')) {
-            $evidencia = Evidencia::all();
-            return Datatables::of($evidencia)
-                ->make(true);
-        }
-    }
+    // public function data(Request $request)
+    // {
+    //     if ($request->ajax() && $request->isMethod('GET')) {
+    //         $evidencia = Evidencia::all();
+    //         return Datatables::of($evidencia)
+    //             ->make(true);
+    //     }
+    // }
 
     /**
      * Display a listing of the resource.
@@ -61,9 +87,10 @@ class EvidenciaController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create($id)
     {
-        //
+        $actividad = ActividadesMejoramiento::find($id);
+        return view('autoevaluacion.SuperAdministrador.Evidencias.create', compact('actividad'));
     }
 
     /**
@@ -76,15 +103,33 @@ class EvidenciaController extends Controller
     {
         $now = new \DateTime();
         $now->format('d-m-Y H:i:s');
-        $evidencia = new Evidencia();
-        $evidencia->fill($request->only(['EVD_Nombre']));
-        $evidencia->fill($request->only(['EVD_Link']));
-        $evidencia->EVD_Fecha_Subido =  Carbon::now();
-        $evidencia->fill($request->only(['EVD_Descripcion_General']));
-        $evidencia->fill($request->only(['FK_EVD_Actividad_Mejoramiento']));
-        $evidencia->save();
+        if ($request->hasFile('archivo')) {
+            $file = $request->file('archivo');
+            $archivo = new Archivo;
+            $archivo->ACV_Nombre = $file->getClientOriginalName();
+            $archivo->ACV_Extension = $file->extension();
+            $archivo->ruta = Storage::url($file->store('public/DocumentosInstitucionales/EVIDENCIA'));
+            $archivo->save();
 
-        return response(['msg' => 'Ambito registrado correctamente.',
+            $docEvidencia = new Evidencia;
+            $docEvidencia->EVD_Nombre = $request->EVD_Nombre;
+            $docEvidencia->EVD_Descripcion_General = $request->EVD_Descripcion_General;
+            $docEvidencia->EVD_link = $request->EVD_link;
+            $docEvidencia->FK_EVD_Archivo = $archivo->PK_ACV_Id;
+            $docEvidencia->FK_EVD_Actividad_Mejoramiento = $request->FK_EVD_Actividad_Mejoramiento;
+            $docEvidencia->EVD_Fecha_Subido =  Carbon::now();
+            $docEvidencia->save();
+        } else {
+            $docEvidencia = new Evidencia;
+            $docEvidencia->EVD_Nombre = $request->EVD_Nombre;
+            $docEvidencia->EVD_Descripcion_General = $request->EVD_Descripcion_General;
+            $docEvidencia->EVD_Link = $request->EVD_Link;
+            $docEvidencia->FK_EVD_Actividad_Mejoramiento = $request->FK_EVD_Actividad_Mejoramiento;
+            $docEvidencia->EVD_Fecha_Subido =  Carbon::now();
+            $docEvidencia->save();
+        }
+
+        return response(['msg' => 'Evidencia registrada correctamente.',
             'title' => '¡Registro exitoso!',
         ], 200) // 200 Status Code: Standard response for successful HTTP request
         ->header('Content-Type', 'application/json');
@@ -128,6 +173,7 @@ class EvidenciaController extends Controller
         $evidencia->fill($request->only(['EVD_Descripcion_General']));
         $evidencia->fill($request->only(['FK_EVD_Actividad_Mejoramiento']));
         $evidencia->update();
+        
         return response(['msg' => 'La Evidencia ha sido modificada exitosamente.',
             'title' => 'Evidencia modificada :*!',
         ], 200) // 200 Status Code: Standard response for successful HTTP request

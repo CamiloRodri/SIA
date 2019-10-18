@@ -137,7 +137,7 @@
                     e.preventDefault();
                     $tr = $(this).closest('tr');
                     var dataTable = table.row($tr).data();
-                    var route = '{{ url('admin/evidencia/') }}' + '/' + dataTable.PK_ACM_Id;
+                    var route = '{{ url('admin/evidencias/') }}' + '/' + dataTable.PK_ACM_Id;
                     window.location.href = route;
                 });
 
