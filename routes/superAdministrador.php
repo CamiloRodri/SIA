@@ -63,32 +63,31 @@ Route::get('evidencia/data/data/{id}', array(
     'as' => 'admin.evidencia.datos', 
     'uses' => 'EvidenciaController@datos'
 ));
-Route::get('evidencia/data/data/', array(
-    'as' => 'admin.evidencia.data', 
-    'uses' => 'EvidenciaController@data'
-));
 
 //Rutas CRUD Evidencia  (Acticidad de Mejoramiento)
-Route::get('evidencia/{id}', array(
+Route::get('evidencias/{id}', array(
     'as' => 'admin.evidencia.index',
     'uses' => 'EvidenciaController@index'
 ));
-Route::get('evidencia/create', array(
+Route::get('evidencia/create/{id}', array(
     'as' => 'admin.evidencia.create',
     'uses' => 'EvidenciaController@create'
 ));
-Route::post('evidencia', array(
-    'as' => 'admin.evidencia.store',
-    'uses' => 'EvidenciaController@store'
-));
-Route::put('evidencia/{evidencia}', array(
-    'as' => 'admin.evidencia.update',
-    'uses' => 'EvidenciaController@update'
-));
-Route::delete('evidencia/{evidencia}', array(
-    'as' => 'admin.evidencia.destroy',
-    'uses' => 'EvidenciaController@destroy'
-));
+Route::resource('evidencia', 'EvidenciaController', ['as' => 'admin'])->except(['index', 'create']);
+
+
+// Route::post('evidencia', array(
+//     'as' => 'admin.evidencia.store',
+//     'uses' => 'EvidenciaController@store'
+// ));
+// Route::put('evidencia/{evidencia}', array(
+//     'as' => 'admin.evidencia.update',
+//     'uses' => 'EvidenciaController@update'
+// ));
+// Route::delete('evidencia/{evidencia}', array(
+//     'as' => 'admin.evidencia.destroy',
+//     'uses' => 'EvidenciaController@destroy'
+// ));
 
 
 //Caracateristicas

@@ -16,7 +16,7 @@ class CreateEvidenciasTable extends Migration
         Schema::connection('autoevaluacion')->create('TBL_Evidencias', function (Blueprint $table) {
             $table->increments('PK_EVD_Id');
             $table->string('EVD_Nombre');
-            $table->string('EVD_Link');
+            $table->string('EVD_Link')->nullable();
             $table->integer("FK_EVD_Archivo")->unsigned()->nullable();
             $table->date('EVD_Fecha_Subido');
             $table->mediumText('EVD_Descripcion_General');

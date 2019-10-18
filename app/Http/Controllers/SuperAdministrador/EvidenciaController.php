@@ -10,6 +10,7 @@ use App\Models\Autoevaluacion\Archivo;
 use Illuminate\Support\Facades\Storage;
 use Yajra\DataTables\DataTables;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Redirect;
 use Barryvdh\Debugbar;
 use App\Models\Autoevaluacion\DocumentoInstitucional;
 
@@ -35,7 +36,6 @@ class EvidenciaController extends Controller
         // if ($request->ajax() && $request->isMethod('GET')) {
             $docEvidencia = Evidencia::with('archivo')->where('FK_EVD_Actividad_Mejoramiento', $id)
                 ->get();
-                \Debugbar::info($docEvidencia);
             return Datatables::of($docEvidencia)
                 ->addColumn('archivo', function ($docEvidencia) {
                     /**
@@ -108,25 +108,25 @@ class EvidenciaController extends Controller
             $archivo = new Archivo;
             $archivo->ACV_Nombre = $file->getClientOriginalName();
             $archivo->ACV_Extension = $file->extension();
-            $archivo->ruta = Storage::url($file->store('public/DocumentosInstitucionales/EVIDENCIA'));
+            $archivo->ruta = Storage::url($file->store('public/DocumentosAutoevaluacion/EVIDENCIA'));
             $archivo->save();
 
-            $docEvidencia = new Evidencia;
-            $docEvidencia->EVD_Nombre = $request->EVD_Nombre;
-            $docEvidencia->EVD_Descripcion_General = $request->EVD_Descripcion_General;
-            $docEvidencia->EVD_link = $request->EVD_link;
-            $docEvidencia->FK_EVD_Archivo = $archivo->PK_ACV_Id;
-            $docEvidencia->FK_EVD_Actividad_Mejoramiento = $request->FK_EVD_Actividad_Mejoramiento;
-            $docEvidencia->EVD_Fecha_Subido =  Carbon::now();
-            $docEvidencia->save();
+            $evidencia = new Evidencia;
+            $evidencia->EVD_Nombre = $request->EVD_Nombre;
+            $evidencia->EVD_Descripcion_General = $request->EVD_Descripcion_General;
+            $evidencia->EVD_link = $request->EVD_link;
+            $evidencia->FK_EVD_Archivo = $archivo->PK_ACV_Id;
+            $evidencia->FK_EVD_Actividad_Mejoramiento = $request->FK_EVD_Actividad_Mejoramiento;
+            $evidencia->EVD_Fecha_Subido =  Carbon::now();
+            $evidencia->save();
         } else {
-            $docEvidencia = new Evidencia;
-            $docEvidencia->EVD_Nombre = $request->EVD_Nombre;
-            $docEvidencia->EVD_Descripcion_General = $request->EVD_Descripcion_General;
-            $docEvidencia->EVD_Link = $request->EVD_Link;
-            $docEvidencia->FK_EVD_Actividad_Mejoramiento = $request->FK_EVD_Actividad_Mejoramiento;
-            $docEvidencia->EVD_Fecha_Subido =  Carbon::now();
-            $docEvidencia->save();
+            $evidencia = new Evidencia;
+            $evidencia->EVD_Nombre = $request->EVD_Nombre;
+            $evidencia->EVD_Descripcion_General = $request->EVD_Descripcion_General;
+            $evidencia->EVD_Link = $request->EVD_Link;
+            $evidencia->FK_EVD_Actividad_Mejoramiento = $request->FK_EVD_Actividad_Mejoramiento;
+            $evidencia->EVD_Fecha_Subido =  Carbon::now();
+            $evidencia->save();
         }
 
         return response(['msg' => 'Evidencia registrada correctamente.',
@@ -154,7 +154,14 @@ class EvidenciaController extends Controller
      */
     public function edit($id)
     {
-        //
+        $evidencia = Evidencia::findOrFail($id);
+        $size = $evidencia->archivo ? filesize(public_path($evidencia->archivo->ruta)) : null;
+        return view('autoevaluacion.SuperAdministrador.Evidencias.edit', [
+            'actividad' => $evidencia,
+            'edit' => true,
+        ], compact('size'));
+
+        \Debugbar::info($evidencia);
     }
 
     /**
@@ -166,18 +173,97 @@ class EvidenciaController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $evidencia = Evidencia::find($id);
-        $evidencia->fill($request->only(['EVD_Nombre']));
-        $evidencia->fill($request->only(['EVD_Link']));
-        $evidencia->EVD_Fecha_Subido =  Carbon::now();
-        $evidencia->fill($request->only(['EVD_Descripcion_General']));
-        $evidencia->fill($request->only(['FK_EVD_Actividad_Mejoramiento']));
+        $borraArchivo = false;
+
+        // \Debugbar::info($borraArchivo);
+
+        $evidencia = Evidencia::findOrFail($id);
+
+        /**
+         * Si la peticion tenia un archivo incluido se guarda y se obtiene el
+         * id del archivo guardado
+         */
+
+        if ($request->hasFile('archivo')) {
+            $archivo = $request->file('archivo');
+            $nombre = $archivo->getClientOriginalName();
+            $extension = $archivo->getClientOriginalExtension();
+            // $carpeta = GrupoDocumento::find($request->FK_DOI_GrupoDocumento);
+            // $nombreCarpeta = $carpeta->GRD_Nombre;
+            $url = Storage::url($archivo->store('public/DocumentosAutoevaluacion/EVIDENCIA'));
+
+            /**
+             * Si el documento y tenia un documento se elimina este y se guarda el nuevo,
+             * si no es asi simplemente se guarda
+             */
+            if ($evidencia->archivo) {
+                $ruta = str_replace('storage', 'public', $evidencia->archivo->ruta);
+                Storage::delete($ruta);
+                $archivos = Archivo::findOrfail($evidencia->FK_EVD_Archivo);
+                $archivos->ACV_Nombre = $nombre;
+                $archivos->ACV_Extension = $extension;
+                $archivos->ruta = $url;
+                $archivos->update();
+                $idArchivo = $archivos->PK_ACV_Id;
+            } else {
+                $archivos = new Archivo();
+                $archivos->ACV_Nombre = $nombre;
+                $archivos->ACV_Extension = $extension;
+                $archivos->ruta = $url;
+                $archivos->save();
+
+                $idArchivo = $archivos->PK_ACV_Id;
+            }
+        }
+
+        /**
+         * Si se guardo un link y existía un archivo se elimina el archivo y se guarda el link
+         */
+
+        if ($request->get('link') != null && $evidencia->archivo) {
+            $evidencia->FK_EVD_Archivo = null;
+            $borraArchivo = true;
+            $ruta = $evidencia->archivo->ruta;
+            $id = $evidencia->FK_EVD_Archivo;
+        }
+
+        $evidencia->fill($request->only([
+            'EVD_Nombre',
+            'EVD_Descripcion',
+            'EVD_link',
+            'FK_EVD_Actividad_Mejoramiento',
+        ]));
+
+        $id_Actividad_Mejoramiento = $request->get('FK_EVD_Actividad_Mejoramiento');
+
+        \Debugbar::info($id_Actividad_Mejoramiento);
+
+        if (isset($idArchivo)) {
+            $evidencia->FK_EVD_Archivo = $idArchivo;
+        }
+
+        // $evidencia->FK_EVD_GrupoDocumento = $request->FK_EVD_GrupoDocumento;
         $evidencia->update();
+
+        /**
+         * Se elimina el archivo al final debido a problemas de perdida de datos, esto ocurre
+         * si la petición traía un link y el documento antes tenia un archivo guardado en el servidor
+         */
+        if ($borraArchivo) {
+            Archivo::destroy($id);
+        }
+
+
+        return Redirect::to('admin/evidencias/1');
         
-        return response(['msg' => 'La Evidencia ha sido modificada exitosamente.',
-            'title' => 'Evidencia modificada :*!',
-        ], 200) // 200 Status Code: Standard response for successful HTTP request
-        ->header('Content-Type', 'application/json');
+        // return response(['msg' => 'La Evidencia ha sido modificada exitosamente.',
+        //     'title' => 'Evidencia modificada :*!',
+        // ], 200) // 200 Status Code: Standard response for successful HTTP request
+        // ->header('Content-Type', 'application/json');
+
+
+
+        
     }
 
     /**
@@ -188,11 +274,17 @@ class EvidenciaController extends Controller
      */
     public function destroy($id)
     {
-        Evidencia::destroy($id);
-
+        $evidencia = Evidencia::findOrfail($id);
+        if ($evidencia->archivo) {
+            $ruta = str_replace('storage', 'public', $evidencia->archivo->ruta);
+            Storage::delete($ruta);
+            $evidencia->archivo()->delete();
+        } else {
+            $evidencia->delete();
+        }
         return response(['msg' => 'La Evidencia ha sido eliminada exitosamente.',
-            'title' => '¡Evidencia Eliminada!',
-        ], 200) // 200 Status Code: Standard response for successful HTTP request
+            'title' => '¡Registro Eliminado!'
+        ], 200)// 200 Status Code: Standard response for successful HTTP request
         ->header('Content-Type', 'application/json');
     }
 }

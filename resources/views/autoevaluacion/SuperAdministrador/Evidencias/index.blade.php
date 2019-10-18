@@ -153,16 +153,16 @@
                 e.preventDefault();
                 $tr = $(this).closest('tr');
                 var dataTable = table.row($tr).data();
-                var route = '{{ url('admin/documental/documentoinstitucional') }}' + '/' + dataTable.PK_DOI_Id;
+                var route = '{{ url('admin/evidencia/') }}' + '/' + dataTable.PK_EVD_Id;
                 var type = 'DELETE';
                 dataType: "JSON",
-                    SwalDelete(dataTable.PK_DOI_Id, route);
+                    SwalDelete(dataTable.PK_EVD_Id, route);
             });
             table.on('click', '.edit', function (e) {
                 e.preventDefault();
                 $tr = $(this).closest('tr');
                 var dataTable = table.row($tr).data();
-                var route = '{{ url('admin/documental/documentoinstitucional/') }}' + '/' + dataTable.PK_DOI_Id + '/edit';
+                var route = '{{ url('admin/evidencia') }}' + '/' + dataTable.PK_EVD_Id + '/edit';
                 window.location.href = route;
             });
 
@@ -171,7 +171,7 @@
         function SwalDelete(id, route) {
             swal({
                 title: 'Esta seguro?',
-                text: "El Documento sera eliminado permanentemente!",
+                text: "La Evidencia sera eliminada permanentemente!",
                 type: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',
