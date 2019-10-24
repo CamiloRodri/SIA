@@ -144,7 +144,16 @@ class EvidenciaController extends Controller
     public function edit($id)
     {
         $evidencia = Evidencia::findOrFail($id);
-        $size = $evidencia->archivo ? filesize(public_path($evidencia->archivo->ruta)) : null;
+
+        if($evidencia->archivo){
+            $size = filesize(public_path($evidencia->archivo->ruta));
+        }
+        else{
+            $size = null;
+        }
+        \Debugbar::info($evidencia);
+        \Debugbar::info($evidencia->archivo);
+        \Debugbar::info($size);
         return view('autoevaluacion.SuperAdministrador.Evidencias.edit', [
             'actividad' => $evidencia,
             'edit' => true,
