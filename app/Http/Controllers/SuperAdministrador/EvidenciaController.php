@@ -10,9 +10,7 @@ use App\Models\Autoevaluacion\Archivo;
 use Illuminate\Support\Facades\Storage;
 use Yajra\DataTables\DataTables;
 use Carbon\Carbon;
-use Illuminate\Support\Facades\Redirect;
-use Barryvdh\Debugbar;
-use App\Models\Autoevaluacion\DocumentoInstitucional;
+use App\Http\Requests\EvidenciaRequest;
 
 class EvidenciaController extends Controller
 {
@@ -33,7 +31,7 @@ class EvidenciaController extends Controller
     public function datos(Request $request, $id)
     {
         
-        // if ($request->ajax() && $request->isMethod('GET')) {
+        if ($request->ajax() && $request->isMethod('GET')) {
             $docEvidencia = Evidencia::with('archivo')->where('FK_EVD_Actividad_Mejoramiento', $id)
                 ->get();
             return Datatables::of($docEvidencia)
@@ -59,17 +57,8 @@ class EvidenciaController extends Controller
                 ->removeColumn('created_at')
                 ->removeColumn('updated_at')
                 ->make(true);
-        // }
+        }
     }
-
-    // public function data(Request $request)
-    // {
-    //     if ($request->ajax() && $request->isMethod('GET')) {
-    //         $evidencia = Evidencia::all();
-    //         return Datatables::of($evidencia)
-    //             ->make(true);
-    //     }
-    // }
 
     /**
      * Display a listing of the resource.
@@ -99,7 +88,7 @@ class EvidenciaController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(EvidenciaRequest $request)
     {
         $now = new \DateTime();
         $now->format('d-m-Y H:i:s');
@@ -160,8 +149,6 @@ class EvidenciaController extends Controller
             'actividad' => $evidencia,
             'edit' => true,
         ], compact('size'));
-
-        \Debugbar::info($evidencia);
     }
 
     /**
@@ -171,7 +158,7 @@ class EvidenciaController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(EvidenciaRequest $request, $id)
     {
         $borraArchivo = false;
 
@@ -181,13 +168,10 @@ class EvidenciaController extends Controller
          * Si la peticion tenia un archivo incluido se guarda y se obtiene el
          * id del archivo guardado
          */
-
         if ($request->hasFile('archivo')) {
             $archivo = $request->file('archivo');
             $nombre = $archivo->getClientOriginalName();
             $extension = $archivo->getClientOriginalExtension();
-            // $carpeta = GrupoDocumento::find($request->FK_DOI_GrupoDocumento);
-            // $nombreCarpeta = $carpeta->GRD_Nombre;
             $url = Storage::url($archivo->store('public/DocumentosAutoevaluacion/EVIDENCIA'));
 
             /**
@@ -209,7 +193,6 @@ class EvidenciaController extends Controller
                 $archivos->ACV_Extension = $extension;
                 $archivos->ruta = $url;
                 $archivos->save();
-
                 $idArchivo = $archivos->PK_ACV_Id;
             }
         }
@@ -217,18 +200,16 @@ class EvidenciaController extends Controller
         /**
          * Si se guardo un link y existía un archivo se elimina el archivo y se guarda el link
          */
-
-        if ($request->get('link') != null && $evidencia->archivo) {
+        if ($request->get('EVD_link') != null && $evidencia->archivo) {
             $evidencia->FK_EVD_Archivo = null;
             $borraArchivo = true;
-            $ruta = $evidencia->archivo->ruta;
             $id = $evidencia->FK_EVD_Archivo;
         }
 
         $evidencia->fill($request->only([
             'EVD_Nombre',
             'EVD_Descripcion_General',
-            'EVD_link',
+            'EVD_Link',
             'FK_EVD_Actividad_Mejoramiento',
         ]));
 
@@ -247,13 +228,8 @@ class EvidenciaController extends Controller
         if ($borraArchivo) {
             Archivo::destroy($id);
         }
-        
-        // return response(['msg' => 'La Evidencia ha sido modificada exitosamente.',
-        //     'title' => 'Evidencia modificada :*!',
-        // ], 200) // 200 Status Code: Standard response for successful HTTP request
-        // ->header('Content-Type', 'application/json');
 
-        return redirect()->route('admin.evidencia.index', $id_Actividad_Mejoramiento);
+        // return redirect()->route('admin.evidencia.index', $id_Actividad_Mejoramiento);
 
 
 

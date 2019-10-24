@@ -29,7 +29,7 @@ class EvidenciaRequest extends FormRequest
         $id = $this->route()->parameter('evidencia');
         $idArchivo = Evidencia::find($id);
         $comprobar = $this->request->get('comprobarArchivo');
-        if ($this->hasFile('archivo') && $this->request->get('link') !== null) {
+        if ($this->hasFile('archivo') && $this->request->get('EVD_Link') !== null) {
             $link = 'file';
         } elseif ($this->hasFile('archivo')) {
             $link = '';
