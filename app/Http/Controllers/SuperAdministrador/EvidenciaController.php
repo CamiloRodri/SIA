@@ -170,6 +170,7 @@ class EvidenciaController extends Controller
     public function update(EvidenciaRequest $request, $id)
     {
         $borraArchivo = false;
+        $borrarLink = false;
 
         $evidencia = Evidencia::findOrFail($id);
 
@@ -178,6 +179,7 @@ class EvidenciaController extends Controller
          * id del archivo guardado
          */
         if ($request->hasFile('archivo')) {
+            $borrarLink = true;
             $archivo = $request->file('archivo');
             $nombre = $archivo->getClientOriginalName();
             $extension = $archivo->getClientOriginalExtension();
@@ -196,7 +198,8 @@ class EvidenciaController extends Controller
                 $archivos->ruta = $url;
                 $archivos->update();
                 $idArchivo = $archivos->PK_ACV_Id;
-            } else {
+            } 
+            else {
                 $archivos = new Archivo();
                 $archivos->ACV_Nombre = $nombre;
                 $archivos->ACV_Extension = $extension;
@@ -209,11 +212,15 @@ class EvidenciaController extends Controller
         /**
          * Si se guardo un link y existía un archivo se elimina el archivo y se guarda el link
          */
-        if ($request->get('EVD_link') != null && $evidencia->archivo) {
+        if ($request->get('EVD_Link') != null && $evidencia->archivo) {
             $evidencia->FK_EVD_Archivo = null;
             $borraArchivo = true;
             $id = $evidencia->FK_EVD_Archivo;
+            // $evidencia->EVD_Link = $request->get('EDV_Link');
         }
+        // else{
+        //     $evidencia->EVD_Link = $request->get('EDV_Link');
+        // }
 
         $evidencia->fill($request->only([
             'EVD_Nombre',
@@ -227,9 +234,6 @@ class EvidenciaController extends Controller
         if (isset($idArchivo)) {
             $evidencia->FK_EVD_Archivo = $idArchivo;
         }
-
-        $evidencia->update();
-
         /**
          * Se elimina el archivo al final debido a problemas de perdida de datos, esto ocurre
          * si la petición traía un link y el documento antes tenia un archivo guardado en el servidor
@@ -237,11 +241,14 @@ class EvidenciaController extends Controller
         if ($borraArchivo) {
             Archivo::destroy($id);
         }
+        if ($borrarLink){
+            $evidencia->EVD_Link = null;
+        }
+
+
+        $evidencia->update();
 
         // return redirect()->route('admin.evidencia.index', $id_Actividad_Mejoramiento);
-
-
-
         
     }
 
