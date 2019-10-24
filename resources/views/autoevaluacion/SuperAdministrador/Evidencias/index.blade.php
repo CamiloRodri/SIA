@@ -5,7 +5,7 @@
 @extends('admin.layouts.app')
 
 @section('content')
-    @component('admin.components.panel') @slot('title', 'Documentos Institucionales')
+    @component('admin.components.panel') @slot('title', 'Evidencias')
 
     <div class="col-md-6">
         <div class="actions">
