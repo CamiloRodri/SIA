@@ -175,8 +175,6 @@ class EvidenciaController extends Controller
     {
         $borraArchivo = false;
 
-        // \Debugbar::info($borraArchivo);
-
         $evidencia = Evidencia::findOrFail($id);
 
         /**
@@ -229,20 +227,17 @@ class EvidenciaController extends Controller
 
         $evidencia->fill($request->only([
             'EVD_Nombre',
-            'EVD_Descripcion',
+            'EVD_Descripcion_General',
             'EVD_link',
             'FK_EVD_Actividad_Mejoramiento',
         ]));
 
         $id_Actividad_Mejoramiento = $request->get('FK_EVD_Actividad_Mejoramiento');
 
-        \Debugbar::info($id_Actividad_Mejoramiento);
-
         if (isset($idArchivo)) {
             $evidencia->FK_EVD_Archivo = $idArchivo;
         }
 
-        // $evidencia->FK_EVD_GrupoDocumento = $request->FK_EVD_GrupoDocumento;
         $evidencia->update();
 
         /**
@@ -252,14 +247,13 @@ class EvidenciaController extends Controller
         if ($borraArchivo) {
             Archivo::destroy($id);
         }
-
-
-        return Redirect::to('admin/evidencias/1');
         
         // return response(['msg' => 'La Evidencia ha sido modificada exitosamente.',
         //     'title' => 'Evidencia modificada :*!',
         // ], 200) // 200 Status Code: Standard response for successful HTTP request
         // ->header('Content-Type', 'application/json');
+
+        return redirect()->route('admin.evidencia.index', $id_Actividad_Mejoramiento);
 
 
 

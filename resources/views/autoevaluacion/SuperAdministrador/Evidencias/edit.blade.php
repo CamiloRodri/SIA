@@ -128,7 +128,7 @@
                     contentType: false,
                     success: function (response, NULL, jqXHR) {
                         sessionStorage.setItem('update', 'La evidencia ha sido modificada exitosamente.');
-                        window.location.href = " {{ url('admin/evidencia/index')}} "  + "/" + '{{ $actividad->PK_ACM_Id }}';
+                        window.location.href = '{{ URL::to('admin/evidencia') }}' + '/' + '{{ $actividad->actividad_mejoramiento->PK_ACM_Id }}';
                     },
                     error: function (data) {
                         console.log(data);
