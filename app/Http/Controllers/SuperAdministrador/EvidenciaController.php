@@ -118,6 +118,10 @@ class EvidenciaController extends Controller
             $evidencia->save();
         }
 
+        $actividadesMejoramiento = ActividadesMejoramiento::findOrFail($request->FK_EVD_Actividad_Mejoramiento);
+        $actividadesMejoramiento->ACM_Estado = 1;
+        $actividadesMejoramiento->update();
+
         return response(['msg' => 'Evidencia registrada correctamente.',
             'title' => '¡Registro exitoso!',
         ], 200) // 200 Status Code: Standard response for successful HTTP request

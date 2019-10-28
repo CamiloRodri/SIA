@@ -94,11 +94,15 @@ class ActividadesMejoramientoController extends Controller
                     ->addColumn('estado', function ($actividades) {
                         if($actividades->ACM_Estado == 0)
                         {
-                            return "<span class='label label-sm label-warning'>Actividad pendiente</span>";
+                            return "<span class='label label-sm label-warning'>Evidencia pendiente</span>";
+                        }
+                        elseif($actividades->ACM_Estado == 1)
+                        {
+                            return "<span class='label label-sm label-info'>Evidencia por calificar</span>";
                         }
                         else
                         {
-                            return "<span class='label label-sm label-success'>Actividad realizada</span>";
+                            return "<span class='label label-sm label-success'>Evidencia calificada</span>";
                         }
                     })
                     ->rawColumns(['estado'])
