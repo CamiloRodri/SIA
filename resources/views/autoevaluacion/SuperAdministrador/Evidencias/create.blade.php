@@ -28,7 +28,7 @@
             <div class="col-md-6 col-md-offset-3">
 
                 {{ link_to_route('admin.evidencia.index',"Cancelar", $actividad->PK_ACM_Id, ['class' => 'btn btn-info']) }}
-                {!! Form::submit('Agregar Documento', ['class' => 'btn btn-success', 'id'=>'crearDocumento']) !!}
+                {!! Form::submit('Agregar Evidencia', ['class' => 'btn btn-success', 'id'=>'crearEvidencia']) !!}
             </div>
         </div>
         {!! Form::close() !!}

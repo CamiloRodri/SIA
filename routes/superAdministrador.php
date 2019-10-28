@@ -48,15 +48,6 @@ Route::get('institucion/data/data', array('as' => 'admin.institucion.data', 'use
 Route::resource('frente_estrategico', 'FrenteEstrategicoController', ['as' => 'admin']);
 Route::get('frente_estrategico/data/data', array('as' => 'admin.frente_estrategico.data', 'uses' => 'FrenteEstrategicoController@data'));
 
-// Route::get('frente_estrategico/{id}', array(
-//     'as' => 'admin.frente_estrategico.index',
-//     'uses' => 'FrenteEstrategicoController@index'
-// ));
-// Route::get('frente_estrategico/{id}', array(
-//     'as' => 'admin.frente_estrategico.store',
-//     'uses' => 'FrenteEstrategicoController@store'
-// ));
-
 //Evidencia (Acticidad de Mejoramiento)
 Route::get('evidencia/data/data/{id}', array(
     'as' => 'admin.evidencia.datos', 
@@ -88,6 +79,11 @@ Route::delete('evidencia/{evidencia}', array(
     'as' => 'admin.evidencia.destroy',
     'uses' => 'EvidenciaController@destroy'
 ));
+
+//CalificaActividades
+Route::resource('califica_actividad', 'CalificaActividadController', ['as' => 'admin']);
+Route::get('califica_actividad/data/data', array('as' => 'admin.califica_actividad.data', 
+    'uses' => 'CalificaActividadController@data'));
 
 //Caracateristicas
 Route::resource('caracteristicas', 'CaracteristicasController', ['as' => 'admin']);

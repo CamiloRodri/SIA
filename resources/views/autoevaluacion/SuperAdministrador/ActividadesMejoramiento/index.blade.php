@@ -79,7 +79,8 @@
                             defaultContent:
                                 '@can('ELIMINAR_ACTIVIDADES_MEJORAMIENTO')<a href="javascript:;" class="btn btn-simple btn-danger btn-sm remove" data-toggle="confirmation"><i class="fa fa-trash"></i></a>@endcan' +
                                 '@can('MODIFICAR_ACTIVIDADES_MEJORAMIENTO')<a href="javascript:;" class="btn btn-simple btn-info btn-sm edit" data-toggle="confirmation"><i class="fa fa-pencil"></i></a>@endcan' +
-                                '@can('MODIFICAR_ACTIVIDADES_MEJORAMIENTO')<a data-toggle="tooltip" title="Agregar Evidencia" href="javascript:;" class="btn btn-simple btn-primary btn-sm asignar"><i class="fa fa-plus"></i></a>@endcan',
+                                '@can('ACCEDER_EVIDENCIA')<a data-toggle="tooltip" title="Agregar Evidencia" href="javascript:;" class="btn btn-simple btn-primary btn-sm asignar"><i class="fa fa-plus"></i></a>@endcan' +
+                                '@can('ACCEDER_CALIFICA_ACTIVIDADES')<a data-toggle="tooltip" title="Calificar actividad" href="javascript:;" class="btn btn-simple btn-info btn-sm calificar"><i class="fa fa-book"></i></a>@endcan',
                                 data: 'action',
                                 name: 'action',
                                 title: 'Acciones',
@@ -134,12 +135,19 @@
                 window.location.href = route;
              });
              table.on('click', '.asignar', function (e) {
-                    e.preventDefault();
-                    $tr = $(this).closest('tr');
-                    var dataTable = table.row($tr).data();
-                    var route = '{{ url('admin/evidencia/') }}' + '/' + dataTable.PK_ACM_Id;
-                    window.location.href = route;
-                });
+                e.preventDefault();
+                $tr = $(this).closest('tr');
+                var dataTable = table.row($tr).data();
+                var route = '{{ url('admin/evidencia/') }}' + '/' + dataTable.PK_ACM_Id;
+                window.location.href = route;
+            });
+            table.on('click', '.calificar', function (e) {
+                e.preventDefault();
+                $tr = $(this).closest('tr');
+                var dataTable = table.row($tr).data();
+                var route = '{{ url('admin/actividades_mejoramiento/calificar') }}' + '/' + dataTable.PK_ACM_Id;
+                window.location.href = route;
+            });
 
             @if (session('status'))
             new PNotify({

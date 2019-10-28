@@ -12,6 +12,13 @@ class CalificaActividadController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    public function __construct()
+    {
+        $this->middleware('permission:ACCEDER_CALIFICA_ACTIVIDADES')->except('show'); //Se puede comentar
+        $this->middleware(['permission:MODIFICAR_CALIFICA_ACTIVIDADES', 'permission:VER_CALIFICA_ACTIVIDADES'], ['only' => ['edit', 'update']]);
+        $this->middleware('permission:CREAR_CALIFICA_ACTIVIDADES', ['only' => ['create', 'store']]);
+        $this->middleware('permission:ELIMINAR_CALIFICA_ACTIVIDADES', ['only' => ['destroy']]);
+    }
     public function index()
     {
         //

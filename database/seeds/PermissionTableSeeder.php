@@ -120,18 +120,24 @@ class PermissionTableSeeder extends Seeder
         Permission::create(['name' => 'MODIFICAR_INSTITUCION']);
         Permission::create(['name' => 'ELIMINAR_INSTITUCION']);
         Permission::create(['name' => 'ASIGNAR_FRENTE_ESTRATEGICO_INSTITUCION']);
-        //Permisos para Institucion
+        //Permisos para Frente Estrategico
         Permission::create(['name' => 'ACCEDER_FRENTE_ESTRATEGICO']);
         Permission::create(['name' => 'VER_FRENTE_ESTRATEGICO']);
         Permission::create(['name' => 'CREAR_FRENTE_ESTRATEGICO']);
         Permission::create(['name' => 'MODIFICAR_FRENTE_ESTRATEGICO']);
         Permission::create(['name' => 'ELIMINAR_FRENTE_ESTRATEGICO']);
-        //Permisos para Institucion
+        //Permisos para Evidencia
         Permission::create(['name' => 'ACCEDER_EVIDENCIA']);
         Permission::create(['name' => 'VER_EVIDENCIA']);
         Permission::create(['name' => 'CREAR_EVIDENCIA']);
         Permission::create(['name' => 'MODIFICAR_EVIDENCIA']);
         Permission::create(['name' => 'ELIMINAR_EVIDENCIA']);
+        //Permisos para Calificacion Actividad de Mejoramiento
+        Permission::create(['name' => 'ACCEDER_CALIFICA_ACTIVIDADES']);
+        Permission::create(['name' => 'VER_CALIFICA_ACTIVIDADES']);
+        Permission::create(['name' => 'CREAR_CALIFICA_ACTIVIDADES']);
+        Permission::create(['name' => 'MODIFICAR_CALIFICA_ACTIVIDADES']);
+        Permission::create(['name' => 'ELIMINAR_CALIFICA_ACTIVIDADES']);
         //Permisos para valorizacion de caracteristicas 
         Permission::create(['name' => 'ACCEDER_VALORIZACION_CARACTERISTICAS']);
         Permission::create(['name' => 'VER_VALORIZACION_CARACTERISTICAS']);
