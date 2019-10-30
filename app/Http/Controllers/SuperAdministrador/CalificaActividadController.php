@@ -95,7 +95,7 @@ class CalificaActividadController extends Controller
         $actividadesMejoramiento->update();
 
 
-        return redirect()->route('admin.actividades_mejoramiento.index');
+        return redirect()->route('admin.actividades_mejoramiento.index')->with('status', 'Actividad Calificada');
         
         return response(['msg' => 'Calificación registrado correctamente.',
             'title' => '¡Registro exitoso!',

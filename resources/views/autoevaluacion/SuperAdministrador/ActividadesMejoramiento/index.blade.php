@@ -151,8 +151,8 @@
 
             @if (session('status'))
             new PNotify({
-                tittle:'Cambio de estado existoso',
-                text:'El cambio de estado de la actividad de mejoramiento se ha realizado satisfactoriamente',
+                tittle:'Calificación Almacenada',
+                text:'Se ha calificado la actividad de mejoramiento',
                 type:'success',
                 styling:'bootstrap3'
 	        });
