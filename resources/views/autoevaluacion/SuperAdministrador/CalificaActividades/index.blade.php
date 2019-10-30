@@ -7,16 +7,51 @@
 @section('content')
     @component('admin.components.panel') @slot('title', 'Califica Actividad de Mejoramiento')
 
-    <div class="col-md-6">
+    <div class="actions col-md-6">
+        {{-- <a href="{{ route('admin.evidencia.create', $actividad->PK_ACM_Id) }}" class="btn btn-info">
+        <i class="fa fa-plus"></i> Calificar {{ $actividad->ACM_Nombre }} </a></div> --}}
         <div class="actions">
-            <a href="{{ route('admin.evidencia.create', $actividad->PK_ACM_Id) }}" class="btn btn-info">
-            <i class="fa fa-plus"></i> Calificar {{ $actividad->ACM_Nombre }} </a></div>
+            <a id="crear_ambitos" href="#" class="btn btn-info" data-toggle="modal" data-target="#modal_ambito">
+                <i class="fa fa-plus"></i> Calificar {{ $actividad->ACM_Nombre }}
+            </a>
+        </div>
     </div>
+
     <div class="col-md-6">
         <div class="actions">
             <a href="{{ route('admin.actividades_mejoramiento.index') }}" class="btn btn-warning">
             <i class="fa fa-backward"></i> Regresar a las actividades </a></div>
     </div>
+
+    <!-- Modal-->
+    <div class="modal fade" id="modal_ambito" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="modal_titulo">Calificar Actividad de Mejoramiento</h4>
+                </div>
+                <div class="modal-body">
+
+                    {!! Form::open([ 'route' => 'admin.califica_actividad.store',
+                    'method' => 'POST', 'id' => 'form_ambito', 'class' => 'form-horizontal
+                        form-label-lef', 'novalidate' ])!!}
+                    @include('autoevaluacion.SuperAdministrador.CalificaActividades.form')
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    {!! Form::submit('Calificar
+                    Actividad', ['class' => 'btn btn-success', 'id' => 'accion']) !!}
+
+                </div>
+                {!! Form::close() !!}
+            </div>
+        </div>
+    </div>
+    <!--FIN Modal CREAR-->
+
     <br>
     <br>
     <br>

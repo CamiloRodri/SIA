@@ -1,10 +1,9 @@
 <?php
 
-namespace App;
+namespace App\Models\Autoevaluacion;
 
-use App\Models\Autoevaluacion\ActividadesMejoramiento;
-use App\Models\Autoevaluacion\FechaCorte;
 use Illuminate\Database\Eloquent\Model;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 class CalificaActividad extends Model
 {

@@ -5,7 +5,7 @@ namespace App\Http\Controllers\SuperAdministrador;
 use Illuminate\Http\Request;
 use App\Models\Autoevaluacion\Evidencia;
 use App\Models\Autoevaluacion\ActividadesMejoramiento;
-// use App\Models\Autoevaluacion\
+use App\Models\Autoevaluacion\CalificaActividad;
 use Yajra\DataTables\DataTables;
 use App\Models\Autoevaluacion\Archivo;
 use Illuminate\Support\Facades\Storage;
@@ -60,7 +60,6 @@ class CalificaActividadController extends Controller
 
     public function index($id)
     {
-        $id = 1;
         $actividad = ActividadesMejoramiento::find($id);
         return view('autoevaluacion.SuperAdministrador.CalificaActividades.index', compact('actividad'));
     }
@@ -83,7 +82,26 @@ class CalificaActividadController extends Controller
      */
     public function store(Request $request)
     {
-        //
+
+        $calificacion = new CalificaActividad();
+        $calificacion->fill($request->only(['CLA_Calificacion', 
+                                            'CLA_Observacion',
+                                            'FK_CLA_Actividad_Mejoramiento']));
+        $calificacion->FK_CLA_Fecha_Corte = 1;
+        $calificacion->save();
+
+        $actividadesMejoramiento = ActividadesMejoramiento::findOrFail($request->FK_CLA_Actividad_Mejoramiento);
+        $actividadesMejoramiento->ACM_Estado = 2;
+        $actividadesMejoramiento->update();
+
+
+        return redirect()->route('admin.actividades_mejoramiento.index');
+        
+        return response(['msg' => 'Calificación registrado correctamente.',
+            'title' => '¡Registro exitoso!',
+        ], 200) // 200 Status Code: Standard response for successful HTTP request
+        ->header('Content-Type', 'application/json');
+
     }
 
     /**
