@@ -3,6 +3,12 @@
 namespace App\Http\Controllers\SuperAdministrador;
 
 use Illuminate\Http\Request;
+use App\Models\Autoevaluacion\Evidencia;
+use App\Models\Autoevaluacion\ActividadesMejoramiento;
+// use App\Models\Autoevaluacion\
+use Yajra\DataTables\DataTables;
+use App\Models\Autoevaluacion\Archivo;
+use Illuminate\Support\Facades\Storage;
 use App\Http\Controllers\Controller;
 
 class CalificaActividadController extends Controller
@@ -19,9 +25,44 @@ class CalificaActividadController extends Controller
         $this->middleware('permission:CREAR_CALIFICA_ACTIVIDADES', ['only' => ['create', 'store']]);
         $this->middleware('permission:ELIMINAR_CALIFICA_ACTIVIDADES', ['only' => ['destroy']]);
     }
-    public function index()
+
+    public function data(Request $request, $id)
     {
-        //
+        
+        // if ($request->ajax() && $request->isMethod('GET')) {
+            $docEvidencia = Evidencia::with('archivo')->where('FK_EVD_Actividad_Mejoramiento', $id)
+                ->get();
+            return Datatables::of($docEvidencia)
+                ->addColumn('archivo', function ($docEvidencia) {
+                    /**
+                     * Si el documento tiene una archivo guardado en el servidor
+                     * Se obtiene el url y se coloca en un link, si no es asi es porque tiene
+                     * una url entonces también se le asignar a un botón tipo link.
+                     */
+                    if (!$docEvidencia->archivo) {
+                        return '<a class="btn btn-success btn-xs" href="' . $docEvidencia->EVD_Link .
+                            '"target="_blank" role="button">Enlace al documento</a>';
+                    } else {
+
+                        return '<a class="btn btn-success btn-xs" href="' . route('descargar') . '?archivo=' .
+                            $docEvidencia->archivo->ruta .
+                            '" target="_blank" role="button">' . $docEvidencia->archivo->ACV_Nombre . '</a>';
+
+
+                    }
+                })
+                ->rawColumns(['archivo'])
+                ->removeColumn('created_at')
+                ->removeColumn('updated_at')
+                ->make(true);
+        // }
+    }
+
+    public function index($id)
+    {
+        $id = 1;
+        $actividad = ActividadesMejoramiento::find($id);
+        return view('autoevaluacion.SuperAdministrador.CalificaActividades.index', compact('actividad'));
     }
 
     /**

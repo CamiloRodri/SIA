@@ -54,35 +54,39 @@ Route::get('evidencia/data/data/{id}', array(
     'uses' => 'EvidenciaController@datos'
 ));
 //Rutas CRUD Evidencia  (Acticidad de Mejoramiento)
-Route::get('evidencia/{id}', array(
+Route::get('actividades_mejoramiento/evidencia/{id}', array(
     'as' => 'admin.evidencia.index',
     'uses' => 'EvidenciaController@index'
 ));
-Route::get('evidencia/create/{id}', array(
+Route::get('actividades_mejoramiento/evidencia/create/{id}', array(
     'as' => 'admin.evidencia.create',
     'uses' => 'EvidenciaController@create'
 ));
 // Route::resource('evidencia', 'EvidenciaController', ['as' => 'admin'])->except(['index', 'create']);
-Route::get('evidencia/{id}/edit', array(
+Route::get('actividades_mejoramiento/evidencia/{id}/edit', array(
     'as' => 'admin.evidencia.edit',
     'uses' => 'EvidenciaController@edit'
 ));
-Route::post('evidencia', array(
+Route::post('actividades_mejoramiento/evidencia', array(
     'as' => 'admin.evidencia.store',
     'uses' => 'EvidenciaController@store'
 ));
-Route::put('evidencia/{evidencia}', array(
+Route::put('actividades_mejoramiento/evidencia/{evidencia}', array(
     'as' => 'admin.evidencia.update',
     'uses' => 'EvidenciaController@update'
 ));
-Route::delete('evidencia/{evidencia}', array(
+Route::delete('actividades_mejoramiento/evidencia/{evidencia}', array(
     'as' => 'admin.evidencia.destroy',
     'uses' => 'EvidenciaController@destroy'
 ));
 
 //CalificaActividades
-Route::resource('califica_actividad', 'CalificaActividadController', ['as' => 'admin']);
-Route::get('califica_actividad/data/data', array('as' => 'admin.califica_actividad.data', 
+Route::get('actividades_mejoramiento/califica_actividad/{id}', array(
+    'as' => 'admin.califica_actividad.index',
+    'uses' => 'CalificaActividadController@index'
+));
+Route::resource('actividades_mejoramiento/califica_actividad', 'CalificaActividadController', ['as' => 'admin'])->except(['show', 'index']);
+Route::get('califica_actividad/data/data/{id}', array('as' => 'admin.califica_actividad.data', 
     'uses' => 'CalificaActividadController@data'));
 
 //Caracateristicas

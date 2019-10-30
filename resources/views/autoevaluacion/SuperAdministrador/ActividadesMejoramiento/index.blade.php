@@ -138,14 +138,14 @@
                 e.preventDefault();
                 $tr = $(this).closest('tr');
                 var dataTable = table.row($tr).data();
-                var route = '{{ url('admin/evidencia/') }}' + '/' + dataTable.PK_ACM_Id;
+                var route = '{{ url('admin/actividades_mejoramiento/evidencia/') }}' + '/' + dataTable.PK_ACM_Id;
                 window.location.href = route;
             });
             table.on('click', '.calificar', function (e) {
                 e.preventDefault();
                 $tr = $(this).closest('tr');
                 var dataTable = table.row($tr).data();
-                var route = '{{ url('admin/actividades_mejoramiento/calificar') }}' + '/' + dataTable.PK_ACM_Id;
+                var route = '{{ url('admin/actividades_mejoramiento/califica_actividad') }}' + '/' + dataTable.PK_ACM_Id;
                 window.location.href = route;
             });
 

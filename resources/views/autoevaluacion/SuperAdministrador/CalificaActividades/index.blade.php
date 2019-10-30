@@ -1,16 +1,16 @@
 {{-- Titulo de la pagina --}}
-@section('title', 'Evidencias')
+@section('title', 'Califica Actividad de Mejoramiento')
 
 {{-- Contenido principal --}}
 @extends('admin.layouts.app')
 
 @section('content')
-    @component('admin.components.panel') @slot('title', 'Evidencias')
+    @component('admin.components.panel') @slot('title', 'Califica Actividad de Mejoramiento')
 
     <div class="col-md-6">
         <div class="actions">
             <a href="{{ route('admin.evidencia.create', $actividad->PK_ACM_Id) }}" class="btn btn-info">
-            <i class="fa fa-plus"></i> Agregar Evidencia para {{ $actividad->ACM_Nombre }} </a></div>
+            <i class="fa fa-plus"></i> Calificar actividad {{ $actividad->ACM_Nombre }} </a></div>
     </div>
     <div class="col-md-6">
         <div class="actions">
@@ -27,10 +27,9 @@
             'Nombre',
             'Fecha Subida',
             'Descripcion',
-            'Archivo',
-            'Acciones' => ['style'
-            => 'width:115px;']]) @endcomponent
-
+            'Archivo'
+            ]) 
+            @endcomponent
     </div>
     @endcomponent
 @endsection
@@ -79,7 +78,7 @@
                 responsive: true,
                 buttons: ['copy', 'csv', 'excel', 'pdf', 'print'],
                 // = '{{ url('admin/permisos') }}' + '/' + $('#id').val();
-                "ajax": "{{ url('admin/evidencia/data/data') }}" + "/" + '{{ $actividad->PK_ACM_Id }}',
+                "ajax": "{{ url('admin/califica_actividad/data/data') }}" + "/" + '{{ $actividad->PK_ACM_Id }}',
                 "columns": [
                     {data: 'PK_EVD_Id', name: 'id', "visible": false},
                     {data: 'EVD_Nombre', name: 'Nombre', className: "all"},
@@ -88,8 +87,8 @@
                     {data: 'archivo', name: 'Archivo', className: "ALL"},
                     {
                         defaultContent:
-                            '@can('ELIMINAR_EVIDENCIA')<a href="javascript:;" class="btn btn-simple btn-danger btn-sm remove" data-toggle="confirmation"><i class="fa fa-trash"></i></a>@endcan' +
-                            '@can('MODIFICAR_EVIDENCIA')<a href="javascript:;" class="btn btn-simple btn-info btn-sm edit" data-toggle="confirmation"><i class="fa fa-pencil"></i></a>@endcan',
+                            '@can('ELIMINAR_CALIFICA_ACTIVIDADES')<a href="javascript:;" class="btn btn-simple btn-danger btn-sm remove" data-toggle="confirmation"><i class="fa fa-trash"></i></a>@endcan' +
+                            '@can('MODIFICAR_CALIFICA_ACTIVIDADES')<a href="javascript:;" class="btn btn-simple btn-info btn-sm edit" data-toggle="confirmation"><i class="fa fa-pencil"></i></a>@endcan',
                         data: 'action',
                         name: 'action',
                         title: 'Acciones',
