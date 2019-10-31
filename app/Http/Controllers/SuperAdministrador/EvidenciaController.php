@@ -7,10 +7,12 @@ use App\Models\Autoevaluacion\ActividadesMejoramiento;
 use App\Http\Controllers\Controller;
 use App\Models\Autoevaluacion\Evidencia;
 use App\Models\Autoevaluacion\Archivo;
+use App\Models\Autoevaluacion\Responsable;
 use Illuminate\Support\Facades\Storage;
 use Yajra\DataTables\DataTables;
 use Carbon\Carbon;
 use App\Http\Requests\EvidenciaRequest;
+use Illuminate\Support\Facades\Auth;
 
 class EvidenciaController extends Controller
 {
@@ -68,7 +70,27 @@ class EvidenciaController extends Controller
     public function index($id)
     {
         $actividad = ActividadesMejoramiento::find($id);
-        return view('autoevaluacion.SuperAdministrador.Evidencias.index', compact('actividad'));
+        $responsable = Responsable::where('PK_RPS_Id','=',$actividad->FK_ACM_Responsable)
+        ->first();
+        $id_usuario = Auth::user()->id;
+
+        \Debugbar::info($id_usuario);
+        \Debugbar::info($responsable->FK_RPS_Responsable);
+        if(!Auth::user()->hasRole('SUPERADMIN') || !Auth::user()->hasRole('SUPERADMIN'))
+        {
+            if($id_usuario != $responsable->FK_RPS_Responsable )
+            {
+                return redirect()->back()->with('error','Mensaje Error');
+            }
+            else
+            {
+                return view('autoevaluacion.SuperAdministrador.Evidencias.index', compact('actividad'));
+            }
+        }
+        else
+        {
+            return view('autoevaluacion.SuperAdministrador.Evidencias.index', compact('actividad'));
+        } 
     }
 
     /**

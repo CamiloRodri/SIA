@@ -11,7 +11,7 @@
         {{-- <a href="{{ route('admin.evidencia.create', $actividad->PK_ACM_Id) }}" class="btn btn-info">
         <i class="fa fa-plus"></i> Calificar {{ $actividad->ACM_Nombre }} </a></div> --}}
         <div class="actions">
-            <a id="crear_ambitos" href="#" class="btn btn-info" data-toggle="modal" data-target="#modal_ambito">
+            <a id="calificar_actividad" href="#" class="btn btn-info" data-toggle="modal" data-target="#modal_cal_actividad">
                 <i class="fa fa-plus"></i> Calificar {{ $actividad->ACM_Nombre }}
             </a>
         </div>
@@ -24,7 +24,7 @@
     </div>
 
     <!-- Modal-->
-    <div class="modal fade" id="modal_ambito" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal fade" id="modal_cal_actividad" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -35,7 +35,7 @@
                 <div class="modal-body">
 
                     {!! Form::open([ 'route' => 'admin.califica_actividad.store',
-                    'method' => 'POST', 'id' => 'form_ambito', 'class' => 'form-horizontal
+                    'method' => 'POST', 'id' => 'form_califica_actividad', 'class' => 'form-horizontal
                         form-label-lef', 'novalidate' ])!!}
                     @include('autoevaluacion.SuperAdministrador.CalificaActividades.form')
 
