@@ -5,7 +5,7 @@
 @extends('admin.layouts.app')
 @section('content')
     @component('admin.components.panel')
-        @slot('title', 'Crear Programas academicos')
+        @slot('title', 'Crear Programas Académicos')
         {!! Form::open([
             'route' => 'admin.programas_academicos.store',
             'method' => 'POST',

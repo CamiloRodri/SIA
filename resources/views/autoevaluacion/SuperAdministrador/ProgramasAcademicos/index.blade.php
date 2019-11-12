@@ -6,7 +6,7 @@
 
 @section('content')
     @component('admin.components.panel')
-        @slot('title', 'Programas Academicos')
+        @slot('title', 'Programas Académicos')
         @can('CREAR_PROGRAMAS_ACADEMICOS')
             <div class="col-md-12">
                 <div class="actions">

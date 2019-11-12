@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Autoevaluacion\Evidencia;
 use App\Models\Autoevaluacion\Archivo;
 use App\Models\Autoevaluacion\Responsable;
+use App\Models\Autoevaluacion\FechaCorte;
 use Illuminate\Support\Facades\Storage;
 use Yajra\DataTables\DataTables;
 use Carbon\Carbon;
@@ -112,8 +113,10 @@ class EvidenciaController extends Controller
      */
     public function store(EvidenciaRequest $request)
     {
-        $now = new \DateTime();
-        $now->format('d-m-Y H:i:s');
+        $fechacorte = FechaCorte::whereDate('FCO_Fecha', '>=', Carbon::now()->format('Y-m-d'))
+                    ->where('FK_FCO_Proceso', '=', session()->get('id_proceso'))
+                    ->get()
+                    ->last();
         if ($request->hasFile('archivo')) {
             $file = $request->file('archivo');
             $archivo = new Archivo;
@@ -128,7 +131,7 @@ class EvidenciaController extends Controller
             $evidencia->EVD_link = $request->EVD_link;
             $evidencia->FK_EVD_Archivo = $archivo->PK_ACV_Id;
             $evidencia->FK_EVD_Actividad_Mejoramiento = $request->FK_EVD_Actividad_Mejoramiento;
-            $evidencia->EVD_Fecha_Subido =  Carbon::now();
+            $evidencia->EVD_Fecha_Subido =  $fechacorte->FCO_Fecha;
             $evidencia->save();
         } else {
             $evidencia = new Evidencia;
@@ -136,7 +139,7 @@ class EvidenciaController extends Controller
             $evidencia->EVD_Descripcion_General = $request->EVD_Descripcion_General;
             $evidencia->EVD_Link = $request->EVD_Link;
             $evidencia->FK_EVD_Actividad_Mejoramiento = $request->FK_EVD_Actividad_Mejoramiento;
-            $evidencia->EVD_Fecha_Subido =  Carbon::now();
+            $evidencia->EVD_Fecha_Subido =  $fechacorte->FCO_Fecha;
             $evidencia->save();
         }
 

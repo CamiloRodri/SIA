@@ -5,7 +5,7 @@
         <div class="titan-caption">
             <div class="caption-content">
                 <div class="font-alt mb-30 titan-title-size-1">Autoevaluación y acreditación</div>
-                <div class="font-alt mb-40 titan-title-size-4">Sistema de información de Autoevaluación v 3.0</div>
+                <div class="font-alt mb-40 titan-title-size-4">Sistema de información de Autoevaluación v 4.0</div>
             </div>
         </div>
     </section>

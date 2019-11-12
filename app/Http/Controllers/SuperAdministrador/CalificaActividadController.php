@@ -6,10 +6,12 @@ use Illuminate\Http\Request;
 use App\Models\Autoevaluacion\Evidencia;
 use App\Models\Autoevaluacion\ActividadesMejoramiento;
 use App\Models\Autoevaluacion\CalificaActividad;
+use App\Models\Autoevaluacion\FechaCorte;
 use Yajra\DataTables\DataTables;
 use App\Models\Autoevaluacion\Archivo;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Carbon;
 
 class CalificaActividadController extends Controller
 {
@@ -82,12 +84,17 @@ class CalificaActividadController extends Controller
      */
     public function store(Request $request)
     {
+        $fechacorte = FechaCorte::whereDate('FCO_Fecha', '>=', Carbon::now()->format('Y-m-d'))
+                    ->where('FK_FCO_Proceso', '=', session()->get('id_proceso'))
+                    ->get()
+                    ->last();       
 
         $calificacion = new CalificaActividad();
         $calificacion->fill($request->only(['CLA_Calificacion', 
                                             'CLA_Observacion',
                                             'FK_CLA_Actividad_Mejoramiento']));
-        $calificacion->FK_CLA_Fecha_Corte = 1;
+
+        $calificacion->FK_CLA_Fecha_Corte = $fechacorte->PK_FCO_Id;
         $calificacion->save();
 
         $actividadesMejoramiento = ActividadesMejoramiento::findOrFail($request->FK_CLA_Actividad_Mejoramiento);
