@@ -165,6 +165,22 @@
                 styling:'bootstrap3'
 	        });
 	        @endif
+            @if (session('date_error'))
+            new PNotify({
+                tittle:'Error',
+                text:'No se puede agregar Evidencia, la fecha actual es mayor a la fecha fin de la actividad.',
+                type:'error',
+                styling:'bootstrap3'
+	        });
+	        @endif
+            @if (session('califica_error'))
+            new PNotify({
+                tittle:'Error',
+                text:'No se puede Calificar la evidencia, sobrepaso la ultima fecha de corte.',
+                type:'error',
+                styling:'bootstrap3'
+	        });
+	        @endif
             @endif
         });
          function SwalDelete(id, route) {

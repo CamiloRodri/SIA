@@ -181,6 +181,47 @@
                     });
                 }
 
+                $(document).on('submit', '#form_califica_actividad', function (e) {
+                e.preventDefault();
+                let route = formCreate.attr('action');
+                let method = formCreate.attr('method');
+                let data = formCreate.serialize();
+                if ($('#accion').hasClass('modificar')) {
+                    route = '{{ url('admin/actividades_mejoramiento/califica_actividad') }}' + '/' + $('#PK_AMB_Id').val() + '/edit';
+                    method = "PUT";
+                }
+                $.ajax({
+                    url: route,
+                    type: method,
+                    data: data,
+                    dataType: 'json',
+                    success: function (response, NULL, jqXHR) {
+                        $(formCreate)[0].reset();
+                        $(formCreate).parsley().reset();
+                        $('#modal_ambito').modal('hide');
+                        new PNotify({
+                            title: response.title,
+                            text: response.msg,
+                            type: 'success',
+                            styling: 'bootstrap3'
+                        });
+                        table.ajax.reload();
+                    },
+                    error: function (data) {
+                        var errores = data.responseJSON.errors;
+                        var msg = '';
+                        $.each(errores, function (name, val) {
+                            msg += val + '<br>';
+                        });
+                        new PNotify({
+                            title: "Error!",
+                            text: msg,
+                            type: 'error',
+                            styling: 'bootstrap3'
+                        });
+                    }
+                });
+
             });
 
             table.on('click', '.remove', function (e) {

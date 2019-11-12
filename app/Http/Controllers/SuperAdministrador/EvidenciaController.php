@@ -75,13 +75,18 @@ class EvidenciaController extends Controller
         ->first();
         $id_usuario = Auth::user()->id;
 
-        \Debugbar::info($id_usuario);
-        \Debugbar::info($responsable->FK_RPS_Responsable);
-        if(!Auth::user()->hasRole('SUPERADMIN') || !Auth::user()->hasRole('SUPERADMIN'))
+        if($actividad->ACM_Fecha_Fin > Carbon::now()->format('Y-m-d') )
         {
-            if($id_usuario != $responsable->FK_RPS_Responsable )
+            if(!Auth::user()->hasRole('SUPERADMIN') || !Auth::user()->hasRole('SUPERADMIN'))
             {
-                return redirect()->back()->with('error','Mensaje Error');
+                if($id_usuario = $responsable->FK_RPS_Responsable )
+                {
+                    return view('autoevaluacion.SuperAdministrador.Evidencias.index', compact('actividad'));
+                }
+                else
+                {
+                    return redirect()->back()->with('error','Mensaje Error'); 
+                }
             }
             else
             {
@@ -90,8 +95,8 @@ class EvidenciaController extends Controller
         }
         else
         {
-            return view('autoevaluacion.SuperAdministrador.Evidencias.index', compact('actividad'));
-        } 
+            return redirect()->back()->with('date_error','Fecha Error');
+        }
     }
 
     /**

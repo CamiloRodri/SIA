@@ -63,7 +63,24 @@ class CalificaActividadController extends Controller
     public function index($id)
     {
         $actividad = ActividadesMejoramiento::find($id);
-        return view('autoevaluacion.SuperAdministrador.CalificaActividades.index', compact('actividad'));
+
+        $fechahoy = Carbon::now()->format('Y-m-d');
+        $fechacorte = FechaCorte::whereDate('FCO_Fecha', '>=', Carbon::now()->format('Y-m-d'))
+                    ->where('FK_FCO_Proceso', '=', session()->get('id_proceso'))
+                    ->get()
+                    ->last();
+
+        if($fechahoy < $fechacorte->FCO_Fecha)         //REVISAR
+        {
+            $calificacion = CalificaActividad::where('FK_CLA_Actividad_Mejoramiento', $actividad->ACM_PK_Id)->get();
+
+            \Debugbar::info($calificacion);
+            return view('autoevaluacion.SuperAdministrador.CalificaActividades.index', compact('actividad', 'calificacion'));
+        }
+        else
+        {
+        //     return redirect()->back()->with('califica_error','Fecha Error');
+        }
     }
 
     /**
@@ -130,7 +147,7 @@ class CalificaActividadController extends Controller
      */
     public function edit($id)
     {
-        //
+        return view('autoevaluacion.SuperAdministrador.CalificaActividades.edit');
     }
 
     /**
@@ -142,7 +159,18 @@ class CalificaActividadController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $fechacorte = FechaCorte::whereDate('FCO_Fecha', '>=', Carbon::now()->format('Y-m-d'))
+                    ->where('FK_FCO_Proceso', '=', session()->get('id_proceso'))
+                    ->get()
+                    ->last();       
+
+        $calificacion = new CalificaActividad();
+        $calificacion->fill($request->only(['CLA_Calificacion', 
+                                            'CLA_Observacion',
+                                            'FK_CLA_Actividad_Mejoramiento']));
+
+        $calificacion->FK_CLA_Fecha_Corte = $fechacorte->PK_FCO_Id;
+        $calificacion->update();
     }
 
     /**
