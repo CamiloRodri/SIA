@@ -35,6 +35,10 @@ class ProcesoUsuario extends Model
      *
      * @var array
      */
+
+    public $timestamps = false;
+
+    
     protected $guarded = ['PK_PCU_Id', 'created_at', 'updated_at'];
     
     public function usuarios()

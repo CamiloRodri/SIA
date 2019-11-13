@@ -261,8 +261,56 @@ class ActividadesMejoramientoController extends Controller
         } 
     }
 
-    public function calendario()
+    public function calendario(Request $request)
     {
-        return view('autoevaluacion.SuperAdministrador.CalendarioPlanMejoramiento.index');
+        $fechahoy = Carbon::now()->format('Y-m-d');
+        $actividades = ActividadesMejoramiento::where('PK_ACM_Id', '0')->get();
+        $planMejoramiento = PlanMejoramiento::where('FK_PDM_Proceso', '=', session()->get('id_proceso'))
+            ->first();        
+        if ($planMejoramiento != null) {
+                if(Auth::user()->hasRole('SUPERADMIN') || Auth::user()->hasRole('SUPERADMIN'))
+                {
+                    $actividades = ActividadesMejoramiento::whereHas('PlanMejoramiento', function ($query) {
+                        return $query->where('FK_PDM_Proceso', '=', session()->get('id_proceso'));
+                    })
+                        ->with('Caracteristicas.factor', 'responsable.usuarios')
+                        ->get();
+                }
+                else
+                {
+                    $responsable = Responsable::where('FK_RPS_Responsable','=',Auth::user()->id)
+                    ->first();
+                    $actividades = ActividadesMejoramiento::where('FK_ACM_Plan_Mejoramiento', session()->get('id_proceso'))
+                        ->where('FK_ACM_Responsable','=',$responsable->PK_RPS_Id ?? null)
+                        ->get(); 
+                }
+        }
+
+
+        $collection = collect(['title' => 'Seleccione Actividad' , 'start' => "2000-01-01"]);
+         
+        foreach($actividades as $actividad){
+            $nombre = ($actividad->ACM_Nombre);
+            $inicio = $actividad->ACM_Fecha_Inicio;
+            $fin = $actividad->ACM_Fecha_Fin;
+            $actividad->json = '[{"title'.'":"'.$nombre.'"},'.']';
+            //'[{"title'.'":"'.$nombre.'"},'.'{"start'.'":"'.$inicio.'"},'.'{"end'.'":"'.$fin.'"},'.']';
+            //{"title":$nombre,"start":$inicio,"end":$fin}
+        }   
+        
+         dd($actividades);
+
+
+         $collection = collect([['title' => 'Prueba 1' , 'start' => "2019-11-02", 'end' => "2019-11-04" ], ['title' => 'Prueba 2' , 'start' => "2019-11-26"], ['title' => 'Prueba 3', 'start' => "2019-11-27"]]);
+         //$collection->push(['title' => 'Prueba 4', 'start' => "2019-11-28"]);
+         $actividad2 = $collection->toJson();
+
+         dd($actividad2);
+         
+         // dd($actividad2);
+        // dd($collection->all());
+
+        // $actividades = ActividadesMejoramiento::where('FK_ACM_Plan_Mejoramiento', session()->get('id_proceso'))->get();
+        return view('autoevaluacion.SuperAdministrador.CalendarioPlanMejoramiento.index', compact('planMejoramiento', 'fechahoy', 'actividades', 'actividad2'));
     }
 }

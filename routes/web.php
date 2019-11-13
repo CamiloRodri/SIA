@@ -41,3 +41,7 @@ Route::get('/', 'Publico\HomeController@index')->name('home');
 Route::resource('encuestas', 'Publico\EncuestasController', ['as' => 'public']);
 Route::get('grupos/{slug_proceso}', 'Publico\EncuestasController@index');
 Route::get('encuesta/{slug_proceso}/{grupo}/{cargo?}', array('as' => 'encuestas', 'uses' => 'Publico\EncuestasController@create'));
+
+Route::get('/cal', function () {
+    return view('autoevaluacion.SuperAdministrador.CalendarioPlanMejoramiento.cal');
+});

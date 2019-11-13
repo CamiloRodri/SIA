@@ -12,9 +12,9 @@ class DatabasePlanMejoramientoSeeder extends Seeder
     public function run()
     {
         $this->truncateTables([
-            
+            'TBL_Responsables'
         ]);
-
+        $this->call(ResponsablesTableSeeder::class);
         $this->call(FasePlanMejoramientoProcesosSeeder::class);
     }
     
