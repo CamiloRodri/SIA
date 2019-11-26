@@ -128,7 +128,9 @@ class RoleTableSeeder extends Seeder
             'MODIFICAR_DOCUMENTOS_INSTITUCIONALES',
             'ELIMINAR_DOCUMENTOS_INSTITUCIONALES',
             'ACCEDER_CONSOLIDACION_FACTORES',
-            'ACCEDER_CALENDARIO_ACTIVIDADES'
+            'ACCEDER_CALENDARIO_ACTIVIDADES',
+            'ACCEDER_EVIDENCIA',
+            'ACCEDER_CALIFICA_ACTIVIDADES'
         ]);
 
         //Crear y asignar permisos fuentes primarias

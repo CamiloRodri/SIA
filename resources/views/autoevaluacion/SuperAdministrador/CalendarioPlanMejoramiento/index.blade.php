@@ -44,12 +44,10 @@
                                     </select> --}}
 
                                     <select id="dropdown" class="bs-select form-control" data-width="75%" >
-                                       <option value="Those" data-feed="https://rawgit.com/konsumkunst/17f101d0ee66e2b22cf23299a0abf1f3/raw/adb4037227a1e94c8c4f366087b38d36c56edfe8/thoseevents.json" selected>Those</option>
-                                       <option value="Them" data-feed="https://rawgit.com/konsumkunst/8ce713ae61c929cbbd2063b46e70278e/raw/4faa698cf29df0868983d5b75321e2043c8de6a5/themevents.json">Them</option>
-                                        {{-- @foreach($actividades as $actividad)
-                                                <option value="Them" data-feed="{{ $actividad2 }}">Them2</option>
-                                        @endforeach --}}
-                                        <option value="Them" data-feed="{{ $actividad2 }}">Them45</option>
+                                       {{-- <option value="Those" data-feed="https://rawgit.com/konsumkunst/17f101d0ee66e2b22cf23299a0abf1f3/raw/adb4037227a1e94c8c4f366087b38d36c56edfe8/thoseevents.json" selected>Those</option> --}}
+                                        @foreach($actividades as $actividad)
+                                           <option value="Them" data-feed="{{ $actividad->json }}">{{ $actividad->ACM_Nombre }}</option>  
+                                        @endforeach                                   
                                     </select>
                            </div>
                         </div>
@@ -96,7 +94,8 @@
             editable: false,
             firstDay: 1,
             displayEventTime: false,
-            defaultDate: '2017-08-01',
+            //defaultDate: '2017-08-01',
+            defaultDate: new Date(),
             eventSources: [ selectedFeed ],
             eventLimit: 3,
             header: {

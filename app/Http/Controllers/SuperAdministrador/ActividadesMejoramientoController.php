@@ -286,31 +286,17 @@ class ActividadesMejoramientoController extends Controller
                 }
         }
 
-
-        $collection = collect(['title' => 'Seleccione Actividad' , 'start' => "2000-01-01"]);
-         
         foreach($actividades as $actividad){
             $nombre = ($actividad->ACM_Nombre);
-            $inicio = $actividad->ACM_Fecha_Inicio;
-            $fin = $actividad->ACM_Fecha_Fin;
-            $actividad->json = '[{"title'.'":"'.$nombre.'"},'.']';
-            //'[{"title'.'":"'.$nombre.'"},'.'{"start'.'":"'.$inicio.'"},'.'{"end'.'":"'.$fin.'"},'.']';
-            //{"title":$nombre,"start":$inicio,"end":$fin}
+            $inicio = substr($actividad->ACM_Fecha_Inicio, 0, 10);
+            $fin = substr($actividad->ACM_Fecha_Fin, 0, 10);
+            // $actividad->json = '[{"title'.'":"'.$nombre.'"},'.'{"start'.'":"'.$inicio.'"},'.'{"end'.'":"'.$fin.'"},'.']';
+            $actividad->json = collect([['title' => $nombre , 'start' => $inicio, 'end' => $fin ]]);
+            $actividad->json = $actividad->json->toJson();
         }   
         
-         dd($actividades);
+        //dd($actividades);
 
-
-         $collection = collect([['title' => 'Prueba 1' , 'start' => "2019-11-02", 'end' => "2019-11-04" ], ['title' => 'Prueba 2' , 'start' => "2019-11-26"], ['title' => 'Prueba 3', 'start' => "2019-11-27"]]);
-         //$collection->push(['title' => 'Prueba 4', 'start' => "2019-11-28"]);
-         $actividad2 = $collection->toJson();
-
-         dd($actividad2);
-         
-         // dd($actividad2);
-        // dd($collection->all());
-
-        // $actividades = ActividadesMejoramiento::where('FK_ACM_Plan_Mejoramiento', session()->get('id_proceso'))->get();
-        return view('autoevaluacion.SuperAdministrador.CalendarioPlanMejoramiento.index', compact('planMejoramiento', 'fechahoy', 'actividades', 'actividad2'));
+        return view('autoevaluacion.SuperAdministrador.CalendarioPlanMejoramiento.index', compact('planMejoramiento', 'fechahoy', 'actividades'));
     }
 }
