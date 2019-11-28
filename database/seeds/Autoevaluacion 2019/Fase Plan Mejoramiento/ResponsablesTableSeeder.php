@@ -24,24 +24,8 @@ class ResponsablesTableSeeder extends Seeder
         	'FK_RPS_Proceso' => $proceso
         ]);
 
-        $responsable = User::where('name','Fuentes Primarias')->value('id');
-        $cargo = CargoAdministrativo::where('CAA_Cargo', 'DIRECTOR/COORDINADOR DE INVESTIGACION')->value('PK_CAA_Id');
-        Responsable::create([
-        	'FK_RPS_Responsable' => $responsable,
-        	'FK_RPS_Cargo' => $cargo,
-        	'FK_RPS_Proceso' => $proceso
-        ]);
-
-        $responsable = User::where('name','Fuentes Secundarias')->value('id');
-        $cargo = CargoAdministrativo::where('CAA_Cargo', 'DIRECTOR/COORDINADOR DE PROGRAMA')->value('PK_CAA_Id');
-        Responsable::create([
-        	'FK_RPS_Responsable' => $responsable,
-        	'FK_RPS_Cargo' => $cargo,
-        	'FK_RPS_Proceso' => $proceso
-        ]);
-
         $responsable = User::where('name','Admin')->value('id');
-        $cargo = CargoAdministrativo::where('CAA_Cargo', 'DIRECTOR/COORDINADOR DE BIENESTAR')->value('PK_CAA_Id');
+        $cargo = CargoAdministrativo::where('CAA_Cargo', 'DIRECTOR/COORDINADOR DE PROGRAMA')->value('PK_CAA_Id');
     	Responsable::create([
         	'FK_RPS_Responsable' => $responsable,
         	'FK_RPS_Cargo' => $cargo,
