@@ -28,8 +28,8 @@ class ActividadesMejoramientoController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('permission:ACCEDER_EVIDENCIA')->except('show');
-        $this->middleware('permission:ACCEDER_CALIFICA_ACTIVIDADES')->except('show');
+        // $this->middleware('permission:ACCEDER_EVIDENCIA')->except('show');
+        // $this->middleware('permission:ACCEDER_CALIFICA_ACTIVIDADES')->except('show');
         $this->middleware('permission:ACCEDER_ACTIVIDADES_MEJORAMIENTO')->except('show');
         $this->middleware(['permission:MODIFICAR_ACTIVIDADES_MEJORAMIENTO', 'permission:VER_ACTIVIDADES_MEJORAMIENTO'], ['only' => ['edit', 'update']]);
         $this->middleware('permission:CREAR_ACTIVIDADES_MEJORAMIENTO', ['only' => ['create', 'store']]);
