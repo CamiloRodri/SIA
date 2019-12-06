@@ -62,7 +62,8 @@ class ActividadesMejoramientoController extends Controller
             ->first();
         if ($planMejoramiento != null) {
             if ($request->ajax() && $request->isMethod('GET')) {
-                if(Auth::user()->hasRole('SUPERADMIN') || Auth::user()->hasRole('SUPERADMIN'))
+                if(Auth::user()->hasRole('SUPERADMIN') || Auth::user()->hasRole('EVALUADOR')
+                )
                 {
                     $actividades = ActividadesMejoramiento::whereHas('PlanMejoramiento', function ($query) {
                         return $query->where('FK_PDM_Proceso', '=', session()->get('id_proceso'));
@@ -94,17 +95,21 @@ class ActividadesMejoramientoController extends Controller
                         
                     })
                     ->addColumn('estado', function ($actividades) {
-                        if($actividades->ACM_Estado == 0)
-                        {
-                            return "<span class='label label-sm label-warning'>Evidencia pendiente</span>";
-                        }
-                        elseif($actividades->ACM_Estado == 1)
-                        {
-                            return "<span class='label label-sm label-info'>Evidencia por calificar</span>";
-                        }
-                        else
-                        {
-                            return "<span class='label label-sm label-success'>Evidencia calificada</span>";
+
+                        switch ($actividades->ACM_Estado) {
+                            case 0:
+                                return "<span class='label label-sm label-warning'>Evidencia pendiente</span>";
+                                break;
+                            case 1:
+                                return "<span class='label label-sm label-info'>Evidencia por calificar</span>";
+                                break;
+                            case 2:
+                                return "<span class='label label-sm label-success'>Evidencia calificada</span>";
+                                break;
+                            case 3:
+                                return "<span class='label label-sm label-success'>Evi. re-calificada</span>";
+                            default:
+                            return "<span class='label label-sm label-danger'>Error</span>";
                         }
                     })
                     ->rawColumns(['estado'])

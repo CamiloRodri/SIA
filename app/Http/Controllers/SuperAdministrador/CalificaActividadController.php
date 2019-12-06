@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\SuperAdministrador;
 
 use Illuminate\Http\Request;
+use App\Http\Requests\CalificaActividadRequest;
 use App\Models\Autoevaluacion\Evidencia;
 use App\Models\Autoevaluacion\ActividadesMejoramiento;
 use App\Models\Autoevaluacion\CalificaActividad;
@@ -12,6 +13,7 @@ use App\Models\Autoevaluacion\Archivo;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Collection;
 
 class CalificaActividadController extends Controller
 {
@@ -22,7 +24,7 @@ class CalificaActividadController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('permission:ACCEDER_CALIFICA_ACTIVIDADES')->except('show'); //Se puede comentar
+        $this->middleware('permission:ACCEDER_CALIFICA_ACTIVIDADES')->except('show');
         $this->middleware(['permission:MODIFICAR_CALIFICA_ACTIVIDADES', 'permission:VER_CALIFICA_ACTIVIDADES'], ['only' => ['edit', 'update']]);
         $this->middleware('permission:CREAR_CALIFICA_ACTIVIDADES', ['only' => ['create', 'store']]);
         $this->middleware('permission:ELIMINAR_CALIFICA_ACTIVIDADES', ['only' => ['destroy']]);
@@ -31,7 +33,7 @@ class CalificaActividadController extends Controller
     public function data(Request $request, $id)
     {
         
-        // if ($request->ajax() && $request->isMethod('GET')) {
+        if ($request->ajax() && $request->isMethod('GET')) {
             $docEvidencia = Evidencia::with('archivo')->where('FK_EVD_Actividad_Mejoramiento', $id)
                 ->get();
             return Datatables::of($docEvidencia)
@@ -57,7 +59,7 @@ class CalificaActividadController extends Controller
                 ->removeColumn('created_at')
                 ->removeColumn('updated_at')
                 ->make(true);
-        // }
+        }
     }
 
     public function index($id)
@@ -72,9 +74,8 @@ class CalificaActividadController extends Controller
 
         if($fechahoy < $fechacorte->FCO_Fecha)         //REVISAR
         {
-            $calificacion = CalificaActividad::where('FK_CLA_Actividad_Mejoramiento', $actividad->ACM_PK_Id)->get();
+            $calificacion = CalificaActividad::where('FK_CLA_Actividad_Mejoramiento', $actividad->PK_ACM_Id)->first();
 
-            \Debugbar::info($calificacion);
             return view('autoevaluacion.SuperAdministrador.CalificaActividades.index', compact('actividad', 'calificacion'));
         }
         else
@@ -101,23 +102,44 @@ class CalificaActividadController extends Controller
      */
     public function store(Request $request)
     {
+        if(!$request->get('CLA_Calificacion') || !$request->get('CLA_Observacion'))
+        {
+            return redirect()->route('admin.califica_actividad.index', $request->get('FK_CLA_Actividad_Mejoramiento'))->with('error', 'Datos Incompletos');
+        }
+
         $fechacorte = FechaCorte::whereDate('FCO_Fecha', '>=', Carbon::now()->format('Y-m-d'))
                     ->where('FK_FCO_Proceso', '=', session()->get('id_proceso'))
                     ->get()
-                    ->last();       
+                    ->last();      
+                    
+        $valida = CalificaActividad::where('FK_CLA_Actividad_Mejoramiento', $request->get('FK_CLA_Actividad_Mejoramiento'))->first();
 
-        $calificacion = new CalificaActividad();
-        $calificacion->fill($request->only(['CLA_Calificacion', 
-                                            'CLA_Observacion',
-                                            'FK_CLA_Actividad_Mejoramiento']));
+        if(!$valida)
+        {
+            $calificacion = new CalificaActividad();
+            $calificacion->fill($request->only(['CLA_Calificacion', 
+                                                'CLA_Observacion',
+                                                'FK_CLA_Actividad_Mejoramiento']));
 
-        $calificacion->FK_CLA_Fecha_Corte = $fechacorte->PK_FCO_Id;
-        $calificacion->save();
+            $calificacion->FK_CLA_Fecha_Corte = $fechacorte->PK_FCO_Id;
+            $calificacion->save();
 
-        $actividadesMejoramiento = ActividadesMejoramiento::findOrFail($request->FK_CLA_Actividad_Mejoramiento);
-        $actividadesMejoramiento->ACM_Estado = 2;
-        $actividadesMejoramiento->update();
+            $actividadesMejoramiento = ActividadesMejoramiento::findOrFail($request->FK_CLA_Actividad_Mejoramiento);
+            $actividadesMejoramiento->ACM_Estado = 2;
+            $actividadesMejoramiento->update();
+        }
+        else
+        {
+            $calificacion = CalificaActividad::find($valida->PK_CLA_Id);
+            $calificacion->CLA_Calificacion = $request->get('CLA_Calificacion');
+            $calificacion->CLA_Observacion = $request->get('CLA_Observacion');
+            $calificacion->update();
 
+            $actividadesMejoramiento = ActividadesMejoramiento::findOrFail($request->FK_CLA_Actividad_Mejoramiento);
+            $actividadesMejoramiento->ACM_Estado = 3;
+            $actividadesMejoramiento->update();
+        }
+        dd("entro");
 
         return redirect()->route('admin.actividades_mejoramiento.index')->with('status', 'Actividad Calificada');
         

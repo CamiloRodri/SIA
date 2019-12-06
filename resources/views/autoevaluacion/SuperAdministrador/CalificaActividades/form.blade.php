@@ -2,7 +2,7 @@
 <div class="item form-group">
     {!! Form::label('CLA_Calificacion','Calificación', [ 'class'=>'control-label col-md-3 col-sm-3 col-xs-12']) !!}
     <div class="col-md-6 col-sm-6 col-xs-12">
-        {!! Form::text('CLA_Calificacion', old('CLA_Calificacion'),[ 'class' => 'form-control col-md-6 col-sm-6 col-xs-12', 'required' => 'required',
+        {!! Form::text('CLA_Calificacion', old(' {{ $calificacion->CLA_Calificacion }} '),[ 'class' => 'form-control col-md-6 col-sm-6 col-xs-12', 'required' => 'required',
             'data-parsley-type'=>"number",
             'data-parsley-length' => "[0, 60]",
             'data-parsley-trigger'=>"change"])

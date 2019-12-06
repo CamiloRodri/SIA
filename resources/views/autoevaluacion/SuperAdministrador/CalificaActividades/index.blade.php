@@ -8,13 +8,15 @@
     @component('admin.components.panel') @slot('title', 'Califica Actividad de Mejoramiento')
 
     <div class="actions col-md-6">
+        @can('CREAR_CALIFICA_ACTIVIDADES')
         {{-- <a href="{{ route('admin.evidencia.create', $actividad->PK_ACM_Id) }}" class="btn btn-info">
         <i class="fa fa-plus"></i> Calificar {{ $actividad->ACM_Nombre }} </a></div> --}}
         <div class="actions">
             <a id="calificar_actividad" href="#" class="btn btn-info" data-toggle="modal" data-target="#modal_cal_actividad">
-                <i class="fa fa-plus"></i> Calificar {{ $actividad->ACM_Nombre }}
+                <i class="fa fa-plus"></i> Calificar {{ $actividad->ACM_Nombre }} 
             </a>
         </div>
+        @endcan
     </div>
 
     <div class="col-md-6">
@@ -35,7 +37,7 @@
                 <div class="modal-body">
 
                     {!! Form::open([ 'route' => 'admin.califica_actividad.store',
-                    'method' => 'POST', 'id' => 'form_califica_actividad', 'class' => 'form-horizontal
+                    'method' => 'POST', 'id' => 'form_cal_actividad', 'class' => 'form-horizontal
                         form-label-lef', 'novalidate' ])!!}
                     @include('autoevaluacion.SuperAdministrador.CalificaActividades.form')
 
@@ -51,22 +53,24 @@
         </div>
     </div>
     <!--FIN Modal CREAR-->
-
-    <br>
-    <br>
-    <br>
-    <div class="col-md-12">
-        @component('admin.components.datatable', ['id' => 'evidencia_table_ajax'])
-            @slot('columns', [
-            'id',
-            'Nombre',
-            'Fecha Subida',
-            'Descripcion',
-            'Archivo',
-            '' => ['style' => 'width:0px;']
-            ]) 
-            @endcomponent
-    </div>
+    @can('VER_CALIFICA_ACTIVIDADES')
+        <br>
+        <br>
+        <br>
+        <div class="col-md-12">
+            @component('admin.components.datatable', ['id' => 'evidencia_table_ajax'])
+                @slot('columns', [
+                'id',
+                'Nombre',
+                'Fecha Subida',
+                'Descripcion',
+                'Archivo',
+                '' => ['style' => 'width:0px;']
+                ]) 
+                @endcomponent
+        </div>
+    @endcan
+    
     @endcomponent
 @endsection
 
@@ -96,11 +100,19 @@
     <script type="text/javascript">
         $(document).ready(function () {
 
+            var formCreate = $('#form_cal_actividad');
+            $('#calificar_actividad').click(function () {
+                $(formCreate)[0].reset();
+                $('.modal-title').text("Calificar Actividad");
+                $('#accion').val("Calificar");
+                $('#accion').removeClass('modificar')
+            });
+
             let sesion = sessionStorage.getItem("update");
             if (sesion != null) {
                 sessionStorage.clear();
                 new PNotify({
-                    title: "Evidencia Modificada!",
+                    title: "Calificación Modificada!",
                     text: sesion,
                     type: 'success',
                     styling: 'bootstrap3'
@@ -181,46 +193,46 @@
                     });
                 }
 
-                $(document).on('submit', '#form_califica_actividad', function (e) {
-                e.preventDefault();
-                let route = formCreate.attr('action');
-                let method = formCreate.attr('method');
-                let data = formCreate.serialize();
-                if ($('#accion').hasClass('modificar')) {
-                    route = '{{ url('admin/actividades_mejoramiento/califica_actividad') }}' + '/' + $('#PK_AMB_Id').val() + '/edit';
-                    method = "PUT";
-                }
-                $.ajax({
-                    url: route,
-                    type: method,
-                    data: data,
-                    dataType: 'json',
-                    success: function (response, NULL, jqXHR) {
-                        $(formCreate)[0].reset();
-                        $(formCreate).parsley().reset();
-                        $('#modal_ambito').modal('hide');
-                        new PNotify({
-                            title: response.title,
-                            text: response.msg,
-                            type: 'success',
-                            styling: 'bootstrap3'
-                        });
-                        table.ajax.reload();
-                    },
-                    error: function (data) {
-                        var errores = data.responseJSON.errors;
-                        var msg = '';
-                        $.each(errores, function (name, val) {
-                            msg += val + '<br>';
-                        });
-                        new PNotify({
-                            title: "Error!",
-                            text: msg,
-                            type: 'error',
-                            styling: 'bootstrap3'
-                        });
-                    }
-                });
+                // $(document).on('submit', '#form_cal_actividad', function (e) {
+                // e.preventDefault();
+                // let route = formCreate.attr('action');
+                // let method = formCreate.attr('method');
+                // let data = formCreate.serialize();
+                // if ($('#accion').hasClass('modificar')) {
+                //     route = '{{ url('admin/actividades_mejoramiento/califica_actividad') }}' + '/' + $('#PK_AMB_Id').val() + '/edit';
+                //     method = "PUT";
+                // }
+                // $.ajax({
+                //     url: route,
+                //     type: method,
+                //     data: data,
+                //     dataType: 'json',
+                //     success: function (response, NULL, jqXHR) {
+                //         $(formCreate)[0].reset();
+                //         $(formCreate).parsley().reset();
+                //         $('#modal_ambito').modal('hide');
+                //         new PNotify({
+                //             title: response.title,
+                //             text: response.msg,
+                //             type: 'success',
+                //             styling: 'bootstrap3'
+                //         });
+                //         table.ajax.reload();
+                //     },
+                //     error: function (data) {
+                //         var errores = data.responseJSON.errors;
+                //         var msg = '';
+                //         $.each(errores, function (name, val) {
+                //             msg += val + '<br>';
+                //         });
+                //         new PNotify({
+                //             title: "Error!",
+                //             text: msg,
+                //             type: 'error',
+                //             styling: 'bootstrap3'
+                //         });
+                //     }
+                // });
 
             });
 
@@ -240,6 +252,15 @@
                 var route = '{{ url('admin/evidencia') }}' + '/' + dataTable.PK_EVD_Id + '/edit';
                 window.location.href = route;
             });
+            
+            @if (session('status'))
+            new PNotify({
+                tittle:'Campos Incompletos',
+                text:'Debe agregar una Calificación y Observación',
+                type:'error',
+                styling:'bootstrap3'
+	        });
+	        @endif
 
         });
 

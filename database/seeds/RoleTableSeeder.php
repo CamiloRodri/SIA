@@ -19,7 +19,6 @@ class RoleTableSeeder extends Seeder
 
         //Crear rol y asignar permisos admin de programa
         $role = Role::create(['name' => 'ADMIN']);
-
         $role->givePermissionTo([
             'ACCESO_USUARIOS',
             'ACCESO_MODULO_SUPERADMINISTRADOR',
@@ -129,12 +128,15 @@ class RoleTableSeeder extends Seeder
             'ELIMINAR_DOCUMENTOS_INSTITUCIONALES',
             'ACCEDER_CONSOLIDACION_FACTORES',
             'ACCEDER_CALENDARIO_ACTIVIDADES',
-            'ACCEDER_EVIDENCIA'
+            'ACCEDER_EVIDENCIA',
+            'VER_EVIDENCIA',
+            'CREAR_EVIDENCIA',
+            'MODIFICAR_EVIDENCIA',
+            'ELIMINAR_EVIDENCIA'
         ]);
 
         //Crear y asignar permisos fuentes primarias
         $role = Role::create(['name' => 'FUENTES_PRIMARIAS']);
-
         $role->givePermissionTo([
             'ACCESO_MODULO_FUENTES_PRIMARIAS',
             'ACCEDER_ENCUESTAS',
@@ -225,7 +227,6 @@ class RoleTableSeeder extends Seeder
         ]);
 
         $role = Role::create(['name' => 'EVALUADOR']);
-
         $role->givePermissionTo([
             'ACCESO_MODULO_FUENTES_PRIMARIAS',
             'ACCESO_MODULO_SUPERADMINISTRADOR',
@@ -240,16 +241,16 @@ class RoleTableSeeder extends Seeder
             'ACCESO_PLAN_MEJORAMIENTO',
             'ACCEDER_ACTIVIDADES_MEJORAMIENTO',
             'VER_ACTIVIDADES_MEJORAMIENTO',
-            'ACCESO_FECHA_CORTE',
-            'VER_FECHA_CORTE',
-            'CREAR_FECHA_CORTE',
-            'MODIFICAR_FECHA_CORTE',
-            'ELIMINAR_FECHA_CORTE',
             'ACCEDER_CALIFICA_ACTIVIDADES',
             'VER_CALIFICA_ACTIVIDADES',
             'CREAR_CALIFICA_ACTIVIDADES',
             'MODIFICAR_CALIFICA_ACTIVIDADES',
-            'ELIMINAR_CALIFICA_ACTIVIDADES'
+            'ELIMINAR_CALIFICA_ACTIVIDADES',
+            'ACCESO_FECHA_CORTE',
+            'VER_FECHA_CORTE',
+            'CREAR_FECHA_CORTE',
+            'MODIFICAR_FECHA_CORTE',
+            'ELIMINAR_FECHA_CORTE'
         ]);  
     }
 }
