@@ -9,6 +9,7 @@ use App\Models\Autoevaluacion\ActividadesMejoramiento;
 use App\Models\Autoevaluacion\PlanMejoramiento;
 use App\Models\Autoevaluacion\Responsable;
 use App\Models\Autoevaluacion\FechaCorte;
+use App\Models\Autoevaluacion\CalificaActividad;
 use Carbon\Carbon;
 use DataTables;
 use Illuminate\Http\Request;
@@ -43,6 +44,12 @@ class ActividadesMejoramientoController extends Controller
      */
     public function index()
     {
+        $califica = CalificaActividad::pluck('CLA_Calificacion');
+        // foreach($califica as $cal){
+        //     return $cal;
+        // }
+        //  dd($cal);
+        // *******************************************************
         $planMejoramiento = PlanMejoramiento::where('FK_PDM_Proceso', '=', session()->get('id_proceso'))
             ->first();
         $fechascorte = FechaCorte::where('FK_FCO_Proceso', '=', session()->get('id_proceso')) 
@@ -58,6 +65,7 @@ class ActividadesMejoramientoController extends Controller
 
     public function data(Request $request)
     {
+        $califica = CalificaActividad::pluck('CLA_Calificacion')->first();
         $planMejoramiento = PlanMejoramiento::where('FK_PDM_Proceso', '=', session()->get('id_proceso'))
             ->first();
         if ($planMejoramiento != null) {
@@ -112,6 +120,11 @@ class ActividadesMejoramientoController extends Controller
                             return "<span class='label label-sm label-danger'>Error</span>";
                         }
                     })
+                    ->addColumn('avance', $califica ."".'%' //function ($califica) {
+                        // foreach($califica as $cal){
+                        //     return $cal;
+                        // }
+                    )// })
                     ->rawColumns(['estado'])
                     ->removeColumn('created_at')
                     ->removeColumn('updated_at')

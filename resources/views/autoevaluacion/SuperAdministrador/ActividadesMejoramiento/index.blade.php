@@ -10,9 +10,12 @@
                 @can('VER_ACTIVIDADES_MEJORAMIENTO')
                     <div class="col-md-12">
                         @include('autoevaluacion.SuperAdministrador.ActividadesMejoramiento._form_fecha_corte')
-                        @component('admin.components.datatable', ['id' => 'actividades_mejoramiento_table_ajax']) @slot('columns', [
-            'id','Factor','Caracteristica','Actividad', 'Descripcion', 'Fecha de Inicio', 'Fecha de Finalizacion', 'Responsable','Estado',
-            'Acciones' => ['style' => 'width:85px;']]) @endcomponent
+                        @component('admin.components.datatable', ['id' => 'actividades_mejoramiento_table_ajax']) 
+                            @slot('columns', [
+                            'id','Factor','Caracteristica','Actividad', 'Descripcion', 'Fecha de Inicio', 
+                            'Fecha de Finalizacion', 'Responsable','Estado', 'Avance',
+                            'Acciones' => ['style' => 'width:85px;']]) 
+                        @endcomponent
                     </div>
                 @endcan
             @else
@@ -75,6 +78,7 @@
                         {data: 'ACM_Fecha_Fin', name: 'Fecha de Finalizacion', className: "all"},
                         {data: 'responsable', name: 'Responsable', className: "all"},
                         {data: 'estado', name: 'Estado', className: "all"},
+                        {data: 'avance', name: 'Avance', className: "all"},
                         {
                             defaultContent:
                                 '@can('ELIMINAR_ACTIVIDADES_MEJORAMIENTO')<a href="javascript:;" class="btn btn-simple btn-danger btn-sm remove" data-toggle="confirmation"><i class="fa fa-trash"></i></a>@endcan' +

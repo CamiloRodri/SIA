@@ -35,7 +35,9 @@ class EvidenciaController extends Controller
     {
         
         if ($request->ajax() && $request->isMethod('GET')) {
-            $docEvidencia = Evidencia::with('archivo')->where('FK_EVD_Actividad_Mejoramiento', $id)
+            $docEvidencia = Evidencia::with('archivo')
+                                        ->where('FK_EVD_Actividad_Mejoramiento', $id)
+                                        ->where('EVD_Fecha_Subido', '>=', Carbon::now()->format('Y-m-d'))
                 ->get();
             return Datatables::of($docEvidencia)
                 ->addColumn('archivo', function ($docEvidencia) {
