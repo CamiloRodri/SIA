@@ -1,22 +1,41 @@
 {{-- <h4> <b>Proxima Fecha de Corte: </b></h4> --}}
-<br>
-    <div class="item form-group">
-        {!! Form::label('FCO_Fecha','Proxima Fecha de Corte:', ['class'=>'control-label col-md-2 col-sm-2 col-xs-12']) !!}
-        <div class="col-md-5 col-sm-6 col-xs-12">
-            {!! Form::text('FCO_Fecha',$fechacorte->FCO_Fecha,
-            [ 'class' => 'form-control col-md-6 col-sm-6 col-xs-12', 
-            'readonly'=>'readonly'
-            ] ) !!}
+@if($fechacorte != null)
+    <br>
+        <div class="item form-group">
+            {!! Form::label('FCO_Fecha','Proxima Fecha de Corte:', ['class'=>'control-label col-md-2 col-sm-2 col-xs-12']) !!}
+            <div class="col-md-5 col-sm-6 col-xs-12">
+                {!! Form::text('FCO_Fecha',$fechacorte->FCO_Fecha,
+                [ 'class' => 'form-control col-md-6 col-sm-6 col-xs-12', 
+                'readonly'=>'readonly'
+                ] ) !!}
+            </div>
+            <div class="actions">
+                <a id="ver_fechascorte" href="#" class="btn btn-success" data-toggle="modal" data-target="#modal_fechascorte">
+                    <i class="fa fa-check"></i> Ver Todas las Fechas</a>
+            </div>
         </div>
-        <div class="actions">
-            <a id="ver_fechascorte" href="#" class="btn btn-success" data-toggle="modal" data-target="#modal_fechascorte">
-                <i class="fa fa-check"></i> Ver Todas las Fechas</a>
+    <br>
+        <hr size="10" width="100%" />
+    <br>
+@else
+    <br>
+        <div class="item form-group">
+            {!! Form::label('FCO_Fecha','Proxima Fecha de Corte:', ['class'=>'control-label col-md-2 col-sm-2 col-xs-12']) !!}
+            <div class="col-md-5 col-sm-6 col-xs-12">
+                {!! Form::text('FCO_Fecha','EL PROCESO NO POSEE FECHAS DE CORTE' ,
+                [ 'class' => 'form-control col-md-6 col-sm-6 col-xs-12', 
+                'readonly'=>'readonly'
+                ] ) !!}
+            </div>
+            <div class="actions">
+                <a id="ver_fechascorte" href="#" class="btn btn-success" data-toggle="modal" data-target="#modal_fechascorte">
+                    <i class="fa fa-check"></i> Ver Todas las Fechas</a>
+            </div>
         </div>
-    </div>
-<br>
-<hr size="10" width="100%" />
-<br>
-        
+    <br>
+    <hr size="10" width="100%" />
+    <br>
+@endif        
     <!-- Modal-->
         <div class="modal fade" id="modal_fechascorte" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
             <div class="modal-dialog" role="document">
