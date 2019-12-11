@@ -30,6 +30,31 @@ class CalificaActividadController extends Controller
         $this->middleware('permission:ELIMINAR_CALIFICA_ACTIVIDADES', ['only' => ['destroy']]);
     }
 
+    public function index($id)
+    {
+        $actividad = ActividadesMejoramiento::find($id);
+
+        $fechahoy = Carbon::now()->format('Y-m-d');
+        $fechacorte = FechaCorte::whereDate('FCO_Fecha', '>=', Carbon::now()->format('Y-m-d'))
+                    ->where('FK_FCO_Proceso', '=', session()->get('id_proceso'))
+                    ->get()
+                    ->first();
+
+        if(!$fechacorte)
+        {
+            return redirect()->back()->with('fecha_corte_error','Mensaje Error'); 
+        }
+        elseif($fechahoy <= $fechacorte->FCO_Fecha)
+        {
+            $calificacion = CalificaActividad::where('FK_CLA_Actividad_Mejoramiento', $actividad->PK_ACM_Id)->first();
+
+            return view('autoevaluacion.SuperAdministrador.CalificaActividades.index', compact('actividad', 'calificacion'));
+        }
+        else
+        {
+            return redirect()->back()->with('califica_error','Fecha Error');
+        }
+    }
     public function data(Request $request, $id)
     {
         
@@ -62,28 +87,6 @@ class CalificaActividadController extends Controller
         }
     }
 
-    public function index($id)
-    {
-        $actividad = ActividadesMejoramiento::find($id);
-
-        $fechahoy = Carbon::now()->format('Y-m-d');
-        $fechacorte = FechaCorte::whereDate('FCO_Fecha', '>=', Carbon::now()->format('Y-m-d'))
-                    ->where('FK_FCO_Proceso', '=', session()->get('id_proceso'))
-                    ->get()
-                    ->last();
-
-        if($fechahoy < $fechacorte->FCO_Fecha)         //REVISAR
-        {
-            $calificacion = CalificaActividad::where('FK_CLA_Actividad_Mejoramiento', $actividad->PK_ACM_Id)->first();
-
-            return view('autoevaluacion.SuperAdministrador.CalificaActividades.index', compact('actividad', 'calificacion'));
-        }
-        else
-        {
-        //     return redirect()->back()->with('califica_error','Fecha Error');
-        }
-    }
-
     /**
      * Show the form for creating a new resource.
      *
@@ -110,9 +113,9 @@ class CalificaActividadController extends Controller
         $fechacorte = FechaCorte::whereDate('FCO_Fecha', '>=', Carbon::now()->format('Y-m-d'))
                     ->where('FK_FCO_Proceso', '=', session()->get('id_proceso'))
                     ->get()
-                    ->last();      
+                    ->first();
                     
-        $valida = CalificaActividad::where('FK_CLA_Actividad_Mejoramiento', $request->get('FK_CLA_Actividad_Mejoramiento'))->first();
+        $valida = CalificaActividad::where('FK_CLA_Actividad_Mejoramiento', $request->get('FK_CLA_Actividad_Mejoramiento'))->get()->last();
 
         if(!$valida)
         {
@@ -130,16 +133,29 @@ class CalificaActividadController extends Controller
         }
         else
         {
-            $calificacion = CalificaActividad::find($valida->PK_CLA_Id);
-            $calificacion->CLA_Calificacion = $request->get('CLA_Calificacion');
-            $calificacion->CLA_Observacion = $request->get('CLA_Observacion');
-            $calificacion->update();
-
+            // dd($valida, $fechacorte);
+            if($valida->FK_CLA_Fecha_Corte == $fechacorte->PK_FCO_Id)
+            {
+                // dd("no deberia");
+                $valida->CLA_Calificacion = $request->get('CLA_Calificacion');
+                $valida->CLA_Observacion = $request->get('CLA_Observacion');
+                $valida->update();
+            }
+            else
+            {
+                // dd("entro");
+                $calificacion_nueva = new CalificaActividad();
+                $calificacion_nueva->fill($request->only(['CLA_Calificacion', 
+                                                    'CLA_Observacion',
+                                                    'FK_CLA_Actividad_Mejoramiento']));
+                $calificacion_nueva->FK_CLA_Fecha_Corte = $fechacorte->PK_FCO_Id;
+                $calificacion_nueva->save();
+            }
+            
             $actividadesMejoramiento = ActividadesMejoramiento::findOrFail($request->FK_CLA_Actividad_Mejoramiento);
             $actividadesMejoramiento->ACM_Estado = 3;
             $actividadesMejoramiento->update();
         }
-        dd("entro");
 
         return redirect()->route('admin.actividades_mejoramiento.index')->with('status', 'Actividad Calificada');
         

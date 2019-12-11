@@ -9,6 +9,7 @@ use App\Models\Autoevaluacion\Evidencia;
 use App\Models\Autoevaluacion\Archivo;
 use App\Models\Autoevaluacion\Responsable;
 use App\Models\Autoevaluacion\FechaCorte;
+use App\Models\Autoevaluacion\CalificaActividad;
 use Illuminate\Support\Facades\Storage;
 use Yajra\DataTables\DataTables;
 use Carbon\Carbon;
@@ -30,15 +31,77 @@ class EvidenciaController extends Controller
         $this->middleware('permission:CREAR_EVIDENCIA', ['only' => ['create', 'store']]);
         $this->middleware('permission:ELIMINAR_EVIDENCIA', ['only' => ['destroy']]);
     }
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function index($id)
+    {
+        $fechacorte = FechaCorte::whereDate('FCO_Fecha', '>=', Carbon::now()->format('Y-m-d'))
+                    ->where('FK_FCO_Proceso', '=', session()->get('id_proceso'))
+                    ->get()
+                    ->first();
+        if(!$fechacorte)
+        {
+            return redirect()->back()->with('fecha_corte_error','Mensaje Error'); 
+        }
+        else
+        {
+            $actividad = ActividadesMejoramiento::find($id);
+            $responsable = Responsable::where('PK_RPS_Id','=',$actividad->FK_ACM_Responsable)
+            ->first();
+            $id_usuario = Auth::user()->id;
 
+            if($actividad->ACM_Fecha_Fin > Carbon::now()->format('Y-m-d') )
+            {
+                if(!Auth::user()->hasRole('SUPERADMIN') || !Auth::user()->hasRole('SUPERADMIN'))
+                {
+                    if($id_usuario = $responsable->FK_RPS_Responsable )
+                    {
+                        // return view('autoevaluacion.SuperAdministrador.Evidencias.index', compact('actividad'))->with('date_error','Fecha Error');
+                        return view('autoevaluacion.SuperAdministrador.Evidencias.index', compact('actividad'));
+                    }
+                    else
+                    {
+                        return redirect()->back()->with('error','Mensaje Error'); 
+                    }
+                }
+                else
+                {
+                    return view('autoevaluacion.SuperAdministrador.Evidencias.index', compact('actividad'));
+                }
+            }
+            else
+            {
+                return redirect()->back()->with('date_error','Fecha Error');
+            }
+        }
+    }
+    
     public function datos(Request $request, $id)
     {
-        
+        $fechacorte = FechaCorte::whereDate('FCO_Fecha', '>=', Carbon::now()->format('Y-m-d'))
+                    ->where('FK_FCO_Proceso', '=', session()->get('id_proceso'))
+                    ->get()
+                    ->first();
+        $fechacorteanterior = FechaCorte::where('PK_FCO_Id', '<', $fechacorte->PK_FCO_Id)->orderBy('PK_FCO_Id', 'des')->first();
         if ($request->ajax() && $request->isMethod('GET')) {
-            $docEvidencia = Evidencia::with('archivo')
-                                        ->where('FK_EVD_Actividad_Mejoramiento', $id)
-                                        ->where('EVD_Fecha_Subido', '>=', Carbon::now()->format('Y-m-d'))
-                ->get();
+            if(!$fechacorteanterior)
+            {
+                $docEvidencia = Evidencia::with('archivo')
+                                            ->where('FK_EVD_Actividad_Mejoramiento', $id)
+                                            ->whereDate('EVD_Fecha_Subido', '<=', $fechacorte->FCO_Fecha)
+                    ->get();//dd($fechacorteanterior);
+            }
+            else
+            {
+                $docEvidencia = Evidencia::with('archivo')
+                                            ->where('FK_EVD_Actividad_Mejoramiento', $id)
+                                            ->whereDate('EVD_Fecha_Subido', '<=', $fechacorte->FCO_Fecha)
+                                            ->whereDate('EVD_Fecha_Subido', '>', $fechacorteanterior->FCO_Fecha)
+                    ->get();//dd($fechacorteanterior);
+            }
             return Datatables::of($docEvidencia)
                 ->addColumn('archivo', function ($docEvidencia) {
                     /**
@@ -46,16 +109,16 @@ class EvidenciaController extends Controller
                      * Se obtiene el url y se coloca en un link, si no es asi es porque tiene
                      * una url entonces también se le asignar a un botón tipo link.
                      */
-                    if (!$docEvidencia->archivo) {
+                    if (!$docEvidencia->archivo)
+                    {
                         return '<a class="btn btn-success btn-xs" href="' . $docEvidencia->EVD_Link .
                             '"target="_blank" role="button">Enlace al documento</a>';
-                    } else {
-
+                    }
+                    else
+                    {
                         return '<a class="btn btn-success btn-xs" href="' . route('descargar') . '?archivo=' .
                             $docEvidencia->archivo->ruta .
                             '" target="_blank" role="button">' . $docEvidencia->archivo->ACV_Nombre . '</a>';
-
-
                     }
                 })
                 ->rawColumns(['archivo'])
@@ -64,43 +127,6 @@ class EvidenciaController extends Controller
                 ->make(true);
         }
     }
-
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index($id)
-    {
-        $actividad = ActividadesMejoramiento::find($id);
-        $responsable = Responsable::where('PK_RPS_Id','=',$actividad->FK_ACM_Responsable)
-        ->first();
-        $id_usuario = Auth::user()->id;
-
-        if($actividad->ACM_Fecha_Fin > Carbon::now()->format('Y-m-d') )
-        {
-            if(!Auth::user()->hasRole('SUPERADMIN') || !Auth::user()->hasRole('SUPERADMIN'))
-            {
-                if($id_usuario = $responsable->FK_RPS_Responsable )
-                {
-                    return view('autoevaluacion.SuperAdministrador.Evidencias.index', compact('actividad'));
-                }
-                else
-                {
-                    return redirect()->back()->with('error','Mensaje Error'); 
-                }
-            }
-            else
-            {
-                return view('autoevaluacion.SuperAdministrador.Evidencias.index', compact('actividad'));
-            }
-        }
-        else
-        {
-            return redirect()->back()->with('date_error','Fecha Error');
-        }
-    }
-
     /**
      * Show the form for creating a new resource.
      *
@@ -120,10 +146,6 @@ class EvidenciaController extends Controller
      */
     public function store(EvidenciaRequest $request)
     {
-        $fechacorte = FechaCorte::whereDate('FCO_Fecha', '>=', Carbon::now()->format('Y-m-d'))
-                    ->where('FK_FCO_Proceso', '=', session()->get('id_proceso'))
-                    ->get()
-                    ->last();
         if ($request->hasFile('archivo')) {
             $file = $request->file('archivo');
             $archivo = new Archivo;
@@ -138,7 +160,7 @@ class EvidenciaController extends Controller
             $evidencia->EVD_link = $request->EVD_link;
             $evidencia->FK_EVD_Archivo = $archivo->PK_ACV_Id;
             $evidencia->FK_EVD_Actividad_Mejoramiento = $request->FK_EVD_Actividad_Mejoramiento;
-            $evidencia->EVD_Fecha_Subido =  $fechacorte->FCO_Fecha;
+            $evidencia->EVD_Fecha_Subido =  Carbon::now()->format('Y-m-d');
             $evidencia->save();
         } else {
             $evidencia = new Evidencia;
@@ -146,7 +168,7 @@ class EvidenciaController extends Controller
             $evidencia->EVD_Descripcion_General = $request->EVD_Descripcion_General;
             $evidencia->EVD_Link = $request->EVD_Link;
             $evidencia->FK_EVD_Actividad_Mejoramiento = $request->FK_EVD_Actividad_Mejoramiento;
-            $evidencia->EVD_Fecha_Subido =  $fechacorte->FCO_Fecha;
+            $evidencia->EVD_Fecha_Subido =  Carbon::now()->format('Y-m-d');
             $evidencia->save();
         }
 

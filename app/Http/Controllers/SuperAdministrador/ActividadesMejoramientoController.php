@@ -44,12 +44,6 @@ class ActividadesMejoramientoController extends Controller
      */
     public function index()
     {
-        $califica = CalificaActividad::pluck('CLA_Calificacion');
-        // foreach($califica as $cal){
-        //     return $cal;
-        // }
-        //  dd($cal);
-        // *******************************************************
         $planMejoramiento = PlanMejoramiento::where('FK_PDM_Proceso', '=', session()->get('id_proceso'))
             ->first();
         $fechascorte = FechaCorte::where('FK_FCO_Proceso', '=', session()->get('id_proceso')) 
@@ -59,7 +53,7 @@ class ActividadesMejoramientoController extends Controller
         $fechacorte = FechaCorte::whereDate('FCO_Fecha', '>=', Carbon::now()->format('Y-m-d'))
                     ->where('FK_FCO_Proceso', '=', session()->get('id_proceso'))
                     ->get()
-                    ->last();
+                    ->first();
         return view('autoevaluacion.SuperAdministrador.ActividadesMejoramiento.index', compact('planMejoramiento', 'fechacorte', 'fechascorte', 'fechahoy'));
     }
 
