@@ -60,6 +60,16 @@
 @endpush @push('functions')
     <script type="text/javascript">
         $(document).ready(function () {
+            if({{ Session::get('calificacion') }} != null){
+                new PNotify({
+                    title: 'Calificación de Actividad',
+                    text: '<span style="font-size: 1.2em;">Ponderación: {{ Session::get('calificacion') }} </span>'+
+                    '<br><span style="font-size: 1.2em;">Observación: </span> {{ Session::get('observacion') }}',
+                    type: 'info',
+                    hide: true,
+                    styling: 'bootstrap3'
+                });
+            }
 
             let sesion = sessionStorage.getItem("update");
             if (sesion != null) {

@@ -5,8 +5,8 @@
 @extends('admin.layouts.app')
 
 @section('content')
-    @component('admin.components.panel') @slot('title', 'Califica Actividad de Mejoramiento')
-
+    @component('admin.components.panel') 
+    @slot('title', 'Calificación Actividad de Mejoramiento')
     <div class="actions col-md-6">
         @can('CREAR_CALIFICA_ACTIVIDADES')
         {{-- <a href="{{ route('admin.evidencia.create', $actividad->PK_ACM_Id) }}" class="btn btn-info">
@@ -99,7 +99,16 @@
 @endpush @push('functions')
     <script type="text/javascript">
         $(document).ready(function () {
-
+            if({{ Session::get('calificacion') }} != null){
+                new PNotify({
+                    title: 'Ultima Calificación',
+                    text: '<span style="font-size: 1.2em;">Ponderación: {{ Session::get('calificacion') }} </span>'+
+                    '<br><span style="font-size: 1.2em;">Observación: </span> {{ Session::get('observacion') }}',
+                    type: 'info',
+                    hide: true,
+                    styling: 'bootstrap3'
+                });
+            }
             var formCreate = $('#form_cal_actividad');
             $('#calificar_actividad').click(function () {
                 $(formCreate)[0].reset();

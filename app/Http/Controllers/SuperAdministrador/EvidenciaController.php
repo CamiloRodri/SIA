@@ -13,6 +13,7 @@ use App\Models\Autoevaluacion\CalificaActividad;
 use Illuminate\Support\Facades\Storage;
 use Yajra\DataTables\DataTables;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Session;
 use App\Http\Requests\EvidenciaRequest;
 use Illuminate\Support\Facades\Auth;
 
@@ -55,11 +56,21 @@ class EvidenciaController extends Controller
 
             if($actividad->ACM_Fecha_Fin > Carbon::now()->format('Y-m-d') )
             {
+                $calificacion = CalificaActividad::where('FK_CLA_Actividad_Mejoramiento', $id)->get()->last();
+                if($calificacion)
+                {
+                    Session::put('calificacion', $calificacion->CLA_Calificacion);
+                    Session::put('observacion', $calificacion->CLA_Observacion);
+                }
+                else
+                {
+                    Session::put('calificacion', 'null');
+                }
+
                 if(!Auth::user()->hasRole('SUPERADMIN') || !Auth::user()->hasRole('SUPERADMIN'))
                 {
                     if($id_usuario = $responsable->FK_RPS_Responsable )
                     {
-                        // return view('autoevaluacion.SuperAdministrador.Evidencias.index', compact('actividad'))->with('date_error','Fecha Error');
                         return view('autoevaluacion.SuperAdministrador.Evidencias.index', compact('actividad'));
                     }
                     else
@@ -209,9 +220,6 @@ class EvidenciaController extends Controller
         else{
             $size = null;
         }
-        \Debugbar::info($evidencia);
-        \Debugbar::info($evidencia->archivo);
-        \Debugbar::info($size);
         return view('autoevaluacion.SuperAdministrador.Evidencias.edit', [
             'actividad' => $evidencia,
             'edit' => true,

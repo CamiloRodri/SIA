@@ -9,6 +9,7 @@ use App\Models\Autoevaluacion\ActividadesMejoramiento;
 use App\Models\Autoevaluacion\CalificaActividad;
 use App\Models\Autoevaluacion\FechaCorte;
 use Yajra\DataTables\DataTables;
+use Illuminate\Support\Facades\Session;
 use App\Models\Autoevaluacion\Archivo;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Controllers\Controller;
@@ -47,7 +48,15 @@ class CalificaActividadController extends Controller
         elseif($fechahoy <= $fechacorte->FCO_Fecha)
         {
             $calificacion = CalificaActividad::where('FK_CLA_Actividad_Mejoramiento', $actividad->PK_ACM_Id)->first();
-
+            if($calificacion)
+                {
+                    Session::put('calificacion', $calificacion->CLA_Calificacion);
+                    Session::put('observacion', $calificacion->CLA_Observacion);
+                }
+                else
+                {
+                    Session::put('calificacion', 'null');
+                }
             return view('autoevaluacion.SuperAdministrador.CalificaActividades.index', compact('actividad', 'calificacion'));
         }
         else
@@ -133,17 +142,14 @@ class CalificaActividadController extends Controller
         }
         else
         {
-            // dd($valida, $fechacorte);
             if($valida->FK_CLA_Fecha_Corte == $fechacorte->PK_FCO_Id)
             {
-                // dd("no deberia");
                 $valida->CLA_Calificacion = $request->get('CLA_Calificacion');
                 $valida->CLA_Observacion = $request->get('CLA_Observacion');
                 $valida->update();
             }
             else
             {
-                // dd("entro");
                 $calificacion_nueva = new CalificaActividad();
                 $calificacion_nueva->fill($request->only(['CLA_Calificacion', 
                                                     'CLA_Observacion',

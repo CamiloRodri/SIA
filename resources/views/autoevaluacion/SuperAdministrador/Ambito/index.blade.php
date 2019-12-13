@@ -85,7 +85,6 @@
 @push('functions')
     <script type="text/javascript">
         $(document).ready(function () {
-
             var formCreate = $('#form_ambito');
             $('#crear_ambitos').click(function () {
                 $(formCreate)[0].reset();
