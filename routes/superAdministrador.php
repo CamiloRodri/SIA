@@ -195,7 +195,12 @@ Route::post('historial/filtro_encuestas/{idProceso}', array(
 
 //Caracteristicas Mejoramiento
 Route::resource('caracteristicas_mejoramiento', 'CaracteristicasMejoramientoController', ['as' => 'admin']);
-Route::get('caracteristicas_mejoramiento/data/data', array('as' => 'admin.caracteristicas_mejoramiento.data', 'uses' => 'CaracteristicasMejoramientoController@data'));
+Route::get('caracteristicas_mejoramiento/data/data', array(
+    'as' => 'admin.caracteristicas_mejoramiento.data', 
+    'uses' => 'CaracteristicasMejoramientoController@data'));
+Route::get('caracteristicas_mejoramiento/data_doc/data_doc', array(
+    'as' => 'admin.caracteristicas_mejoramiento.data_doc', 
+    'uses' => 'CaracteristicasMejoramientoController@data_doc'));
 
 //Responsables
 Route::resource('responsables', 'ResponsablesController', ['as' => 'admin']);

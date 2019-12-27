@@ -7,6 +7,14 @@
 @section('content')
     @component('admin.components.panel') 
     @slot('title', 'Calificación Actividad de Mejoramiento')
+    <div>
+        Puntuación para Calificar: 
+        <img src="{{ asset('titan\assets\images\calificacion.png') }}" class="img-responsive" alt=""> </div>
+    </div>
+    <br>
+    <br>
+    <br>
+    <hr>
     <div class="actions col-md-6">
         @can('CREAR_CALIFICA_ACTIVIDADES')
         {{-- <a href="{{ route('admin.evidencia.create', $actividad->PK_ACM_Id) }}" class="btn btn-info">

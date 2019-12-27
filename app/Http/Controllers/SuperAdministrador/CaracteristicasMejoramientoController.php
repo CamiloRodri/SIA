@@ -3,11 +3,14 @@
 namespace App\Http\Controllers\SuperAdministrador;
 
 use App\Http\Controllers\Controller;
+use App\Models\Autoevaluacion\AmbitoResponsabilidad;
 use App\Models\Autoevaluacion\Caracteristica;
 use App\Models\Autoevaluacion\PlanMejoramiento;
 use App\Models\Autoevaluacion\Proceso;
 use App\Models\Autoevaluacion\SolucionEncuesta;
-use DataTables;
+use App\Models\Autoevaluacion\DocumentoAutoevaluacion;
+use App\Models\Autoevaluacion\Factor;
+use Yajra\DataTables\DataTables;
 use Illuminate\Http\Request;
 
 class CaracteristicasMejoramientoController extends Controller
@@ -35,6 +38,11 @@ class CaracteristicasMejoramientoController extends Controller
      */
     public function index()
     {
+        $proceso = Proceso::where('PK_PCS_Id', '=', session()->get('id_proceso'))
+                    ->first();
+        // $docAuto = DocumentoAutoevaluacion::whereHas('indicadorDocumental.caracteristica', '=', $proceso->PK_PCS_Id)->get();
+        // dd($docAuto);
+
         $planMejoramiento = PlanMejoramiento::where('FK_PDM_Proceso', '=', session()->get('id_proceso'))
             ->first();
         return view('autoevaluacion.SuperAdministrador.CaracteristicasMejoramiento.index', compact('planMejoramiento'));
@@ -70,6 +78,7 @@ class CaracteristicasMejoramientoController extends Controller
                             })
                             ->with('respuestas.ponderacion')
                             ->get();
+                            // dd($caracteristicas, $soluciones);
                         if ($soluciones->count() > 0) {
                             $totalponderacion = 0;
                             $prueba = $soluciones->count();
@@ -101,6 +110,36 @@ class CaracteristicasMejoramientoController extends Controller
                     ->make(true);
             }
         }
+    }
+
+    public function data_doc(Request $request)
+    {
+        // $planMejoramiento = PlanMejoramiento::where('FK_PDM_Proceso', '=', session()->get('id_proceso'))
+        //     ->first();
+        // if ($planMejoramiento != null) {
+        //     if ($request->ajax() && $request->isMethod('GET')) {
+                $proceso = Proceso::where('PK_PCS_Id', '=', session()->get('id_proceso'))
+                    ->first();
+                    $docAuto = DocumentoAutoevaluacion::where('FK_DOA_Proceso', '=', $proceso->PK_PCS_Id)->get();
+                return DataTables::of($docAuto)
+                    ->addColumn('Calificacion', function ($docAuto) {
+                        // $docAuto->DOA_Calificacion = session()->pull('valorizacion')[0];
+                        if ($docAuto->DOA_Calificacion >= 0.0 && $docAuto->DOA_Calificacion < 3.9 || $docAuto->DOA_Calificacion == null) {
+                            return "<span class='label label-sm label-danger'>No se cumple</span>";
+                        } elseif ($docAuto->DOA_Calificacion >= 4.0 && $docAuto->DOA_Calificacion <= 6.9) {
+                            return "<span class='label label-sm label-warning'>Parcialmente</span>";
+                        } elseif ($docAuto->DOA_Calificacion >= 7.0 && $docAuto->DOA_Calificacion <= 9.5) {
+                            return "<span class='label label-sm label-info'>Se cumple aceptablemente</span>";
+                        } else {
+                            return "<span class='label label-sm label-success'>Se cumple totalmente</span>";
+                        }
+                    })
+                    ->rawColumns(['Calificacion'])
+                    ->removeColumn('created_at')
+                    ->removeColumn('updated_at')
+                    ->make(true);
+    //         }
+    //     }
     }
 
     /**
