@@ -17,7 +17,7 @@
             </ul>
             <div class="clearfix">
             </div>
-        </div>        
+        </div>
         @if(session()->get('id_proceso'))
             @if(isset($planMejoramiento))
                 <div class="col-md-12">
@@ -34,7 +34,14 @@
                     <div class="x_content">
                         <div class="col-md-12">
                             @component('admin.components.datatable', ['id' => 'caracteristicas_mejoramiento_table_ajax']) @slot('columns', [
-                                'id', 'Caracteristica', 'Descripcion', 'Identificador', 'Factor', 'Ambito', 'Valorizacion', 'Calificacion',
+                                'id',
+                                'Caracteristica',
+                                'Descripcion',
+                                'Identificador',
+                                'Factor',
+                                'Ambito',
+                                'Valorizacion',
+                                'Calificacion',
                                 'Acciones' => ['style' => 'width:50px;']])
                             @endcomponent
                         </div>
@@ -54,17 +61,26 @@
                     </ul>
                     <div class="clearfix">
                     </div>
-                </div> 
+                </div>
                 @can('VER_VALORIZACION_CARACTERISTICAS')
                     <div class="x_content">
                         <div class="col-md-12">
                             @component('admin.components.datatable', ['id' => 'caracteristicas_mejoramiento_doc_table_ajax']) @slot('columns', [
-                                'id', 'Numero', 'Descripcion', 'Observaciones', 'Valorizacion', 'Calificacion',
+                                'id',
+                                'Nombre',
+                                'Caracteristica',
+                                'Factor',
+                                'identificador',
+                                'Numero',
+                                'Descripcion',
+                                'Observaciones',
+                                'Valorizacion',
+                                'Calificacion',
                                 'Acciones' => ['style' => 'width:50px;']])
                             @endcomponent
                         </div>
                     </div>
-                @endcan 
+                @endcan
     </div>
             @else
                 Este proceso aun no tiene plan de mejoramiento.
@@ -205,6 +221,10 @@
                 "ajax": "{{ route('admin.caracteristicas_mejoramiento.data_doc') }}",
                 "columns": [
                     {data: 'PK_DOA_Id', name: 'id', "visible": false},
+                    {data: 'nombre',name: 'Nombre',className: "min-tablet-l"},
+                    {data: 'nombre_caracteristica',name: 'Caracteristica',className: "min-tablet-l"},
+                    {data: 'nombre_factor',name: 'Factor',className: "all"},
+                    {data: 'identificador',name: 'Factor',className: "all"},
                     {data: 'DOA_Numero', name: 'Numero', className: "min-phone-l"},
                     {data: 'DOA_DescripcionGeneral', name: 'Descripcion', className: "min-phone-l"},
                     {data: 'DOA_Observaciones', name: 'Observaciones', className: "min-phone-l"},
@@ -270,11 +290,10 @@
 
             });
             table_2.on('click', '.asignar_table_2', function (e) {
-                var prueba = dataTable.PK_DOA_Id;
                 e.preventDefault();
                 $tr = $(this).closest('tr');
-                var dataTable = table.row($tr).data();
-                var route = '{{ url('admin/actividades_mejoramiento/') }}' + '/' + dataTable.PK_DOA_Id;
+                var dataTable = table_2.row($tr).data();
+                var route = '{{ url('admin/actividades_mejoramiento/') }}' + '/' + dataTable.identificador;
                 window.location.href = route;
             });
             @endif

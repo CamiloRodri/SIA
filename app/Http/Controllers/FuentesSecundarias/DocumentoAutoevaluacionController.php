@@ -12,7 +12,7 @@ use App\Models\Autoevaluacion\Factor;
 use App\Models\Autoevaluacion\IndicadorDocumental;
 use App\Models\Autoevaluacion\Proceso;
 use App\Models\Autoevaluacion\TipoDocumento;
-use DataTables;
+use Yajra\DataTables\DataTables;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -254,7 +254,7 @@ class DocumentoAutoevaluacionController extends Controller
         $documento = DocumentoAutoevaluacion::where('PK_DOA_Id', '=', $id_documento)
             ->with(['archivo', 'indicadorDocumental', 'tipoDocumento', 'dependencia'])
             ->get();
-        return view('autoevaluacion.FuentesSecundarias.DocumentosAutoevaluacion.evaluar', 
+        return view('autoevaluacion.FuentesSecundarias.DocumentosAutoevaluacion.evaluar',
         compact('documento'));
     }
 
@@ -427,5 +427,4 @@ class DocumentoAutoevaluacionController extends Controller
         return json_encode($caracteristicas);
     }
 
-    
 }

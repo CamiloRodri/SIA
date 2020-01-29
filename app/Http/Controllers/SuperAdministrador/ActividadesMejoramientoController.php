@@ -11,7 +11,7 @@ use App\Models\Autoevaluacion\Responsable;
 use App\Models\Autoevaluacion\FechaCorte;
 use App\Models\Autoevaluacion\CalificaActividad;
 use Carbon\Carbon;
-use DataTables;
+use Yajra\DataTables\DataTables;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -46,7 +46,7 @@ class ActividadesMejoramientoController extends Controller
     {
         $planMejoramiento = PlanMejoramiento::where('FK_PDM_Proceso', '=', session()->get('id_proceso'))
             ->first();
-        $fechascorte = FechaCorte::where('FK_FCO_Proceso', '=', session()->get('id_proceso')) 
+        $fechascorte = FechaCorte::where('FK_FCO_Proceso', '=', session()->get('id_proceso'))
                     ->orderBy('FCO_Fecha')
                     ->get();
         $fechahoy = Carbon::now()->format('Y-m-d');
@@ -82,7 +82,7 @@ class ActividadesMejoramientoController extends Controller
                     })
                         ->with('Caracteristicas.factor', 'responsable.usuarios')
                         ->where('FK_ACM_Responsable','=',$responsable->PK_RPS_Id ?? null)
-                        ->get(); 
+                        ->get();
 
                 }
                 return DataTables::of($actividades)
@@ -94,7 +94,7 @@ class ActividadesMejoramientoController extends Controller
                     })
                     ->addColumn('responsable', function ($actividades) {
                         return $actividades->responsable->usuarios->name." ".$actividades->responsable->usuarios->lastname;
-                        
+
                     })
                     ->addColumn('estado', function ($actividades) {
 
@@ -270,7 +270,7 @@ class ActividadesMejoramientoController extends Controller
                 $actividades->ACM_Estado=1;}
             $actividades->update();
             return redirect()->back()->with('status','Mensaje Enviado');
-        } 
+        }
     }
 
     public function calendario(Request $request)
@@ -278,7 +278,7 @@ class ActividadesMejoramientoController extends Controller
         $fechahoy = Carbon::now()->format('Y-m-d');
         $actividades = ActividadesMejoramiento::where('PK_ACM_Id', '0')->get();
         $planMejoramiento = PlanMejoramiento::where('FK_PDM_Proceso', '=', session()->get('id_proceso'))
-            ->first();        
+            ->first();
         if ($planMejoramiento != null) {
                 if(Auth::user()->hasRole('SUPERADMIN') || Auth::user()->hasRole('SUPERADMIN'))
                 {
@@ -294,7 +294,7 @@ class ActividadesMejoramientoController extends Controller
                     ->first();
                     $actividades = ActividadesMejoramiento::where('FK_ACM_Plan_Mejoramiento', session()->get('id_proceso'))
                         ->where('FK_ACM_Responsable','=',$responsable->PK_RPS_Id ?? null)
-                        ->get(); 
+                        ->get();
                 }
         }
 
@@ -305,8 +305,8 @@ class ActividadesMejoramientoController extends Controller
             // $actividad->json = '[{"title'.'":"'.$nombre.'"},'.'{"start'.'":"'.$inicio.'"},'.'{"end'.'":"'.$fin.'"},'.']';
             $actividad->json = collect([['title' => $nombre , 'start' => $inicio, 'end' => $fin ]]);
             $actividad->json = $actividad->json->toJson();
-        }   
-        
+        }
+
         //dd($actividades);
 
         return view('autoevaluacion.SuperAdministrador.CalendarioPlanMejoramiento.index', compact('planMejoramiento', 'fechahoy', 'actividades'));

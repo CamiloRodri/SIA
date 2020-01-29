@@ -78,7 +78,6 @@ class CaracteristicasMejoramientoController extends Controller
                             })
                             ->with('respuestas.ponderacion')
                             ->get();
-                            // dd($caracteristicas, $soluciones);
                         if ($soluciones->count() > 0) {
                             $totalponderacion = 0;
                             $prueba = $soluciones->count();
@@ -114,14 +113,37 @@ class CaracteristicasMejoramientoController extends Controller
 
     public function data_doc(Request $request)
     {
-        // $planMejoramiento = PlanMejoramiento::where('FK_PDM_Proceso', '=', session()->get('id_proceso'))
-        //     ->first();
-        // if ($planMejoramiento != null) {
-        //     if ($request->ajax() && $request->isMethod('GET')) {
+        $planMejoramiento = PlanMejoramiento::where('FK_PDM_Proceso', '=', session()->get('id_proceso'))
+            ->first();
+        if ($planMejoramiento != null) {
+            if ($request->ajax() && $request->isMethod('GET')) {
                 $proceso = Proceso::where('PK_PCS_Id', '=', session()->get('id_proceso'))
                     ->first();
-                    $docAuto = DocumentoAutoevaluacion::where('FK_DOA_Proceso', '=', $proceso->PK_PCS_Id)->get();
+                    $docAuto = DocumentoAutoevaluacion::with('indicadorDocumental.caracteristica.factor')
+                    ->with('archivo')
+                    ->with(['tipoDocumento' => function ($query) {
+                        return $query->select('PK_TDO_Id', 'TDO_Nombre');
+                    }])
+                    ->where('FK_DOA_Proceso', '=', $proceso->PK_PCS_Id)
+                    ->get();
+
                 return DataTables::of($docAuto)
+                    ->addColumn('nombre', function ($docAuto) {
+                        if ($docAuto->archivo) {
+                            return $docAuto->archivo->ACV_Nombre;
+                        } else {
+                            return 'Link';
+                        }
+                    })
+                    ->addColumn('nombre_caracteristica', function ($docAuto) {
+                        return $docAuto->indicadorDocumental->caracteristica->nombre_caracteristica;
+                    })
+                    ->addColumn('nombre_factor', function ($docAuto) {
+                        return $docAuto->indicadorDocumental->caracteristica->factor->nombre_factor;
+                    })
+                    ->addColumn('identificador', function ($docAuto) {
+                        return $docAuto->indicadorDocumental->caracteristica->CRT_Identificador;
+                    })
                     ->addColumn('Calificacion', function ($docAuto) {
                         // $docAuto->DOA_Calificacion = session()->pull('valorizacion')[0];
                         if ($docAuto->DOA_Calificacion >= 0.0 && $docAuto->DOA_Calificacion < 3.9 || $docAuto->DOA_Calificacion == null) {
@@ -138,8 +160,8 @@ class CaracteristicasMejoramientoController extends Controller
                     ->removeColumn('created_at')
                     ->removeColumn('updated_at')
                     ->make(true);
-    //         }
-    //     }
+            }
+        }
     }
 
     /**
