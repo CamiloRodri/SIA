@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\SuperAdministrador;
 
 use App\Http\Controllers\Controller;
-use DataTables;
+use Yajra\DataTables\DataTables;
 use Illuminate\Http\Request;
 use Spatie\Activitylog\Models\Activity;
 
@@ -35,15 +35,15 @@ class SeguridadController extends Controller
                 ->addColumn('usuario', function ($seguridad) {
                     return $seguridad->causer->email ?? 'Usuario no especificado';
                 })
-                
+
                 ->addColumn('antes', function ($seguridad) {
                     $json = json_decode($seguridad->properties, true);
-                    
+
                     if(isset($json['old'])){
                         $data = json_encode($json['old']);
                         return $data;
                     }
-                    
+
                     return '';
                 })
                 ->addColumn('despues', function ($seguridad) {
