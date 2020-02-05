@@ -24,6 +24,7 @@ class CreateActividadesMejoramiento extends Migration
             $table->integer("FK_ACM_Caracteristica")->unsigned();
             $table->integer("FK_ACM_Plan_Mejoramiento")->unsigned();
             $table->boolean("ACM_Estado");
+            $table->date("ACM_Notificacion");
             $table->timestamps();
 
             $table->foreign("FK_ACM_Responsable")->references("PK_RPS_Id")->on("TBL_Responsables")->onDelete("cascade");
