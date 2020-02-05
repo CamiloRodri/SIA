@@ -43,7 +43,7 @@ class CalificaActividadController extends Controller
 
         if(!$fechacorte)
         {
-            return redirect()->back()->with('fecha_corte_error','Mensaje Error'); 
+            return redirect()->back()->with('fecha_corte_error_califica','Mensaje Error');
         }
         elseif($fechahoy <= $fechacorte->FCO_Fecha)
         {
@@ -66,7 +66,7 @@ class CalificaActividadController extends Controller
     }
     public function data(Request $request, $id)
     {
-        
+
         if ($request->ajax() && $request->isMethod('GET')) {
             $docEvidencia = Evidencia::with('archivo')->where('FK_EVD_Actividad_Mejoramiento', $id)
                 ->get();
@@ -123,13 +123,13 @@ class CalificaActividadController extends Controller
                     ->where('FK_FCO_Proceso', '=', session()->get('id_proceso'))
                     ->get()
                     ->first();
-                    
+
         $valida = CalificaActividad::where('FK_CLA_Actividad_Mejoramiento', $request->get('FK_CLA_Actividad_Mejoramiento'))->get()->last();
 
         if(!$valida)
         {
             $calificacion = new CalificaActividad();
-            $calificacion->fill($request->only(['CLA_Calificacion', 
+            $calificacion->fill($request->only(['CLA_Calificacion',
                                                 'CLA_Observacion',
                                                 'FK_CLA_Actividad_Mejoramiento']));
 
@@ -151,20 +151,20 @@ class CalificaActividadController extends Controller
             else
             {
                 $calificacion_nueva = new CalificaActividad();
-                $calificacion_nueva->fill($request->only(['CLA_Calificacion', 
+                $calificacion_nueva->fill($request->only(['CLA_Calificacion',
                                                     'CLA_Observacion',
                                                     'FK_CLA_Actividad_Mejoramiento']));
                 $calificacion_nueva->FK_CLA_Fecha_Corte = $fechacorte->PK_FCO_Id;
                 $calificacion_nueva->save();
             }
-            
+
             $actividadesMejoramiento = ActividadesMejoramiento::findOrFail($request->FK_CLA_Actividad_Mejoramiento);
             $actividadesMejoramiento->ACM_Estado = 3;
             $actividadesMejoramiento->update();
         }
 
         return redirect()->route('admin.actividades_mejoramiento.index')->with('status', 'Actividad Calificada');
-        
+
         return response(['msg' => 'Calificación registrado correctamente.',
             'title' => '¡Registro exitoso!',
         ], 200) // 200 Status Code: Standard response for successful HTTP request
@@ -206,10 +206,10 @@ class CalificaActividadController extends Controller
         $fechacorte = FechaCorte::whereDate('FCO_Fecha', '>=', Carbon::now()->format('Y-m-d'))
                     ->where('FK_FCO_Proceso', '=', session()->get('id_proceso'))
                     ->get()
-                    ->last();       
+                    ->last();
 
         $calificacion = new CalificaActividad();
-        $calificacion->fill($request->only(['CLA_Calificacion', 
+        $calificacion->fill($request->only(['CLA_Calificacion',
                                             'CLA_Observacion',
                                             'FK_CLA_Actividad_Mejoramiento']));
 

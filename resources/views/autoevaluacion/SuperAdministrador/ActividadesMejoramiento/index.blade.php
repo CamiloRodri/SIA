@@ -10,11 +10,11 @@
                 @can('VER_ACTIVIDADES_MEJORAMIENTO')
                     <div class="col-md-12">
                         @include('autoevaluacion.SuperAdministrador.ActividadesMejoramiento._form_fecha_corte')
-                        @component('admin.components.datatable', ['id' => 'actividades_mejoramiento_table_ajax']) 
+                        @component('admin.components.datatable', ['id' => 'actividades_mejoramiento_table_ajax'])
                             @slot('columns', [
-                            'id','Factor','Caracteristica','Actividad', 'Descripcion', 'Fecha de Inicio', 
+                            'id','Factor','Caracteristica','Actividad', 'Descripcion', 'Fecha de Inicio',
                             'Fecha de Finalizacion', 'Responsable','Estado', 'Avance',
-                            'Acciones' => ['style' => 'width:85px;']]) 
+                            'Acciones' => ['style' => 'width:85px;']])
                         @endcomponent
                     </div>
                 @endcan
@@ -181,6 +181,22 @@
             new PNotify({
                 tittle:'Error',
                 text:'No se puede Calificar la evidencia, sobrepaso la ultima fecha de corte.',
+                type:'error',
+                styling:'bootstrap3'
+	        });
+	        @endif
+            @if (session('fecha_corte_error_califica'))
+            new PNotify({
+                tittle:'Error',
+                text:'No se puede Calificar la evidencia, el proceso no posee fecha de corte.',
+                type:'error',
+                styling:'bootstrap3'
+	        });
+	        @endif
+            @if (session('fecha_corte_error'))
+            new PNotify({
+                tittle:'Error',
+                text:'No se puede Agregar la evidencia, el proceso no posee fecha de corte.',
                 type:'error',
                 styling:'bootstrap3'
 	        });
