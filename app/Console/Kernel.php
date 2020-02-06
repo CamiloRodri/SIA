@@ -24,7 +24,7 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        //
+        'App\Console\Commands\NotifiedUsers',
     ];
 
     /**
@@ -37,6 +37,13 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
+        /**
+         * Schedule utilizado para comprobar enviar diariamente un correo
+         * como notificacion a los responsables de las actividades por vencer
+         */
+        $schedule->command('notified:users')->daily();
+
+
         /**
          * Schedule utilizado para comprobar si el proceso ya termino
          * si ya termino el estado cambia a 1 el cual significa cerrado
