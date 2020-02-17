@@ -5,6 +5,8 @@ namespace App\Http\Controllers\SuperAdministrador;
 use App\Http\Controllers\Controller;
 use App\Models\Autoevaluacion\AmbitoResponsabilidad;
 use App\Models\Autoevaluacion\Caracteristica;
+use App\Models\Autoevaluacion\Encuesta;
+use App\Models\Autoevaluacion\Encuestado;
 use App\Models\Autoevaluacion\Factor;
 use App\Models\Autoevaluacion\FrenteEstrategico;
 use App\Models\Autoevaluacion\Metodologia;
@@ -40,56 +42,59 @@ class AmbitoController extends Controller
          */
         $proceso = Proceso::where('PK_PCS_Id', '=', session()->get('id_proceso'))->first();
         $programa = $proceso->programa;
-        $facultad = $proceso->programa->facultad;
-        $sede = $proceso->programa->sede;
+        // $facultad = $proceso->programa->facultad;
+        // $sede = $proceso->programa->sede;
         $institucion = $proceso->programa->sede->institucion;
-        $metodologia = $proceso->programa->metodologia;
-        // $metodologia_query = Metodologia::where('PK_MTD_Id', '=', $institucion->FK_ITN_Metodologia)->first();
-        // $frentesEstrategicos = FrenteEstrategico::where('FK_FES_Institucion', '=', $institucion->PK_ITN_Id)->get();
+        // $metodologia = $proceso->programa->metodologia;
+        $metodologia_query = Metodologia::where('PK_MTD_Id', '=', $institucion->FK_ITN_Metodologia)->first();
+        $frentesEstrategicos = FrenteEstrategico::where('FK_FES_Institucion', '=', $institucion->PK_ITN_Id)->get();
         // dd($proceso, $programa, $facultad, $sede, $institucion, $metodologia, $metodologia_query, $frentesEstrategicos);
 
+        /**
+         * Path para descargar
+         */
         // $ruta = public_path(). "\storage\Plantila_AutoEvaluacion_V2.docx";
         // dd(public_path(). "\storage\Plantila_AutoEvaluacion_V2.docx");
 
         $documento = new TemplateProcessor('Plantila_AutoEvaluacion_V2.docx');
 
-        // $documento->setValue('nombre_institucion', $institucion->ITN_Nombre);
-        // $documento->setValue('domicilio_institucion', $institucion->ITN_Domicilio);
-        // $documento->setValue('caracter_institucion', $institucion->ITN_Caracter);
-        // $documento->setValue('snies_institucion', $institucion->ITN_CodigoSNIES);
-        // $documento->setValue('norma_creacion', $institucion->ITN_Norma_Creacion);
-        // $documento->setValue('estudiante_matriculados', $institucion->ITN_Estudiantes);
-        // $documento->setValue('metodologia', $metodologia_query->MTD_Nombre);
-        // $documento->setValue('planta', $institucion->ITN_Profesor_Planta);
-        // $documento->setValue('t_c', $institucion->ITN_Profesor_TCompleto);
-        // $documento->setValue('m_t', $institucion->ITN_Profesor_TMedio);
-        // $documento->setValue('catedra', $institucion->ITN_Profesor_Catedra);
-        // $documento->setValue('graduados', $institucion->ITN_Graduados);
-        // $documento->setValue('boletin_mes', $institucion->ITN_FuenteBoletinMes);
-        // $documento->setValue('boletin_anio', $institucion->ITN_FuenteBoletinAnio);
-        // $documento->setValue('mision', $institucion->ITN_Mision);
-        // $documento->setValue('vision', $institucion->ITN_Vision);
-        $documento->setValue('nombre_programa', $programa->PAC_Nombre);
-        $documento->setValue('formacion', $programa->PAC_Nivel_Formacion);
-        $documento->setValue('titulo', $programa->PAC_Titutlo_Otorga);
-        $documento->setValue('situacion', $programa->PAC_Situacion_Programa);
-        $documento->setValue('anio_inicio_act', $programa->PAC_Anio_Inicio_Actividades);
-        $documento->setValue('lugar_funcionamiento', $programa->PAC_Lugar_Funcionamiento);
-        $documento->setValue('norma_creacion_programa', $programa->PAC_Norma_Interna);
-        $documento->setValue('resolucion_r_c', $programa->PAC_Resolucion_Registro);
-        $documento->setValue('snies', $programa->PAC_Codigo_SNIES);
-        $documento->setValue('creditos', $programa->PAC_Numero_Creditos);
-        $documento->setValue('duracion', $programa->PAC_Duracion);
-        $documento->setValue('jornada', $programa->PAC_Jornada);
-        $documento->setValue('duracion_semestre', $programa->PAC_Duracion_Semestre);
-        $documento->setValue('periodicidad', $programa->PAC_Periodicidad);
-        $documento->setValue('adscrito', $programa->PAC_Adscrito);
-        $documento->setValue('area_conocimiento', $programa->PAC_Area_Conocimiento);
-        $documento->setValue('nucleo_basico', $programa->PAC_Nucleo);
-        $documento->setValue('area_formacion', $programa->PAC_Area_Formacion);
-        $documento->setValue('estudiantes_actual', $programa->PAC_Estudiantes);
-        $documento->setValue('no_egresados', $programa->PAC_Egresados);
-        $documento->setValue('smlv', $programa->PAC_Valor_Matricula);
+        $documento->setValue('nombre_institucion', $institucion->ITN_Nombre);
+        $documento->setValue('domicilio_institucion', $institucion->ITN_Domicilio);
+        $documento->setValue('caracter_institucion', $institucion->ITN_Caracter);
+        $documento->setValue('snies_institucion', $institucion->ITN_CodigoSNIES);
+        $documento->setValue('norma_creacion', $institucion->ITN_Norma_Creacion);
+        $documento->setValue('estudiante_matriculados', $institucion->ITN_Estudiantes);
+        $documento->setValue('metodologia', $metodologia_query->MTD_Nombre);
+        $documento->setValue('planta', $institucion->ITN_Profesor_Planta);
+        $documento->setValue('t_c', $institucion->ITN_Profesor_TCompleto);
+        $documento->setValue('m_t', $institucion->ITN_Profesor_TMedio);
+        $documento->setValue('catedra', $institucion->ITN_Profesor_Catedra);
+        $documento->setValue('graduados', $institucion->ITN_Graduados);
+        $documento->setValue('boletin_mes', $institucion->ITN_FuenteBoletinMes);
+        $documento->setValue('boletin_anio', $institucion->ITN_FuenteBoletinAnio);
+        $documento->setValue('mision', $institucion->ITN_Mision);
+        $documento->setValue('vision', $institucion->ITN_Vision);
+        // $documento->setValue('nombre_programa', $programa->PAC_Nombre);
+        // $documento->setValue('formacion', $programa->PAC_Nivel_Formacion);
+        // $documento->setValue('titulo', $programa->PAC_Titutlo_Otorga);
+        // $documento->setValue('situacion', $programa->PAC_Situacion_Programa);
+        // $documento->setValue('anio_inicio_act', $programa->PAC_Anio_Inicio_Actividades);
+        // $documento->setValue('lugar_funcionamiento', $programa->PAC_Lugar_Funcionamiento);
+        // $documento->setValue('norma_creacion_programa', $programa->PAC_Norma_Interna);
+        // $documento->setValue('resolucion_r_c', $programa->PAC_Resolucion_Registro);
+        // $documento->setValue('snies', $programa->PAC_Codigo_SNIES);
+        // $documento->setValue('creditos', $programa->PAC_Numero_Creditos);
+        // $documento->setValue('duracion', $programa->PAC_Duracion);
+        // $documento->setValue('jornada', $programa->PAC_Jornada);
+        // $documento->setValue('duracion_semestre', $programa->PAC_Duracion_Semestre);
+        // $documento->setValue('periodicidad', $programa->PAC_Periodicidad);
+        // $documento->setValue('adscrito', $programa->PAC_Adscrito);
+        // $documento->setValue('area_conocimiento', $programa->PAC_Area_Conocimiento);
+        // $documento->setValue('nucleo_basico', $programa->PAC_Nucleo);
+        // $documento->setValue('area_formacion', $programa->PAC_Area_Formacion);
+        // $documento->setValue('estudiantes_actual', $programa->PAC_Estudiantes);
+        // $documento->setValue('no_egresados', $programa->PAC_Egresados);
+        // $documento->setValue('smlv', $programa->PAC_Valor_Matricula);
 
         // $documento->cloneRow('no_frente_estrategico', sizeof($frentesEstrategicos));
 
@@ -152,11 +157,8 @@ class AmbitoController extends Controller
                 $documento->setValue('caracteristica#'.$contador_caracteristicas, $labelsCaracteristica[$k]);
                 $contador_caracteristicas++;
             }
-            // $documento->setValue('caracteristica#'.$j, $labelsCaracteristica[0]);
-            // $documento->setValue('caracteristica#'.$va1, $labelsCaracteristica[1]);
-            // $documento->setValue('caracteristica#'.$va2, $labelsCaracteristica[2]);
 
-            $ponderacion = intval(array_sum($dataCaracteristicas)/count($dataCaracteristicas));
+            $ponderacion = round(array_sum($dataCaracteristicas)/count($dataCaracteristicas));
 
             // dd($labelsCaracteristica, $dataCaracteristicas, $ponderacion, $contador_caracteristicas, $contador_factores);
 
@@ -179,6 +181,42 @@ class AmbitoController extends Controller
             $documento->setValue('ponderacion#'.$j, $ponderacion);
         }   //FOR
 
+        /**
+         * Dedicado para traer la catidad total de encuestados
+         */
+        $encuesta = Encuesta::where('FK_ECT_Proceso', '=', session()->get('id_proceso'))->first();
+        $encuestados = Encuestado::with('grupos')
+            ->where('FK_ECD_Encuesta', '=', $encuesta->PK_ECT_Id ?? null)
+            ->selectRaw('*, COUNT(FK_ECD_GrupoInteres) as cantidad')
+            ->groupby('FK_ECD_GrupoInteres')
+            ->get();
+        $labelsEncuestado = [];
+        $dataEncuestado = [];
+        foreach ($encuestados as $encuestado) {
+            array_push($labelsEncuestado, $encuestado->grupos->GIT_Nombre);
+            array_push($dataEncuestado, $encuestado->cantidad);
+        }
+
+        $totalEstudiates = $dataEncuestado[3] + $dataEncuestado[4];
+        $coberturaEstudiantes = ($totalEstudiates * 100) / $programa->PAC_Estudiantes;
+        $coberturaDocentes = ($dataEncuestado[0] * 100) / 120;
+        $coberturaAdmin = ($dataEncuestado[1] * 100 / 8);
+        $coberturaEgresados = ($dataEncuestado[2] * 100 / 10);
+
+        dd($labelsEncuestado[2], $dataEncuestado[2], round($coberturaEgresados, 2));
+
+        $documento->setValue('total_estudiantes', $programa->PAC_Estudiates);
+        $documento->setValue('solucion_estudiantes', $totalEstudiates);
+        $documento->setValue('cobertura_estudiantes', round($coberturaEstudiantes, 2));
+        // $documento->setValue('total_docentes', $dataEncuestado[0]);
+        $documento->setValue('solucion_docentes', $dataEncuestado[0]);
+        $documento->setValue('cobertura_docentes', round($coberturaDocentes), 2);
+        // $documento->setValue('total_admin', $);
+        $documento->setValue('solucion_admin', $dataEncuestado[1]);
+        $documento->setValue('cobertura_admin', round($coberturaAdmin), 2);
+        // $documento->setValue('total_egresados', $);
+        $documento->setValue('solucion_egresados', $dataEncuestado[2]);
+        $documento->setValue('cobertura_egresados', round($coberturaEgresados), 2);
 
         $documento->saveAs('InformeAuto.docx');
 
