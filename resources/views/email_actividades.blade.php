@@ -338,10 +338,12 @@
                         <p>Hola, {!!$nombre_responsable!!}</p>
                         <hr>
                         <p>Es un gusto para nosotros que forme parte del sistema de autoevaluación,
-                            por lo cual ha sido designado como responsable de la actividad: <br><br>{{--Actividad de Mejoramiento--}} {!!$ACM_Nombre!!},
-                            <br>Descripción: {{--Descripcion de la actividad de mejoramiento--}} {!!$ACM_Descripcion!!}
-                            <br><br>Fecha de Finalización: {{--22-22-2020 00:00:00--}} {!!$ACM_Fecha_Fin!!}.
-                            <br><span class="label danger">Tener en cuenta, días restantes: {{--3--}} {!!$dias_restantes!!}</span>
+                            por lo cual ha sido designado como responsable de la actividad: <br><br>{!!$ACM_Nombre!!},
+                            <br>Descripción: {!!$ACM_Descripcion!!}
+                            <br><br>Fecha de Finalización: {{date('j M, Y -- h:i:s a', strtotime($ACM_Fecha_Fin))}}.
+                            {{-- <br><br>Fecha de Finalización: {{\Carbon\Carbon::parse($ACM_Fecha_Fin->date)->format('j F, Y')}}. --}}
+                            {{-- \Carbon\Carbon::parse($ACM_Fecha_Fin->date)->format('j F, Y') --}}
+                            <br>{!!$dias_restantes!!}
                         </p>
                         <table role="presentation" border="0" cellpadding="0" cellspacing="0" class="btn btn-primary">
                           <tbody>
