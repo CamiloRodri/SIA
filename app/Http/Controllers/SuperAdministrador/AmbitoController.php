@@ -97,7 +97,7 @@ class AmbitoController extends Controller
         $documento->setValue('no_egresados', $programa->PAC_Egresados);
         $documento->setValue('smlv', $programa->PAC_Valor_Matricula);
 
-        // $documento->cloneRow('no_frente_estrategico', sizeof($frentesEstrategicos));
+        $documento->cloneRow('no_frente_estrategico', sizeof($frentesEstrategicos));
 
         /**
          * Uso de tablas
@@ -116,7 +116,6 @@ class AmbitoController extends Controller
         /**
          * Enfocado a traer la ponderacion y demas datos que necesita la tabla de resultados
          */
-
         $labelsCaracteristica = [];
         $dataCaracteristicas = [];
         // $dataFactor = [];
@@ -151,11 +150,12 @@ class AmbitoController extends Controller
                 $prueba = $totalPonderacion / $prueba;
                 array_push($dataCaracteristicas, $prueba);
             }
-
-            $documento->setValue('factor#'.$j, $factor->FCT_Nombre);
+            $stringMinusculasFactor = mb_strtolower($factor->FCT_Nombre, 'UTF-8');
+            $documento->setValue('factor#'.$j, ucfirst($stringMinusculasFactor));
 
             for($k = 0; $k < sizeof($labelsCaracteristica); $k++) {
-                $documento->setValue('caracteristica#'.$contador_caracteristicas, $labelsCaracteristica[$k]);
+                $stringMinusculas = mb_strtolower ($labelsCaracteristica[$k], 'UTF-8');
+                $documento->setValue('caracteristica#'.$contador_caracteristicas, ucfirst($stringMinusculas) );
                 $contador_caracteristicas++;
             }
 
@@ -241,12 +241,6 @@ class AmbitoController extends Controller
             }
         }
         $coberturaAdmin_Directivo = $coberturaAdmin_Directivo / 2;
-        // $labelsEncuestado = [];
-        // $dataEncuestado = [];
-        // foreach ($encuestados as $encuestado) {
-        //     array_push($labelsEncuestado, $encuestado->grupos->GIT_Nombre);
-        //     array_push($dataEncuestado, $encuestado->cantidad);
-        // }
 
 
         $documento->setValue('total_estudiantes', $programa->PAC_Estudiantes);
@@ -265,29 +259,18 @@ class AmbitoController extends Controller
         $documento->setValue('solucion_empresa', $totalEmpresa);
         $documento->setValue('cobertura_empresa', round($coberturaEmpresa), 2);
 
-        // dd(
-        //     "estudiantes",$programa->PAC_Estudiantes,
-        //     $totalEstudiates,
-        //     $coberturaEstudiantes,
-        //     "docentes", $totalDocentes,
-        //     $coberturaDocentes,
-        //     "admin", $totalAdmin_Directivo,
-        //     $coberturaAdmin_Directivo,
-        //     "egresados", $totalEgresados,
-        //     $coberturaEgresados,
-        //     "empresa", $totalEmpresa,
-        //     $coberturaEmpresa
-        // );
-
-
-
 
         /**
          * Deciado a traer los resultados valorizados por grupo de interes
          */
+        /**Para los resultados de ponderacion de los arryas */
         $datosPorCaracteristica = [];
         $datosPorFactor = [];
         $grupoFactores = [];
+        /**Para los labels de os arrays */
+        $label_datosPorCaracteristica = [];
+        $label_datosPorFactor = [];
+        $label_grupoFactores = [];
 
         $labelGrupoInteres = [];
         $totalPonderaciones = [];
@@ -456,10 +439,10 @@ class AmbitoController extends Controller
                 }
                 for($l = 0; $l < count($totalGruposI); $l++){
                     if(!isset($labelGrupoInteres[$l])) {
-                        $labelGrupoInteres[$l] = "";
+                        $labelGrupoInteres[$l] = 0;
                     }
                     if(!isset($ponderacion[$l]) || $ponderacion[$l] == 0) {
-                        $ponderacion[$l] = "";
+                        $ponderacion[$l] = 0;
                     }
                 }
                 {
@@ -524,31 +507,231 @@ class AmbitoController extends Controller
                     //     $ponderacion_9 = 0;
                     // }
                 }
-                array_push($datosPorCaracteristica,     $labelGrupoInteres[0], $ponderacion[0],
-                                                        $labelGrupoInteres[1], $ponderacion[1],
-                                                        $labelGrupoInteres[2], $ponderacion[2],
-                                                        $labelGrupoInteres[3], $ponderacion[3],
-                                                        $labelGrupoInteres[4], $ponderacion[4],
-                                                        $labelGrupoInteres[5], $ponderacion[5],
-                                                        $labelGrupoInteres[6], $ponderacion[6],
-                                                        $labelGrupoInteres[7], $ponderacion[7],
-                                                        $labelGrupoInteres[8], $ponderacion[8],
-                                                        $labelGrupoInteres[9], $ponderacion[9]
+                array_push($datosPorCaracteristica,     $ponderacion[0],
+                                                        $ponderacion[1],
+                                                        $ponderacion[2],
+                                                        $ponderacion[3],
+                                                        $ponderacion[4],
+                                                        $ponderacion[5],
+                                                        $ponderacion[6],
+                                                        $ponderacion[7],
+                                                        $ponderacion[8],
+                                                        $ponderacion[9]
                                                 );
                 array_push($datosPorFactor, $datosPorCaracteristica);
-
                 unset($datosPorCaracteristica);
                 $datosPorCaracteristica = [];
+
+                array_push($label_datosPorCaracteristica,   $labelGrupoInteres[0],
+                                                            $labelGrupoInteres[1],
+                                                            $labelGrupoInteres[2],
+                                                            $labelGrupoInteres[3],
+                                                            $labelGrupoInteres[4],
+                                                            $labelGrupoInteres[5],
+                                                            $labelGrupoInteres[6],
+                                                            $labelGrupoInteres[7],
+                                                            $labelGrupoInteres[8],
+                                                            $labelGrupoInteres[9]
+                                            );
+                array_push($label_datosPorFactor, $label_datosPorCaracteristica);
+                unset($label_datosPorCaracteristica);
+                $label_datosPorCaracteristica = [];
 
             }//foreach caracteristicas
 
             array_push($grupoFactores, $datosPorFactor);
-
             unset($datosPorCaracteristica);
             $datosPorCaracteristica = [];
+
+            array_push($label_grupoFactores, $label_datosPorFactor);
+            unset($label_datosPorCaracteristica);
+            $label_datosPorCaracteristica = [];
         }   //FOR
 
-        dd($grupoFactores);
+        /**Calculo para los porcentaje de acuerdo a los Factores */
+        $sumaPorFactor = [];
+        $resultadoPorFactor = [];
+
+        for($k = 0; $k < count($grupoFactores); $k++){
+            for($i = 0; $i < count($grupoFactores[0][0]); $i++){
+                $suma = 0;
+                for($j = 0; $j < count($grupoFactores[$k]); $j++){
+                    $suma = $suma + $grupoFactores[$k][$j][$i];
+                    {
+                        // $suma = $suma + $grupoFactores[0][$j][$i];
+                        // $suma = $suma + $grupoFactores[0][$j][$i];
+                    }
+                }
+                if($suma == 0){
+                    array_push($sumaPorFactor, 0);
+                }
+                else
+                {
+                    array_push( $sumaPorFactor, ( ($suma / count($grupoFactores[$k]))) * 10 );
+                }
+            }
+            array_push($resultadoPorFactor, $sumaPorFactor);
+            unset($sumaPorFactor);
+                $sumaPorFactor = [];
+        }
+
+
+        {
+            // for($i = 0; $i < count($totalGruposI); $i++){
+            //     $suma = 0;
+            //     for($j = 0; $j < count($grupoFactores[1]); $j++){
+            //         $suma = $suma + $grupoFactores[1][$j][$i];
+            //         {
+            //             // $grupoFactores[1][1][$i] +
+            //             // $grupoFactores[1][2][$i] +
+            //             // $grupoFactores[1][3][$i] +
+            //             // $grupoFactores[1][4][$i] +
+            //             // $grupoFactores[1][5][$i] +
+            //             // $grupoFactores[1][6][$i];
+            //         }
+            //     }
+            //     if($suma == 0){
+            //         array_push($sumaPorFactor_1, 0);
+            //     }
+            //     else
+            //     {
+            //         array_push( $sumaPorFactor_1, ( ($suma / count($grupoFactores[1]))) * 10);
+            //     }
+            // }
+
+            // for($i = 0; $i < count($totalGruposI); $i++){
+            //     $suma = 0;
+            //     for($j = 0; $j < count($grupoFactores[2]); $j++){
+            //         $suma = $suma + $grupoFactores[2][$j][$i];
+            //         {
+            //             // $suma = $grupoFactores[2][0][$i] +
+            //             //         $grupoFactores[2][1][$i] +
+            //             //         $grupoFactores[2][2][$i] +
+            //             //         $grupoFactores[2][3][$i] +
+            //             //         $grupoFactores[2][4][$i] +
+            //             //         $grupoFactores[2][5][$i] +
+            //             //         $grupoFactores[2][6][$i] +
+            //             //         $grupoFactores[2][7][$i] +
+            //             //         $grupoFactores[2][8][$i] +
+            //             //         $grupoFactores[2][9][$i] +
+            //             //         $grupoFactores[2][10][$i] +
+            //             //         $grupoFactores[2][11][$i] +
+            //             //         $grupoFactores[2][12][$i] +
+            //             //         $grupoFactores[2][13][$i] +
+            //             //         $grupoFactores[2][14][$i];
+            //         }
+            //     }
+            //     if($suma == 0){
+            //         array_push($sumaPorFactor_2, 0);
+            //     }
+            //     else{
+            //         array_push( $sumaPorFactor_2, ( ($suma / count($grupoFactores[2]))) * 10 );
+            //     }
+            // }
+
+            // for($i = 0; $i < count($totalGruposI); $i++){
+            //     $suma = 0;
+            //     for($j = 0; $j < count($grupoFactores[3]); $j++){
+            //         $suma = $suma + $grupoFactores[3][$j][$i];
+            //         {
+            //             // $suma = $grupoFactores[3][0][$i] +
+            //             //         $grupoFactores[3][1][$i] +
+            //             //         $grupoFactores[3][2][$i] +
+            //             //         $grupoFactores[3][3][$i] +
+            //             //         $grupoFactores[3][4][$i] +
+            //             //         $grupoFactores[3][5][$i] +
+            //             //         $grupoFactores[3][6][$i] +
+            //             //         $grupoFactores[3][7][$i] +
+            //             //         $grupoFactores[3][8][$i] +
+            //             //         $grupoFactores[3][9][$i] +
+            //             //         $grupoFactores[3][10][$i] +
+            //             //         $grupoFactores[3][11][$i] +
+            //             //         $grupoFactores[3][12][$i] +
+            //             //         $grupoFactores[3][13][$i] +
+            //             //         $grupoFactores[3][14][$i] +
+            //             //         $grupoFactores[3][15][$i] +
+            //             //         $grupoFactores[3][16][$i] +
+            //             //         $grupoFactores[3][17][$i] +
+            //             //         $grupoFactores[3][18][$i] +
+            //             //         $grupoFactores[3][19][$i] +
+            //             //         $grupoFactores[3][20][$i] +
+            //             //         $grupoFactores[3][21][$i] +
+            //             //         $grupoFactores[3][22][$i] +
+            //             //         $grupoFactores[3][23][$i] +
+            //             //         $grupoFactores[3][24][$i] +
+            //             //         $grupoFactores[3][25][$i];
+            //         }
+            //     }
+            //     if($suma == 0){
+            //         array_push($sumaPorFactor_3, 0 );
+            //     }
+            //     else{
+            //         array_push($sumaPorFactor_3, ( ($suma / 26)) * 10 );
+            //     }
+            // }
+
+            // for($i = 0; $i < count($totalGruposI); $i++){
+            //     $suma = 0;
+            //     for($j = 0; $j < count($grupoFactores[4]); $j++){
+            //         $suma = $suma + $grupoFactores[4][$j][$i];
+            //         {
+            //             // $suma = $grupoFactores[4][0][$i] +
+            //             //         $grupoFactores[4][1][$i] +
+            //             //         $grupoFactores[4][2][$i] +
+            //             //         $grupoFactores[4][3][$i] +
+            //             //         $grupoFactores[4][4][$i] +
+            //             //         $grupoFactores[4][5][$i] +
+            //             //         $grupoFactores[4][6][$i] +
+            //             //         $grupoFactores[4][7][$i] +
+            //             //         $grupoFactores[4][8][$i] +
+            //             //         $grupoFactores[4][9][$i] +
+            //             //         $grupoFactores[4][10][$i] +
+            //             //         $grupoFactores[4][11][$i] +
+            //             //         $grupoFactores[4][12][$i] +
+            //             //         $grupoFactores[4][13][$i] +
+            //             //         $grupoFactores[4][14][$i] +
+            //             //         $grupoFactores[4][15][$i] +
+            //             //         $grupoFactores[4][16][$i] +
+            //             //         $grupoFactores[4][17][$i] +
+            //             //         $grupoFactores[4][18][$i] +
+            //             //         $grupoFactores[4][19][$i] +
+            //             //         $grupoFactores[4][20][$i] +
+            //             //         $grupoFactores[4][21][$i] +
+            //             //         $grupoFactores[4][22][$i] +
+            //             //         $grupoFactores[4][23][$i] +
+            //             //         $grupoFactores[4][24][$i] +
+            //             //         $grupoFactores[4][25][$i] +
+            //             //         $grupoFactores[4][26][$i] +
+            //             //         $grupoFactores[4][27][$i];
+            //         }
+            //     }
+            //     if($suma == 0){
+            //         array_push($sumaPorFactor_4, 0 );
+            //     }
+            //     else{
+            //         array_push($sumaPorFactor_4, ( ($suma / 28)) * 10 );
+            //     }
+            // }
+        }
+
+        $contCaracFactor = 0;
+        for($i = 0;$i < count($grupoFactores); $i++){
+            for($j = 0;$j < 6;$j++){
+                $contCaracFactor ++;
+                if($resultadoPorFactor[$i][$j] == 0){
+                    $documento->setValue('resultado#'.$contCaracFactor, "");
+                }
+                else{
+                    $documento->setValue('resultado#'.$contCaracFactor, round($resultadoPorFactor[$i][$j])."%");
+                }
+            }
+        }
+        // $documento->setValue('resultado_1', round($resultadoPorFactor[0][0]));
+        // $documento->setValue('resultado_2', round($resultadoPorFactor[0][1]));
+        // $documento->setValue('resultado_3', round($resultadoPorFactor[0][2]));
+        // $documento->setValue('resultado_4', round($resultadoPorFactor[0][3]));
+
+
 
         $documento->saveAs('InformeAuto.docx');
 
