@@ -152,6 +152,7 @@ class AmbitoController extends Controller
             }
             $stringMinusculasFactor = mb_strtolower($factor->FCT_Nombre, 'UTF-8');
             $documento->setValue('factor#'.$j, ucfirst($stringMinusculasFactor));
+            $documento->setValue('factorMayus#'.$j, mb_strtoupper($stringMinusculasFactor));
 
             for($k = 0; $k < sizeof($labelsCaracteristica); $k++) {
                 $stringMinusculas = mb_strtolower ($labelsCaracteristica[$k], 'UTF-8');
@@ -245,19 +246,19 @@ class AmbitoController extends Controller
 
         $documento->setValue('total_estudiantes', $programa->PAC_Estudiantes);
         $documento->setValue('solucion_estudiantes', $totalEstudiates);
-        $documento->setValue('cobertura_estudiantes', round($coberturaEstudiantes, 2));
+        $documento->setValue('cobertura_estudiantes', round($coberturaEstudiantes."%", 2));
         $documento->setValue('total_docentes',"120");
         $documento->setValue('solucion_docentes', $totalDocentes);
-        $documento->setValue('cobertura_docentes', round($coberturaDocentes), 2);
+        $documento->setValue('cobertura_docentes', round($coberturaDocentes."%"), 2);
         $documento->setValue('total_admin', "18");
         $documento->setValue('solucion_admin', $totalAdmin_Directivo);
-        $documento->setValue('cobertura_admin', round($coberturaAdmin_Directivo), 2);
+        $documento->setValue('cobertura_admin', round($coberturaAdmin_Directivo."%"), 2);
         $documento->setValue('total_egresados', "439");
         $documento->setValue('solucion_egresados', $totalEgresados);
-        $documento->setValue('cobertura_egresados', round($coberturaEgresados), 2);
+        $documento->setValue('cobertura_egresados', round($coberturaEgresados."%"), 2);
         $documento->setValue('total_empresa', "10");
         $documento->setValue('solucion_empresa', $totalEmpresa);
-        $documento->setValue('cobertura_empresa', round($coberturaEmpresa), 2);
+        $documento->setValue('cobertura_empresa', round($coberturaEmpresa)."%", 2);
 
 
         /**
@@ -540,27 +541,37 @@ class AmbitoController extends Controller
             }//foreach caracteristicas
 
             array_push($grupoFactores, $datosPorFactor);
-            unset($datosPorCaracteristica);
-            $datosPorCaracteristica = [];
+            unset($datosPorFactor);
+            $datosPorFactor = [];
 
             array_push($label_grupoFactores, $label_datosPorFactor);
-            unset($label_datosPorCaracteristica);
-            $label_datosPorCaracteristica = [];
-        }   //FOR
+            unset($label_datosPorFactor);
+            $label_datosPorFactor = [];
+        }
+
+        /**
+         * Ponderacion de factores
+         */
+        $ponderacionFactores = [];
+        array_push($ponderacionFactores , 13, 12, 12, 15, 8, 9, 7, 8, 7, 9);
 
         /**Calculo para los porcentaje de acuerdo a los Factores */
         $sumaPorFactor = [];
         $resultadoPorFactor = [];
+        $porcentajeFactor = [];
+
+        $sumaPorFactorGrupos = [];
+        $resultadoPorFactorGrupos = [];
+        /**
+         * Array para el promedio por factor
+         */
+        $promedioFactor = [];
 
         for($k = 0; $k < count($grupoFactores); $k++){
             for($i = 0; $i < count($grupoFactores[0][0]); $i++){
                 $suma = 0;
                 for($j = 0; $j < count($grupoFactores[$k]); $j++){
                     $suma = $suma + $grupoFactores[$k][$j][$i];
-                    {
-                        // $suma = $suma + $grupoFactores[0][$j][$i];
-                        // $suma = $suma + $grupoFactores[0][$j][$i];
-                    }
                 }
                 if($suma == 0){
                     array_push($sumaPorFactor, 0);
@@ -571,10 +582,39 @@ class AmbitoController extends Controller
                 }
             }
             array_push($resultadoPorFactor, $sumaPorFactor);
+            $promedio = array_sum($sumaPorFactor)/6;    //Grupos de interes FIjos
+            array_push($promedioFactor, $promedio);
+
+            $promedioFactorIndicador = ($ponderacionFactores[$k] * ($promedioFactor[$k] / 100));
+
+            array_push($porcentajeFactor, $promedioFactorIndicador);
+
             unset($sumaPorFactor);
-                $sumaPorFactor = [];
+            $sumaPorFactor = [];
+
         }
 
+        for($i = 0;$i < count($grupoFactores);$i++ ){
+            for($j =0;$j < count($grupoFactores[$i]);$j++) {
+                $suma = 0;
+                $ponderacionPorCarac = 0;
+                for($k = 0;$k < count($grupoFactores[$i][$j]);$k++ ){
+                    $suma = $suma + $grupoFactores[$i][$j][$k];
+                }
+                if($suma == 0){
+                    array_push($sumaPorFactorGrupos, 0);
+                }
+                else
+                {
+                    $ponderacionPorCarac = ($ponderacionFactores[$i] / count($grupoFactores[$i])) * (($suma / 6) / 10);
+                    array_push($sumaPorFactorGrupos, $ponderacionPorCarac );
+                }
+            }
+            array_push($resultadoPorFactorGrupos, $sumaPorFactorGrupos);
+
+            unset($sumaPorFactorGrupos);
+            $sumaPorFactorGrupos = [];
+        }
 
         {
             // for($i = 0; $i < count($totalGruposI); $i++){
@@ -715,21 +755,54 @@ class AmbitoController extends Controller
         }
 
         $contCaracFactor = 0;
+        $contPC = 0;
         for($i = 0;$i < count($grupoFactores); $i++){
             for($j = 0;$j < 6;$j++){
                 $contCaracFactor ++;
-                if($resultadoPorFactor[$i][$j] == 0){
+                if($resultadoPorFactor[$i][$j] == 0 || !$resultadoPorFactor[$i][$j]){
                     $documento->setValue('resultado#'.$contCaracFactor, "");
                 }
                 else{
                     $documento->setValue('resultado#'.$contCaracFactor, round($resultadoPorFactor[$i][$j])."%");
                 }
             }
+            for($j = 0;$j < count($resultadoPorFactorGrupos[$i]);$j++){
+                $contPC++;
+                if($resultadoPorFactorGrupos[$i][$j] == 0 || !$resultadoPorFactorGrupos[$i][$j]){
+                    $documento->setValue('pc#'.$contPC, "");
+                }
+                else{
+                    $documento->setValue('pc#'.$contPC, round($resultadoPorFactorGrupos[$i][$j], 1)."%");
+                }
+            }
+
+            $documento->setValue('promedio#'.$i, round($promedioFactor[$i], 1)."%");
+            $documento->setValue('ponderacionFactor#'.$i, $ponderacionFactores[$i]."%");
+            $documento->setValue('porcentajeFactor#'.$i, round($porcentajeFactor[$i], 1)."%");
         }
-        // $documento->setValue('resultado_1', round($resultadoPorFactor[0][0]));
-        // $documento->setValue('resultado_2', round($resultadoPorFactor[0][1]));
-        // $documento->setValue('resultado_3', round($resultadoPorFactor[0][2]));
-        // $documento->setValue('resultado_4', round($resultadoPorFactor[0][3]));
+
+        $promedioPorcentajeValor = array_sum($porcentajeFactor)/count($porcentajeFactor);
+        $documento->setValue('promedioPorcentajeValor', round($promedioPorcentajeValor, 1));
+
+        for($i = 0;$i < count($grupoFactores); $i++){
+            if($promedioFactor[$i] >= 0 && $promedioFactor[$i] < 40){
+                $documento->setValue('gradoCumplimiento#'.$i, "No se cumple");
+            }
+            elseif($promedioFactor[$i] >= 40 && $promedioFactor[$i] < 55){
+                $documento->setValue('gradoCumplimiento#'.$i, "Se cumple insatisfactoriamente");
+            }
+            elseif($promedioFactor[$i] >= 55 && $promedioFactor[$i] < 70){
+                $documento->setValue('gradoCumplimiento#'.$i, "Se cumple aceptablemente");
+            }
+            elseif($promedioFactor[$i] >= 70 && $promedioFactor[$i] < 85){
+                $documento->setValue('gradoCumplimiento#'.$i, "Se cumple en alto grado");
+            }
+            elseif($promedioFactor[$i] >= 85 && $promedioFactor[$i] <= 100){
+                $documento->setValue('gradoCumplimiento#'.$i, "Se cumple plenamente");
+            }
+        }
+
+
 
 
 
