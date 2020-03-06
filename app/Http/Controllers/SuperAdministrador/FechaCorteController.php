@@ -60,7 +60,7 @@ class FechaCorteController extends Controller
     	if ($request->ajax() && $request->isMethod('GET')) {
             $fechacorte=FechaCorte::with(['proceso' => function ($query) {
                     return $query->select('PK_PCS_Id', 'PCS_Nombre');
-                }])->get();
+                }])->where('FK_FCO_Proceso', '=', session()->get('id_proceso'))->get();
             return DataTables::of($fechacorte)
                 ->removeColumn('created_at')
                 ->removeColumn('updated_at')

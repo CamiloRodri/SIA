@@ -5,57 +5,60 @@
 @extends('admin.layouts.app')
 @section('content') @component('admin.components.panel')
     @slot('title', 'Fechas de Corte')
-    <div class="col-md-12">
-        @can('CREAR_FECHA_CORTE')
-            <div class="actions">
-                <a id="crear_fechacorte" href="#" class="btn btn-info" data-toggle="modal" data-target="#modal_fechacorte">
-                    <i class="fa fa-plus"></i> Agregar Fechas de Corte</a></div>
-    @endcan
-    <!-- Modal-->
-        <div class="modal fade" id="modal_fechacorte" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                                    aria-hidden="true">&times;</span></button>
-                        <h4 class="modal-title" id="modal_titulo">Crear Fecha de Corte</h4>
-                    </div>
-                    <div class="modal-body">
+    @if(session()->get('id_proceso'))
+        <div class="col-md-12">
+            @can('CREAR_FECHA_CORTE')
+                <div class="actions">
+                    <a id="crear_fechacorte" href="#" class="btn btn-info" data-toggle="modal" data-target="#modal_fechacorte">
+                        <i class="fa fa-plus"></i> Agregar Fechas de Corte</a></div>
+            @endcan
+        <!-- Modal-->
+            <div class="modal fade" id="modal_fechacorte" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                        aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title" id="modal_titulo">Crear Fecha de Corte</h4>
+                        </div>
+                        <div class="modal-body">
 
-                        {!! Form::open([ 'route' => 'admin.fechacorte.store', 'method' => 'POST', 'id' => 'form_fechacorte', 'class' => 'form-horizontal
-                            form-label-lef', 'novalidate' ])!!}
-                        @include('autoevaluacion.SuperAdministrador.FechasdeCorte._form')
+                            {!! Form::open([ 'route' => 'admin.fechacorte.store', 'method' => 'POST', 'id' => 'form_fechacorte', 'class' => 'form-horizontal
+                                form-label-lef', 'novalidate' ])!!}
+                            @include('autoevaluacion.SuperAdministrador.FechasdeCorte._form')
+
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                            {!! Form::submit('Crear
+                            FechadeCorte', ['class' => 'btn btn-success', 'id' => 'accion']) !!}
+
+                        </div>
+                        {!! Form::close() !!}
 
                     </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                        {!! Form::submit('Crear
-                        FechadeCorte', ['class' => 'btn btn-success', 'id' => 'accion']) !!}
-
-                    </div>
-                    {!! Form::close() !!}
                 </div>
             </div>
+            <!--FIN Modal CREAR-->
         </div>
-        <!--FIN Modal CREAR-->
-
-    </div>
-    @can('VER_FECHA_CORTE')
-        <br>
-        <br>
-        <br>
-        <div class="col-md-12">
-            @component('admin.components.datatable',['id' => 'fechacorte_table_ajax']) 
-                @slot('columns', [ 
-                        'id', 
-                        'Fecha', 
-                        'Proceso', 
-                        'Acciones' =>['style' => 'width:85px;'] ])
-             @endcomponent
-
-        </div>
+        @can('VER_FECHA_CORTE')
+            <br>
+            <br>
+            <br>
+            <div class="col-md-12">
+                @component('admin.components.datatable',['id' => 'fechacorte_table_ajax']) 
+                    @slot('columns', [ 
+                            'id', 
+                            'Fecha', 
+                            'Proceso', 
+                            'Acciones' =>['style' => 'width:85px;'] ])
+                 @endcomponent
+            </div>
+        @endcan
+        @else
+            Por favor seleccione un proceso
+        @endif
         @endcomponent
-    @endcan
 @endsection
 {{-- Scripts necesarios para el formulario --}}
 @push('scripts')
