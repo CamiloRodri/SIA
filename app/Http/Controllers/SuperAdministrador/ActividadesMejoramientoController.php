@@ -214,11 +214,11 @@ class ActividadesMejoramientoController extends Controller
                             return "<span class='label label-sm label-danger'>Error</span>";
                         }
                     })
-                    ->addColumn('avance', $califica ."".'%' //function ($califica) {
-                        // foreach($califica as $cal){
-                        //     return $cal;
-                        // }
-                    )// })
+                    // |---------|   |----------------|    |--------------------|
+                    ->addColumn('avance', function ($actividades) {
+                        //return ($actividades->califica)
+                        return (($actividades->califica->CLA_Calificacion)*100)/5.0 .'%';
+                    })
                     ->rawColumns(['estado'])
                     ->removeColumn('created_at')
                     ->removeColumn('updated_at')

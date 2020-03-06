@@ -54,4 +54,9 @@ class ActividadesMejoramiento extends Model
         return $this->belongsTo(Responsable::class, 'FK_ACM_Responsable', 'PK_RPS_Id');
     }
 
+    public function califica()
+    {
+        return $this->hasOne(CalificaActividad::class, 'FK_CLA_Actividad_Mejoramiento', 'PK_ACM_Id');
+    }
+
 }
