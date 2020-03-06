@@ -201,6 +201,14 @@
                 styling:'bootstrap3'
 	        });
 	        @endif
+            @if (session('califica_completo'))
+            new PNotify({
+                tittle:'Info',
+                text:'La actividad ya ha sido calificada satisfactoriamente.',
+                type:'info',
+                styling:'bootstrap3'
+	        });
+	        @endif
             @endif
         });
          function SwalDelete(id, route) {

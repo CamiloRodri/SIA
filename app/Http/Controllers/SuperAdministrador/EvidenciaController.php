@@ -45,7 +45,7 @@ class EvidenciaController extends Controller
                     ->first();
         if(!$fechacorte)
         {
-            return redirect()->back()->with('fecha_corte_error','Mensaje Error'); 
+            return redirect()->back()->with('fecha_corte_error','Mensaje Error');
         }
         else
         {
@@ -59,8 +59,14 @@ class EvidenciaController extends Controller
                 $calificacion = CalificaActividad::where('FK_CLA_Actividad_Mejoramiento', $id)->get()->last();
                 if($calificacion)
                 {
-                    Session::put('calificacion', $calificacion->CLA_Calificacion);
-                    Session::put('observacion', $calificacion->CLA_Observacion);
+                    if($calificacion->CLA_Calificacion == 5){
+                        return redirect()->back()->with('califica_completo','Mensaje Info');
+                    }
+                    else{
+                        Session::put('calificacion', $calificacion->CLA_Calificacion);
+                        Session::put('observacion', $calificacion->CLA_Observacion);
+                    }
+
                 }
                 else
                 {
@@ -75,7 +81,7 @@ class EvidenciaController extends Controller
                     }
                     else
                     {
-                        return redirect()->back()->with('error','Mensaje Error'); 
+                        return redirect()->back()->with('error','Mensaje Error');
                     }
                 }
                 else
@@ -89,7 +95,7 @@ class EvidenciaController extends Controller
             }
         }
     }
-    
+
     public function datos(Request $request, $id)
     {
         $fechacorte = FechaCorte::whereDate('FCO_Fecha', '>=', Carbon::now()->format('Y-m-d'))
@@ -264,7 +270,7 @@ class EvidenciaController extends Controller
                 $archivos->ruta = $url;
                 $archivos->update();
                 $idArchivo = $archivos->PK_ACV_Id;
-            } 
+            }
             else {
                 $archivos = new Archivo();
                 $archivos->ACV_Nombre = $nombre;
@@ -315,7 +321,7 @@ class EvidenciaController extends Controller
         $evidencia->update();
 
         // return redirect()->route('admin.evidencia.index', $id_Actividad_Mejoramiento);
-        
+
     }
 
     /**
