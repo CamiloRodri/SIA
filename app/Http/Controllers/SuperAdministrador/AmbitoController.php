@@ -562,6 +562,8 @@ class AmbitoController extends Controller
 
         $sumaPorFactorGrupos = [];
         $resultadoPorFactorGrupos = [];
+
+        $promResulPorFactGrup = [];
         /**
          * Array para el promedio por factor
          */
@@ -611,6 +613,9 @@ class AmbitoController extends Controller
                 }
             }
             array_push($resultadoPorFactorGrupos, $sumaPorFactorGrupos);
+
+            $promedioPonFactor = array_sum($sumaPorFactorGrupos) / count($sumaPorFactorGrupos);
+            array_push($promResulPorFactGrup, $promedioPonFactor);
 
             unset($sumaPorFactorGrupos);
             $sumaPorFactorGrupos = [];
@@ -779,9 +784,10 @@ class AmbitoController extends Controller
             $documento->setValue('promedio#'.$i, round($promedioFactor[$i], 1)."%");
             $documento->setValue('ponderacionFactor#'.$i, $ponderacionFactores[$i]."%");
             $documento->setValue('porcentajeFactor#'.$i, round($porcentajeFactor[$i], 1)."%");
+            $documento->setValue('promPC#'.$i, round($promResulPorFactGrup[$i], 1)."%");
         }
 
-        $promedioPorcentajeValor = array_sum($porcentajeFactor)/count($porcentajeFactor);
+        $promedioPorcentajeValor = array_sum($porcentajeFactor) / count($porcentajeFactor);
         $documento->setValue('promedioPorcentajeValor', round($promedioPorcentajeValor, 1));
 
         for($i = 0;$i < count($grupoFactores); $i++){
@@ -801,8 +807,6 @@ class AmbitoController extends Controller
                 $documento->setValue('gradoCumplimiento#'.$i, "Se cumple plenamente");
             }
         }
-
-
 
 
 
