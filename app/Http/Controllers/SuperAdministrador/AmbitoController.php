@@ -5,6 +5,7 @@ namespace App\Http\Controllers\SuperAdministrador;
 use App\Http\Controllers\Controller;
 use App\Models\Autoevaluacion\AmbitoResponsabilidad;
 use App\Models\Autoevaluacion\Caracteristica;
+use App\Models\Autoevaluacion\Consolidacion;
 use App\Models\Autoevaluacion\Encuesta;
 use App\Models\Autoevaluacion\Encuestado;
 use App\Models\Autoevaluacion\Factor;
@@ -97,13 +98,10 @@ class AmbitoController extends Controller
         $documento->setValue('no_egresados', $programa->PAC_Egresados);
         $documento->setValue('smlv', $programa->PAC_Valor_Matricula);
 
-        $documento->cloneRow('no_frente_estrategico', sizeof($frentesEstrategicos));
-
         /**
          * Uso de tablas
          */
-        $documento->setValue('no_frente_estrategico#1', 1);
-        $documento->setValue('no_frente_estrategico#2', 2);
+        $documento->cloneRow('no_frente_estrategico', sizeof($frentesEstrategicos));
 
         for($i = 0; $i < sizeof($frentesEstrategicos); $i++) {
             $lista = $i + 1;
@@ -808,9 +806,43 @@ class AmbitoController extends Controller
             }
         }
 
+        $contadorConsolida = [];
+        for($i = 0;$i < count($grupoFactores); $i++){
+            $contadorConsolida[$i] = 0;
+        }
 
+
+        $consolidaciones=Consolidacion::where('FK_CNS_Proceso', '=', session()->get('id_proceso'))
+            	->with('caracteristica.factor')
+            ->get();
+
+        // dd($consolidaciones);
+
+        for($i = 0;$i < count($grupoFactores); $i++){
+            $valida = $i + 1;
+            // dd($valida);
+            for($j = 0;$j < count($consolidaciones);$j++){
+                if($consolidaciones[$j]->caracteristica->factor->FCT_Identificador == $valida){
+                    $contadorConsolida[$i] ++;
+                }
+            }
+        }
+
+        // $documento->cloneRow('no_fortalezaFactor'.'1', $contadorConsolida[0]);
+        for($i = 0;$i < count($grupoFactores); $i++){
+            $factor = $i + 1;
+            $documento->cloneRow('no_fortalezaFactor'.$factor, $contadorConsolida[$i]);
+            for($j = 0;$j < $contadorConsolida[0]; $j++){
+                $lista = $j + 1;
+                $documento->setValue('no_fortalezaFactor'.$factor.'#'.$lista, $consolidaciones[$j]->CNS_Fortaleza);
+                $documento->setValue('no_debilidadFactor'.$factor.'#'.$lista, $consolidaciones[$j]->CNS_Debilidad);
+            }
+        }
+
+        // dd($contadorConsolida);
 
         $documento->saveAs('InformeAuto.docx');
+
 
 //         $pathToFile = public_path(). "\InformeAuto.docx";
 // // dd($pathToFile);

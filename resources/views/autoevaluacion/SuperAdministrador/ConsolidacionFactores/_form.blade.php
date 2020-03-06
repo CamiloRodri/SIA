@@ -4,7 +4,7 @@
     {!! Form::label('PK_FCT_Id', 'Factor', ['class' => 'control-label col-md-3 col-sm-3 col-xs-12']) !!}
     <div class="col-md-8 col-sm-6 col-xs-12">
         {!! Form::select('PK_FCT_Id', $factores, old('PK_FCT_Id', isset($indicador)? $indicador->caracteristica->factor()->pluck('PK_FCT_Id','FCT_Nombre'): ''),
-        ['class' => 'select2 form-control', 
+        ['class' => 'select2 form-control',
         'placeholder' => 'Seleccione un factor', 'required' => '', 'id' => 'factor'])
         !!}
     </div>
@@ -21,11 +21,11 @@
 <div class="form-group">
     {!! Form::label('CNS_Fortaleza','Fortaleza', ['class'=>'control-label col-md-3 col-sm-3 col-xs-12']) !!}
     <div class="col-md-8 col-sm-6 col-xs-12">
-        {!! Form::textarea('CNS_Fortaleza', old('CNS_Fortaleza'),[ 'class' => 'form-control col-md-6 col-sm-6 col-xs-12', 
+        {!! Form::textarea('CNS_Fortaleza', old('CNS_Fortaleza'),[ 'class' => 'form-control col-md-6 col-sm-6 col-xs-12',
         'required' => 'required',
         'data-parsley-pattern' => '^[a-zA-Z0-9-_\.,;:ñÑáéíóúÁÉÍÓÚ ]+$',
         'data-parsley-pattern-message' => 'Error en el texto',
-        'data-parsley-length'=>'[5, 200]',
+        'data-parsley-length'=>'[5, 800]',
         'rows' => '3',
          'data-parsley-trigger'=>"change" ] ) !!}
     </div>
@@ -33,11 +33,11 @@
 <div class="form-group">
     {!! Form::label('CNS_Debilidad','Debilidad', ['class'=>'control-label col-md-3 col-sm-3 col-xs-12']) !!}
     <div class="col-md-8 col-sm-6 col-xs-12">
-        {!! Form::textarea('CNS_Debilidad', old('CNS_Debilidad'),[ 'class' => 'form-control col-md-6 col-sm-6 col-xs-12', 
+        {!! Form::textarea('CNS_Debilidad', old('CNS_Debilidad'),[ 'class' => 'form-control col-md-6 col-sm-6 col-xs-12',
         'required' => 'required',
         'data-parsley-pattern' => '^[a-zA-Z0-9-_\.,;:ñÑáéíóúÁÉÍÓÚ ]+$',
         'data-parsley-pattern-message' => 'Error en el texto',
-        'data-parsley-length'=>'[5, 200]',
+        'data-parsley-length'=>'[5, 800]',
         'rows' => '3',
          'data-parsley-trigger'=>"change" ] ) !!}
     </div>

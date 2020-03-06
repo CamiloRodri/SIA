@@ -111,7 +111,7 @@ class ConsolidacionController extends Controller
      * @return \Illuminate\Http\Response
      */
     /**
-     * Esta funcion crea las Consolidaciones 
+     * Esta funcion crea las Consolidaciones
      */
     public function store(ConsolidacionesRequest $request)
     {
@@ -150,7 +150,7 @@ class ConsolidacionController extends Controller
      */
     public function edit($id)
     {
-        $consolidacion = Consolidacion::findorFail($id);        
+        $consolidacion = Consolidacion::findorFail($id);
         $factores = Factor::pluck('FCT_Nombre', 'PK_FCT_Id');
 
         $caracteristica = new Caracteristica();
@@ -171,7 +171,7 @@ class ConsolidacionController extends Controller
      * @return \Illuminate\Http\Response
      */
     /**
-     * Esta funcion edita las Consolidaciones 
+     * Esta funcion edita las Consolidaciones
      */
     public function update($id, ConsolidacionesRequest $request)
     {
@@ -195,7 +195,7 @@ class ConsolidacionController extends Controller
      * @return \Illuminate\Http\Response
      */
     /**
-     * Esta funcion elimina las Consolidaciones 
+     * Esta funcion elimina las Consolidaciones
      */
     public function destroy($id)
     {
