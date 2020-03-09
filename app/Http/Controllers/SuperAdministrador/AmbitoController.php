@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\SuperAdministrador;
 
 use App\Http\Controllers\Controller;
+use App\Models\Autoevaluacion\ActividadesMejoramiento;
 use App\Models\Autoevaluacion\AmbitoResponsabilidad;
 use App\Models\Autoevaluacion\Caracteristica;
 use App\Models\Autoevaluacion\Consolidacion;
@@ -812,7 +813,7 @@ class AmbitoController extends Controller
         }
 
 
-        $consolidaciones=Consolidacion::where('FK_CNS_Proceso', '=', session()->get('id_proceso'))
+        $consolidaciones = Consolidacion::where('FK_CNS_Proceso', '=', session()->get('id_proceso'))
             	->with('caracteristica.factor')
             ->get();
 
@@ -828,7 +829,6 @@ class AmbitoController extends Controller
             }
         }
 
-        // $documento->cloneRow('no_fortalezaFactor'.'1', $contadorConsolida[0]);
         for($i = 0;$i < count($grupoFactores); $i++){
             $factor = $i + 1;
             $documento->cloneRow('no_fortalezaFactor'.$factor, $contadorConsolida[$i]);
@@ -839,7 +839,35 @@ class AmbitoController extends Controller
             }
         }
 
-        // dd($contadorConsolida);
+        $documento->cloneRow('no_fortalezaSintesis', count($consolidaciones));
+        for($i = 0;$i < count($consolidaciones); $i++){
+            $lista = $i + 1;
+            $documento->setValue('no_fortalezaSintesis#'.$lista, $consolidaciones[$i]->CNS_Fortaleza);
+            $documento->setValue('no_debilidadSintesis#'.$lista, $consolidaciones[$i]->CNS_Debilidad);
+        }
+
+        $actividades = ActividadesMejoramiento::whereHas('PlanMejoramiento', function ($query) {
+            return $query->where('FK_PDM_Proceso', '=', session()->get('id_proceso'));
+        })
+            ->with('Caracteristicas.factor', 'responsable.usuarios', 'responsable.cargo')
+            ->get();
+
+        $documento->cloneRow('actFac', count($actividades));
+        for($i = 0;$i < count($actividades); $i++){
+            $lista = $i + 1;
+            $documento->setValue('actFac#'.$lista, $actividades[$i]->Caracteristicas->factor->FCT_Identificador);
+            $documento->setValue('actAc#'.$lista, "");
+            $documento->setValue('actNom#'.$lista, $actividades[$i]->ACM_Nombre);
+            $documento->setValue('actFi#'.$lista, $actividades[$i]->ACM_Fecha_Inicio);
+            $documento->setValue('actFf#'.$lista, $actividades[$i]->ACM_Fecha_Fin);
+            $documento->setValue('actInd#'.$lista, "");
+            $documento->setValue('actRes#'.$lista, $actividades[$i]->responsable->usuarios->name . " " . $actividades[$i]->responsable->usuarios->lastname);
+            $documento->setValue('actCar#'.$lista, $actividades[$i]->responsable->cargo->CAA_Cargo);
+            $documento->setValue('actMet#'.$lista, "");
+            $documento->setValue('actDes#'.$lista, $actividades[$i]->ACM_Descripcion);
+            $documento->setValue('actRec#'.$lista, "");
+        }
+
 
         $documento->saveAs('InformeAuto.docx');
 
