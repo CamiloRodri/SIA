@@ -145,7 +145,7 @@ class ActividadesMejoramientoController extends Controller
                             return '0 %';
                         }
                         else{
-                            return (($actividades->califica->CLA_Calificacion)*100)/5.0 .'%';
+                            return ((($actividades->califica->get()->sortByDesc('CLA_Calificacion')->first())->CLA_Calificacion)*100)/5.0 .'%';
                         }
                     })
                     ->rawColumns(['estado'])
