@@ -10,12 +10,11 @@ use App\Models\Autoevaluacion\PlanMejoramiento;
 use App\Models\Autoevaluacion\Responsable;
 use App\Models\Autoevaluacion\FechaCorte;
 use App\Models\Autoevaluacion\CalificaActividad;
+use App\Models\Autoevaluacion\Evidencia;
 use Carbon\Carbon;
 use Yajra\DataTables\DataTables;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Collection as Collection;
 
 class ActividadesMejoramientoController extends Controller
 {
@@ -76,6 +75,38 @@ class ActividadesMejoramientoController extends Controller
                 ->with('Caracteristicas.factor', 'responsable.usuarios', 'califica')
                 ->where('FK_ACM_Responsable','=',$responsable->PK_RPS_Id ?? null)
                 ->get();
+        }
+
+        $fechacorteanterior = FechaCorte::where('PK_FCO_Id', '<', $fechacorte->PK_FCO_Id)->orderBy('PK_FCO_Id', 'des')->first();
+        for($i = 0; $i < count($actividades); $i ++){
+            if($fechacorteanterior) {
+                $docEvidencia = Evidencia::whereHas('actividad_mejoramiento.califica')
+                                        ->where('FK_EVD_Actividad_Mejoramiento', $actividades[$i]->PK_ACM_Id)
+                                        ->whereDate('EVD_Fecha_Subido', '<=', $fechacorte->FCO_Fecha)
+                                        ->whereDate('EVD_Fecha_Subido', '>', $fechacorteanterior->FCO_Fecha)
+                                        ->get();
+                if($docEvidencia->isEmpty()){
+
+                    $actividadesMejoramiento = ActividadesMejoramiento::findOrFail($actividades[$i]->PK_ACM_Id);
+                    $actividadesMejoramiento->ACM_Estado = 0;
+                    $actividadesMejoramiento->update();
+                }
+                else{
+                    $calificaciones = CalificaActividad::where('FK_CLA_Actividad_Mejoramiento', $actividades[$i]->PK_ACM_Id)
+                                                        ->where('FK_CLA_Fecha_Corte', $fechacorte->PK_FCO_Id)
+                                                        ->get();
+                    if($calificaciones->isEmpty()){
+                        $actividadesMejoramiento = ActividadesMejoramiento::findOrFail($actividades[$i]->PK_ACM_Id);
+                        $actividadesMejoramiento->ACM_Estado = 1;
+                        $actividadesMejoramiento->update();
+                    }
+                    else{
+                        $actividadesMejoramiento = ActividadesMejoramiento::findOrFail($actividades[$i]->PK_ACM_Id);
+                        $actividadesMejoramiento->ACM_Estado = 2;
+                        $actividadesMejoramiento->update();
+                    }
+                }
+            }
         }
 
         return view('autoevaluacion.SuperAdministrador.ActividadesMejoramiento.index',

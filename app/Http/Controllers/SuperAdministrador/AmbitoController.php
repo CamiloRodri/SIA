@@ -5,6 +5,7 @@ namespace App\Http\Controllers\SuperAdministrador;
 use App\Http\Controllers\Controller;
 use App\Models\Autoevaluacion\ActividadesMejoramiento;
 use App\Models\Autoevaluacion\AmbitoResponsabilidad;
+use App\Models\Autoevaluacion\CalificaActividad;
 use App\Models\Autoevaluacion\Caracteristica;
 use App\Models\Autoevaluacion\Consolidacion;
 use App\Models\Autoevaluacion\Encuesta;
@@ -15,7 +16,7 @@ use App\Models\Autoevaluacion\GrupoInteres;
 use App\Models\Autoevaluacion\Metodologia;
 use App\Models\Autoevaluacion\Proceso;
 use App\Models\Autoevaluacion\SolucionEncuesta;
-use DataTables;
+use Yajra\DataTables\DataTables;
 use Illuminate\Http\Request;
 use PhpOffice\PhpWord\TemplateProcessor;
 
@@ -866,6 +867,22 @@ class AmbitoController extends Controller
             $documento->setValue('actMet#'.$lista, "");
             $documento->setValue('actDes#'.$lista, $actividades[$i]->ACM_Descripcion);
             $documento->setValue('actRec#'.$lista, "");
+        }
+
+        $calificaciones = CalificaActividad::whereHas('actividadesMejoramiento')
+            ->with('actividadesMejoramiento.Caracteristicas.factor')
+            ->orderBy('CLA_Calificacion', 'desc')
+            ->get();
+
+        for($i = 0; $i < count($grupoFactores); $i ++){
+            $identificador = $i + 1;
+            for($j = 0; $j < count($calificaciones); $j ++){
+                if($calificaciones[$j]->actividadesMejoramiento->Caracteristicas->factor->FCT_Identificador == $identificador){
+                    $documento->setValue('accion_implementada#'.$i, $calificaciones[$j]->actividadesMejoramiento->ACM_Nombre);
+                    $documento->setValue('seguimiento#'.$i, $calificaciones[$j]->actividadesMejoramiento->ACM_Descripcion);
+                }
+            break;
+            }
         }
 
 

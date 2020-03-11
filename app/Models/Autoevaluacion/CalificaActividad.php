@@ -39,7 +39,7 @@ class CalificaActividad extends Model
 
     public function actividadesMejoramiento()
     {
-        return $this->hasOne(ActividadesMejoramiento::class, 'FK_CLA_Actividad_Mejoramiento', 'PK_ACM_Id');
+        return $this->belongsTo(ActividadesMejoramiento::class, 'FK_CLA_Actividad_Mejoramiento', 'PK_ACM_Id');
     }
 
     public function fechasCorte()

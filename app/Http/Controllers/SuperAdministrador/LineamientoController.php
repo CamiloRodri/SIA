@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\LineamientosRequest;
 use App\Jobs\ImportarLineamiento;
 use App\Models\Autoevaluacion\Lineamiento;
-use DataTables;
+use Yajra\DataTables\DataTables;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
