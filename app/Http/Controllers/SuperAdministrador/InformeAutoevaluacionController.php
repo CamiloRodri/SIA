@@ -14,6 +14,7 @@ use App\Models\Autoevaluacion\Factor;
 use App\Models\Autoevaluacion\FrenteEstrategico;
 use App\Models\Autoevaluacion\GrupoInteres;
 use App\Models\Autoevaluacion\Metodologia;
+use App\Models\Autoevaluacion\PlanMejoramiento;
 use App\Models\Autoevaluacion\Proceso;
 use App\Models\Autoevaluacion\SolucionEncuesta;
 
@@ -187,9 +188,9 @@ class InformeAutoevaluacionController extends Controller
             $ponderacion = round(array_sum($dataCaracteristicas)/count($dataCaracteristicas));
 
             if($ponderacion >= 0 && $ponderacion <= 4){
-                $documento->setValue('tipo1_'.$j, "X");
+                $documento->setValue('tipo1_'.$j, " ");
                 $documento->setValue('tipo2_'.$j, " ");
-                $documento->setValue('tipo3_'.$j, " ");
+                $documento->setValue('tipo3_'.$j, "X");
             }
             elseif($ponderacion > 4 && $ponderacion <= 7){
                 $documento->setValue('tipo1_'.$j, " ");
@@ -197,9 +198,9 @@ class InformeAutoevaluacionController extends Controller
                 $documento->setValue('tipo3_'.$j, " ");
             }
             elseif($ponderacion > 7 && $ponderacion <= 10){
-                $documento->setValue('tipo1_'.$j, " ");
+                $documento->setValue('tipo1_'.$j, "X");
                 $documento->setValue('tipo2_'.$j, " ");
-                $documento->setValue('tipo3_'.$j, "X");
+                $documento->setValue('tipo3_'.$j, " ");
             }
 
             $documento->setValue('ponderacion#'.$j, $ponderacion);
@@ -239,28 +240,28 @@ class InformeAutoevaluacionController extends Controller
             }
             elseif(strcasecmp($encuestados[$l]->grupos->GIT_Nombre, "DOCENTES") == 0 || strcasecmp($encuestados[$l]->grupos->GIT_Nombre, "docentes") == 0){
                 $totalDocentes = $totalDocentes + $encuestados[$l]->cantidad;
-                $coberturaDocentes = ($encuestados[$l]->cantidad * 100) / 12;
+                $coberturaDocentes = ($encuestados[$l]->cantidad * 100) / $programa->PAC_Docentes_Actual;
             }
             elseif(strcasecmp($encuestados[$l]->grupos->GIT_Nombre, "DIRECTIVOS ACADEMICOS") == 0 || strcasecmp($encuestados[$l]->grupos->GIT_Nombre, "DIRECTIVO ACADEMICO") == 0
             || strcasecmp($encuestados[$l]->grupos->GIT_Nombre, "administrativo") == 0 || strcasecmp($encuestados[$l]->grupos->GIT_Nombre, "administrativos") == 0){
                 if(strcasecmp($encuestados[$l]->grupos->GIT_Nombre, "DIRECTIVOS ACADEMICOS") == 0 || strcasecmp($encuestados[$l]->grupos->GIT_Nombre, "DIRECTIVO ACADEMICO") == 0){
                     $totalDirectivo = $totalDirectivo + $encuestados[$l]->cantidad;
-                    $coberturaDirectivo = $encuestados[$l]->cantidad * 100 / 8;
+                    $coberturaDirectivo = $encuestados[$l]->cantidad * 100 / ($programa->PAC_Directivos_Academicos);
                 }
                 else{
                     $totalAdmin = $totalAdmin + $encuestados[$l]->cantidad;
-                    $coberturaAdmin = $encuestados[$l]->cantidad * 100 / 10;
+                    $coberturaAdmin = $encuestados[$l]->cantidad * 100 / $programa->PAC_Administrativos;
                 }
                 $totalAdmin_Directivo = $totalDirectivo + $totalAdmin;
                 $coberturaAdmin_Directivo = $coberturaDirectivo + $coberturaAdmin;
             }
             elseif(strcasecmp($encuestados[$l]->grupos->GIT_Nombre, "graduados") == 0 || strcasecmp($encuestados[$l]->grupos->GIT_Nombre, "egresados") == 0){
                 $totalEgresados = $totalEgresados + $encuestados[$l]->cantidad;
-                $coberturaEgresados = ($encuestados[$l]->cantidad * 100 / 439);
+                $coberturaEgresados = ($encuestados[$l]->cantidad * 100 / $programa->PAC_Egresados_Cinco);
             }
             elseif(strcasecmp($encuestados[$l]->grupos->GIT_Nombre, "empresarios") == 0 || strcasecmp($encuestados[$l]->grupos->GIT_Nombre, "empleadores") == 0){
                 $totalEmpresa = $totalEmpresa + $encuestados[$l]->cantidad;
-                $coberturaEmpresa = ($encuestados[$l]->cantidad * 100 / 10);
+                $coberturaEmpresa = ($encuestados[$l]->cantidad * 100 / $programa->PAC_Empresarios);
             }
         }
         $coberturaAdmin_Directivo = $coberturaAdmin_Directivo / 2;
@@ -576,7 +577,7 @@ class InformeAutoevaluacionController extends Controller
 
         $consolidaciones = Consolidacion::where('FK_CNS_Proceso', '=', session()->get('id_proceso'))
             	->with('caracteristica.factor')
-            ->get();
+                ->get();
 
         for($i = 0;$i < count($grupoFactores); $i++){
             $valida = $i + 1;
@@ -638,6 +639,10 @@ class InformeAutoevaluacionController extends Controller
                     $documento->setValue('accion_implementada#'.$i, $calificaciones[$j]->actividadesMejoramiento->ACM_Nombre);
                     $documento->setValue('seguimiento#'.$i, $calificaciones[$j]->actividadesMejoramiento->ACM_Descripcion);
                 }
+                else{
+                    $documento->setValue('accion_implementada#'.$i, "");
+                    $documento->setValue('seguimiento#'.$i, "");
+                }
             break;
             }
         }
@@ -652,6 +657,12 @@ class InformeAutoevaluacionController extends Controller
 
         $pathToFile = public_path(). '\InformeAutoevaluacion_'. $nombreArchivo .'.docx';
         return response()->download($pathToFile);
+
+
+        return response(['msg' => 'El Informe generado exitosamente.',
+            'title' => 'Informe Generado :*!',
+        ], 200) // 200 Status Code: Standard response for successful HTTP request
+        ->header('Content-Type', 'application/json');
     }
 
     /**

@@ -6,25 +6,34 @@
 @section('content')
     @component('admin.components.panel')
         @slot('title', 'Informe Autoevaluación')
-        {!! Form::open([
-            'route' => 'admin.informes_autoevaluacion.store',
-            'method' => 'POST',
-            'id' => 'form_crear_institucion',
-            'class' => 'form-horizontal form-label-lef',
-            'novalidate'
-        ])!!}
-        @include('autoevaluacion.SuperAdministrador.InformeAutoevaluacion._form')
-        <div class="ln_solid"></div>
-        <div class="form-group">
-            <div class="col-md-6 col-md-offset-3">
-                {!! Form::submit('Generar y Descargar',
-                    [   'class' => 'btn btn-success', 'data-toggle' => 'tooltip',
-                        'data-placement'=>'right', 'title'=>'Esta acción puede tardar más tiempo de lo esperado'
-                    ])
-                !!}
-            </div>
-        </div>
-        {!! Form::close() !!}
+        @if(session()->get('id_proceso'))
+            @if( session()->get('estado_proceso'))
+
+                {!! Form::open([
+                    'route' => 'admin.informes_autoevaluacion.store',
+                    'method' => 'POST',
+                    'id' => 'form_crear_institucion',
+                    'class' => 'form-horizontal form-label-lef',
+                    'novalidate'
+                ])!!}
+                @include('autoevaluacion.SuperAdministrador.InformeAutoevaluacion._form')
+                <div class="ln_solid"></div>
+                <div class="form-group">
+                    <div class="col-md-6 col-md-offset-3">
+                        {!! Form::submit('Generar y Descargar',
+                            [   'class' => 'btn btn-success', 'data-toggle' => 'tooltip',
+                                'data-placement'=>'right', 'title'=>'Esta acción puede tardar más tiempo de lo esperado'
+                            ])
+                        !!}
+                    </div>
+                </div>
+                {!! Form::close() !!}
+            @else
+                Este proceso aun no se ha cerrado.
+            @endif
+        @else
+            Por favor seleccione un proceso
+        @endif
     @endcomponent
 @endsection
 

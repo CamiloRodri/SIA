@@ -150,7 +150,7 @@ class ProcesoProgramaController extends Controller
     {
         $fechaInicio = Carbon::createFromFormat('d/m/Y', $request->get('PCS_FechaInicio'));
         $fechaFin = Carbon::createFromFormat('d/m/Y', $request->get('PCS_FechaFin'));
-        
+
         $proceso = new Proceso();
         $proceso->fill($request->only(['PCS_Nombre']));
         $proceso->PCS_FechaInicio = $fechaInicio;
@@ -206,12 +206,12 @@ class ProcesoProgramaController extends Controller
     {
         $instituciones = Institucion::pluck('ITN_nombre', 'PK_ITN_Id');
         $proceso = Proceso::findOrFail($id);
-        
+
         $sedes = Sede::pluck('SDS_Nombre', 'PK_SDS_Id');
         $facultades = Facultad::pluck('FCD_Nombre', 'PK_FCD_Id');
         $lineamientos = Lineamiento::pluck('LNM_Nombre', 'PK_LNM_Id');
         $fases = Fase::pluck('FSS_Nombre', 'PK_FSS_Id');
-        
+
         $sede = $proceso->programa->FK_PAC_Sede;
         $obtenerInstitucion = Sede::where('PK_SDS_Id', $sede)->get()->first();
         $idInstitucion = $obtenerInstitucion->FK_SDS_Institucion;
@@ -223,7 +223,7 @@ class ProcesoProgramaController extends Controller
 
         return view(
             'autoevaluacion.SuperAdministrador.ProcesosProgramas.edit',
-            compact('proceso', 'sedes', 'facultades', 'programas', 'lineamientos', 'fases', 
+            compact('proceso', 'sedes', 'facultades', 'programas', 'lineamientos', 'fases',
                     'instituciones', 'idInstitucion')
         );
     }
@@ -269,6 +269,15 @@ class ProcesoProgramaController extends Controller
 
         $proceso->PCS_Slug_Procesos = $slug . Carbon::now()->toDateString();
         $proceso->update();
+
+        if($request->get('PK_FSS_Id') != 1){
+            if(session()->has('estado_proceso')){
+                session()->forget('estado_proceso');
+            }
+        }
+        else{
+            session(['estado_proceso' => "cerrado" ]);
+        }
 
         return response([
             'msg' => 'El proceso ha sido modificado exitosamente.',
