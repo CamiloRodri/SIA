@@ -138,7 +138,7 @@ class PermissionTableSeeder extends Seeder
         Permission::create(['name' => 'CREAR_CALIFICA_ACTIVIDADES']);
         Permission::create(['name' => 'MODIFICAR_CALIFICA_ACTIVIDADES']);
         Permission::create(['name' => 'ELIMINAR_CALIFICA_ACTIVIDADES']);
-        //Permisos para valorizacion de caracteristicas 
+        //Permisos para valorizacion de caracteristicas
         Permission::create(['name' => 'ACCEDER_VALORIZACION_CARACTERISTICAS']);
         Permission::create(['name' => 'VER_VALORIZACION_CARACTERISTICAS']);
         //Permisos para Consolidacion de Factores
@@ -149,6 +149,8 @@ class PermissionTableSeeder extends Seeder
         Permission::create(['name' => 'ELIMINAR_CONSOLIDACION_FACTORES']);
         //Permisos para Calendario de Actividades
         Permission::create(['name' => 'ACCEDER_CALENDARIO_ACTIVIDADES']);
+        //Permisos para Informe Autoevaluacion
+        Permission::create(['name' => 'ACCEDER_INFORME_AUTOEVALUACION']);
 
         // Permisos Fuentes primarias
         Permission::create(['name' => 'ACCEDER_SIDEBAR_ENCUESTAS']);
@@ -267,6 +269,6 @@ class PermissionTableSeeder extends Seeder
         Permission::create(['name' => 'ACCEDER_INFORMES_FUENTES_SECUNDARIAS']);
         Permission::create(['name' => 'ACCEDER_INFORMES_DOCUMENTOS_AUTOEVALUACION']);
         Permission::create(['name' => 'ACCEDER_INFORMES_DOCUMENTOS_INSTITUCIONALES']);
-        
+
     }
 }

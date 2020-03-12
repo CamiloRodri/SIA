@@ -22,7 +22,7 @@
 @endcan
 <li><a><i class="fa fa-male"></i> Super administrador <span class="fa fa-chevron-down"></span></a>
     <ul class="nav child_menu">
-        @can('ACCEDER_INSTITUCION')    
+        @can('ACCEDER_INSTITUCION')
             <li>
                 <a href="{{ route('admin.institucion.index')}}"><i class="fa fa-university"></i> Institución</a>
             </li>
@@ -121,7 +121,12 @@
                                     class="fa fa-calendar"></i> Calendario de Actividades</a>
                     </li>
                 @endcan
-
+                @can('ACCEDER_INFORME_AUTOEVALUACION')
+                    <li>
+                        <a href="{{ route('admin.informes_autoevaluacion.create')}}"><i class="fa fa-file-word-o"></i>
+                        Informe Autoevaluación</a>
+                    </li>
+                @endcan
             </ul>
         </li>
         @endcan

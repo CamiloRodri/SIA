@@ -132,7 +132,8 @@ class RoleTableSeeder extends Seeder
             'VER_EVIDENCIA',
             'CREAR_EVIDENCIA',
             'MODIFICAR_EVIDENCIA',
-            'ELIMINAR_EVIDENCIA'
+            'ELIMINAR_EVIDENCIA',
+            'ACCEDER_INFORME_AUTOEVALUACION'
         ]);
 
         //Crear y asignar permisos fuentes primarias
@@ -251,6 +252,6 @@ class RoleTableSeeder extends Seeder
             'CREAR_FECHA_CORTE',
             'MODIFICAR_FECHA_CORTE',
             'ELIMINAR_FECHA_CORTE'
-        ]);  
+        ]);
     }
 }

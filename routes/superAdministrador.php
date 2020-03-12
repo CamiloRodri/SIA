@@ -50,7 +50,7 @@ Route::get('frente_estrategico/data/data', array('as' => 'admin.frente_estrategi
 
 //Evidencia (Acticidad de Mejoramiento)
 Route::get('evidencia/data/data/{id}', array(
-    'as' => 'admin.evidencia.datos', 
+    'as' => 'admin.evidencia.datos',
     'uses' => 'EvidenciaController@datos'
 ));
 //Rutas CRUD Evidencia  (Acticidad de Mejoramiento)
@@ -86,7 +86,7 @@ Route::get('actividades_mejoramiento/califica_actividad/{id}', array(
     'uses' => 'CalificaActividadController@index'
 ));
 Route::resource('actividades_mejoramiento/califica_actividad', 'CalificaActividadController', ['as' => 'admin'])->except(['show', 'index']);
-Route::get('califica_actividad/data/data/{id}', array('as' => 'admin.califica_actividad.data', 
+Route::get('califica_actividad/data/data/{id}', array('as' => 'admin.califica_actividad.data',
     'uses' => 'CalificaActividadController@data'));
 
 //Caracateristicas
@@ -117,7 +117,7 @@ Route::get('facultades/data/data', array('as' => 'admin.facultades.data', 'uses'
 Route::resource('programas_academicos', 'ProgramaAcademicoController', ['as' => 'admin']);
 Route::get('programas_academicos/data/data', array('as' => 'admin.programas_academicos.data',
     'uses' => 'ProgramaAcademicoController@data'));
-    
+
 Route::get('programas_academicos/sedes/{id_institucion}', array(
     'as' => 'admin.programas_academicos.obtener_sedes',
     'uses' => 'ProgramaAcademicoController@ObtenerSedes'
@@ -196,21 +196,34 @@ Route::post('historial/filtro_encuestas/{idProceso}', array(
 //Caracteristicas Mejoramiento
 Route::resource('caracteristicas_mejoramiento', 'CaracteristicasMejoramientoController', ['as' => 'admin']);
 Route::get('caracteristicas_mejoramiento/data/data', array(
-    'as' => 'admin.caracteristicas_mejoramiento.data', 
+    'as' => 'admin.caracteristicas_mejoramiento.data',
     'uses' => 'CaracteristicasMejoramientoController@data'));
 Route::get('caracteristicas_mejoramiento/data_doc/data_doc', array(
-    'as' => 'admin.caracteristicas_mejoramiento.data_doc', 
+    'as' => 'admin.caracteristicas_mejoramiento.data_doc',
     'uses' => 'CaracteristicasMejoramientoController@data_doc'));
 
 //Responsables
 Route::resource('responsables', 'ResponsablesController', ['as' => 'admin']);
-Route::get('responsables/data/data', array('as' => 'admin.responsables.data', 'uses' => 'ResponsablesController@data'));
+Route::get('responsables/data/data', array(
+                        'as' => 'admin.responsables.data',
+                        'uses' => 'ResponsablesController@data'));
 
 //Actividades de mejoramiento
 Route::resource('actividades_mejoramiento', 'ActividadesMejoramientoController', ['as' => 'admin'])->except(['show']);
-Route::get('actividades_mejoramiento/{id}', array('as' => 'admin.actividades_mejoramiento.datos', 'uses' => 'ActividadesMejoramientoController@create'));
-Route::get('estado_actividades/{id}', array('as' => 'admin.actividades_mejoramiento.estado', 'uses' => 'ActividadesMejoramientoController@estado'));
-Route::get('actividades_mejoramiento/data/data', array('as' => 'admin.actividades_mejoramiento.data', 'uses' => 'ActividadesMejoramientoController@data'));
+Route::get('actividades_mejoramiento/{id}', array(
+                        'as' => 'admin.actividades_mejoramiento.datos',
+                        'uses' => 'ActividadesMejoramientoController@create'));
+Route::get('estado_actividades/{id}', array(
+                        'as' => 'admin.actividades_mejoramiento.estado',
+                        'uses' => 'ActividadesMejoramientoController@estado'));
+Route::get('actividades_mejoramiento/data/data', array(
+                        'as' => 'admin.actividades_mejoramiento.data',
+                        'uses' => 'ActividadesMejoramientoController@data'));
+
+//informe Autoevaluación
+Route::resource('informes_autoevaluacion', 'InformeAutoevaluacionController', [
+                'as' => 'admin'])->except(['index', 'show', 'edit', 'update', 'destroy']);
+
 
 //informes plan de mejoramiento
 Route::get('informes_mejoramiento', array(
@@ -247,9 +260,9 @@ Route::resource('fechacorte', 'FechaCorteController', ['as' => 'admin']);
 Route::get('fechacorte/data/data', array('as' => 'admin.fechacorte.data',
     'uses' => 'FechaCorteController@data'));
 
-//Consolidacion de Factores 
+//Consolidacion de Factores
 Route::resource('consolidacion_factores', 'ConsolidacionController', ['as' => 'admin']);
-Route::get('consolidacion_factores/data/data', array('as' => 'admin.consolidacion_factores.data', 
+Route::get('consolidacion_factores/data/data', array('as' => 'admin.consolidacion_factores.data',
     'uses' => 'ConsolidacionController@data'));
 
 Route::get('calendario', array('as' => 'admin.calendario', 'uses' => 'ActividadesMejoramientoController@calendario'));
