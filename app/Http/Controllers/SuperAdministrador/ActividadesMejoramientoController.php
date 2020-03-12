@@ -77,37 +77,41 @@ class ActividadesMejoramientoController extends Controller
                 ->get();
         }
 
-        $fechacorteanterior = FechaCorte::where('PK_FCO_Id', '<', $fechacorte->PK_FCO_Id)->orderBy('PK_FCO_Id', 'des')->first();
-        for($i = 0; $i < count($actividades); $i ++){
-            if($fechacorteanterior) {
-                $docEvidencia = Evidencia::whereHas('actividad_mejoramiento.califica')
-                                        ->where('FK_EVD_Actividad_Mejoramiento', $actividades[$i]->PK_ACM_Id)
-                                        ->whereDate('EVD_Fecha_Subido', '<=', $fechacorte->FCO_Fecha)
-                                        ->whereDate('EVD_Fecha_Subido', '>', $fechacorteanterior->FCO_Fecha)
-                                        ->get();
-                if($docEvidencia->isEmpty()){
+       if(! is_null($fechacorte)){
+            $fechacorteanterior = FechaCorte::where('PK_FCO_Id', '<', $fechacorte->PK_FCO_Id)->orderBy('PK_FCO_Id', 'des')->first();
+            for($i = 0; $i < count($actividades); $i ++){
+                if($fechacorteanterior) {
+                    $docEvidencia = Evidencia::whereHas('actividad_mejoramiento.califica')
+                                            ->where('FK_EVD_Actividad_Mejoramiento', $actividades[$i]->PK_ACM_Id)
+                                            ->whereDate('EVD_Fecha_Subido', '<=', $fechacorte->FCO_Fecha)
+                                            ->whereDate('EVD_Fecha_Subido', '>', $fechacorteanterior->FCO_Fecha)
+                                            ->get();
+                    if($docEvidencia->isEmpty()){
 
-                    $actividadesMejoramiento = ActividadesMejoramiento::findOrFail($actividades[$i]->PK_ACM_Id);
-                    $actividadesMejoramiento->ACM_Estado = 0;
-                    $actividadesMejoramiento->update();
-                }
-                else{
-                    $calificaciones = CalificaActividad::where('FK_CLA_Actividad_Mejoramiento', $actividades[$i]->PK_ACM_Id)
-                                                        ->where('FK_CLA_Fecha_Corte', $fechacorte->PK_FCO_Id)
-                                                        ->get();
-                    if($calificaciones->isEmpty()){
                         $actividadesMejoramiento = ActividadesMejoramiento::findOrFail($actividades[$i]->PK_ACM_Id);
-                        $actividadesMejoramiento->ACM_Estado = 1;
+                        $actividadesMejoramiento->ACM_Estado = 0;
                         $actividadesMejoramiento->update();
                     }
                     else{
-                        $actividadesMejoramiento = ActividadesMejoramiento::findOrFail($actividades[$i]->PK_ACM_Id);
-                        $actividadesMejoramiento->ACM_Estado = 2;
-                        $actividadesMejoramiento->update();
+                        $calificaciones = CalificaActividad::where('FK_CLA_Actividad_Mejoramiento', $actividades[$i]->PK_ACM_Id)
+                                                            ->where('FK_CLA_Fecha_Corte', $fechacorte->PK_FCO_Id)
+                                                            ->get();
+                        if($calificaciones->isEmpty()){
+                            $actividadesMejoramiento = ActividadesMejoramiento::findOrFail($actividades[$i]->PK_ACM_Id);
+                            $actividadesMejoramiento->ACM_Estado = 1;
+                            $actividadesMejoramiento->update();
+                        }
+                        else{
+                            $actividadesMejoramiento = ActividadesMejoramiento::findOrFail($actividades[$i]->PK_ACM_Id);
+                            $actividadesMejoramiento->ACM_Estado = 2;
+                            $actividadesMejoramiento->update();
+                        }
                     }
                 }
             }
-        }
+       }
+
+
 
         return view('autoevaluacion.SuperAdministrador.ActividadesMejoramiento.index',
         compact('planMejoramiento', 'fechacorte', 'fechascorte', 'fechahoy', 'actividades'));
