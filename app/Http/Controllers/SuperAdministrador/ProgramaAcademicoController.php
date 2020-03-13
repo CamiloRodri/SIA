@@ -12,7 +12,6 @@ use App\Models\Autoevaluacion\Institucion;
 use App\Models\Autoevaluacion\Metodologia;
 use Yajra\DataTables\DataTables;
 use Illuminate\Http\Request;
-use Barryvdh\Debugbar;
 
 class ProgramaAcademicoController extends Controller
 {
@@ -134,7 +133,12 @@ class ProgramaAcademicoController extends Controller
                                                     'PAC_Area_Formacion', 'PAC_Area_Formacion',
                                                     'PAC_Estudiantes', 'PAC_Estudiantes',
                                                     'PAC_Egresados', 'PAC_Egresados',
-                                                    'PAC_Valor_Matricula', 'PAC_Valor_Matricula'
+                                                    'PAC_Valor_Matricula', 'PAC_Valor_Matricula',
+                                                    'PAC_Docentes_Actual', 'PAC_Docentes_Actual',
+                                                    'PAC_Directivos_Academicos', 'PAC_Directivos_Academicos',
+                                                    'PAC_Administrativos', 'PAC_Administrativos',
+                                                    'PAC_Egresados_Cinco', 'PAC_Egresados_Cinco',
+                                                    'PAC_Empresarios', 'PAC_Empresarios'
                                                 ]));
         $programaAcademico->FK_PAC_Sede = $request->get('PK_SDS_Id');
         $programaAcademico->FK_PAC_Estado = $request->get('PK_ESD_Id');
@@ -181,8 +185,6 @@ class ProgramaAcademicoController extends Controller
 
         $sede = Sede::findOrFail($programaAcademico->FK_PAC_Sede);
         $idInstitucion = $sede->FK_SDS_Institucion;
-        \Debugbar::info($sede);
-        \Debugbar::info($idInstitucion);
 
         return view(
             'autoevaluacion.SuperAdministrador.ProgramasAcademicos.edit',
@@ -225,7 +227,12 @@ class ProgramaAcademicoController extends Controller
                                                     'PAC_Area_Formacion', 'PAC_Area_Formacion',
                                                     'PAC_Estudiantes', 'PAC_Estudiantes',
                                                     'PAC_Egresados', 'PAC_Egresados',
-                                                    'PAC_Valor_Matricula', 'PAC_Valor_Matricula'
+                                                    'PAC_Valor_Matricula', 'PAC_Valor_Matricula',
+                                                    'PAC_Docentes_Actual', 'PAC_Docentes_Actual',
+                                                    'PAC_Directivos_Academicos', 'PAC_Directivos_Academicos',
+                                                    'PAC_Administrativos', 'PAC_Administrativos',
+                                                    'PAC_Egresados_Cinco', 'PAC_Egresados_Cinco',
+                                                    'PAC_Empresarios', 'PAC_Empresarios'
                                                 ]));
         if($request->get('PK_SDS_Id') != ''){
             $programaAcademico->FK_PAC_Sede = $request->get('PK_SDS_Id');
@@ -233,7 +240,7 @@ class ProgramaAcademicoController extends Controller
         else{
             $programas = ProgramaAcademico::find($programaAcademico->PK_PAC_Id);
             $programaAcademico->FK_PAC_Sede = $programas->FK_PAC_Sede;
-        } 
+        }
         $programaAcademico->FK_PAC_Estado = $request->get('PK_ESD_Id');
         $programaAcademico->FK_PAC_Facultad = $request->get('PK_FCD_Id');
 

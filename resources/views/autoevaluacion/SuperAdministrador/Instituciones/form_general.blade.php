@@ -39,7 +39,8 @@
     <div class="col-md-6 col-sm-6 col-xs-12">
         {!! Form::textarea('ITN_CodigoSNIES', old('ITN_CodigoSNIES'),[ 'class' => 'form-control col-md-6 col-sm-6 col-xs-12',
             'required' => 'required',
-            'data-parsley-pattern' => '^[a-zA-Z0-9-_\.,;:ñÑáéíóúÁÉÍÓÚ ]{1,100}$',
+            'rows' => '3',
+            'data-parsley-pattern' => '^[a-zA-Z0-9-_\.,;:ñÑáéíóúÁÉÍÓÚ\n ]{1,100}$',
             'data-parsley-pattern-message' => 'Por favor escriba un código SNIES válido',
             'data-parsley-length' => "[1, 100]",
             'data-parsley-trigger'=>"change"] )
@@ -61,7 +62,7 @@
 <div class="item form-group">
     {!! Form::label('ITN_Estudiantes','Número de Estudiantes', [ 'class'=>'control-label col-md-3 col-sm-3 col-xs-12']) !!}
     <div class="col-md-6 col-sm-6 col-xs-12">
-        {!! Form::text('ITN_Estudiantes', old('ITN_Estudiantes'),[ 'class' => 'form-control col-md-6 col-sm-6 col-xs-12', 'required' => 'required',
+        {!! Form::number('ITN_Estudiantes', old('ITN_Estudiantes'),[ 'class' => 'form-control col-md-6 col-sm-6 col-xs-12', 'required' => 'required',
             'data-parsley-type'=>"number",
             'data-parsley-length' => "[0, 60]",
             'data-parsley-trigger'=>"change"])
@@ -81,7 +82,7 @@
 <div class="item form-group">
     {!! Form::label('ITN_Profesor_Planta','Planta', ['class'=>'control-label col-md-3 col-sm-3 col-xs-12']) !!}
     <div class="col-md-6 col-sm-6 col-xs-12">
-        {!! Form::text('ITN_Profesor_Planta', old('ITN_Profesor_Planta'),[ 'class' => 'form-control col-md-6 col-sm-6 col-xs-12',
+        {!! Form::number('ITN_Profesor_Planta', old('ITN_Profesor_Planta'),[ 'class' => 'form-control col-md-6 col-sm-6 col-xs-12',
             'data-parsley-type'=>"number",
             'data-parsley-length' => "[0, 60]",
             'data-parsley-trigger'=>"change"])
@@ -91,7 +92,7 @@
 <div class="item form-group">
     {!! Form::label('ITN_Profesor_TCompleto','Tiempo completo ocasional', ['class'=>'control-label col-md-3 col-sm-3 col-xs-12']) !!}
     <div class="col-md-6 col-sm-6 col-xs-12">
-        {!! Form::text('ITN_Profesor_TCompleto', old('ITN_Profesor_TCompleto'),[ 'class' => 'form-control col-md-6 col-sm-6 col-xs-12',
+        {!! Form::number('ITN_Profesor_TCompleto', old('ITN_Profesor_TCompleto'),[ 'class' => 'form-control col-md-6 col-sm-6 col-xs-12',
             'data-parsley-type'=>"number",
             'data-parsley-length' => "[0, 60]",
             'data-parsley-trigger'=>"change"])
@@ -101,7 +102,7 @@
 <div class="item form-group">
     {!! Form::label('ITN_Profesor_TMedio','Medio tiempo', ['class'=>'control-label col-md-3 col-sm-3 col-xs-12']) !!}
     <div class="col-md-6 col-sm-6 col-xs-12">
-        {!! Form::text('ITN_Profesor_TMedio', old('ITN_Profesor_TMedio'),[ 'class' => 'form-control col-md-6 col-sm-6 col-xs-12',
+        {!! Form::number('ITN_Profesor_TMedio', old('ITN_Profesor_TMedio'),[ 'class' => 'form-control col-md-6 col-sm-6 col-xs-12',
             'data-parsley-type'=>"number",
             'data-parsley-length' => "[0, 60]",
             'data-parsley-trigger'=>"change"])
@@ -111,7 +112,7 @@
 <div class="item form-group">
     {!! Form::label('ITN_Profesor_Catedra','Catedra', ['class'=>'control-label col-md-3 col-sm-3 col-xs-12']) !!}
     <div class="col-md-6 col-sm-6 col-xs-12">
-        {!! Form::text('ITN_Profesor_Catedra', old('ITN_Profesor_Catedra'),[ 'class' => 'form-control col-md-6 col-sm-6 col-xs-12',
+        {!! Form::number('ITN_Profesor_Catedra', old('ITN_Profesor_Catedra'),[ 'class' => 'form-control col-md-6 col-sm-6 col-xs-12',
             'data-parsley-type'=>"number",
             'data-parsley-length' => "[0, 60]",
             'data-parsley-trigger'=>"change"])
@@ -121,7 +122,7 @@
 <div class="item form-group">
     {!! Form::label('ITN_Graduados','N° de estudiantes graduados', ['class'=>'control-label col-md-3 col-sm-3 col-xs-12']) !!}
     <div class="col-md-6 col-sm-6 col-xs-12">
-        {!! Form::text('ITN_Graduados', old('ITN_Graduados'),[ 'class' => 'form-control col-md-6 col-sm-6 col-xs-12',
+        {!! Form::number('ITN_Graduados', old('ITN_Graduados'),[ 'class' => 'form-control col-md-6 col-sm-6 col-xs-12',
             'data-parsley-type'=>"number",
             'data-parsley-length' => "[0, 60]",
             'data-parsley-trigger'=>"change"])
@@ -132,7 +133,7 @@
     {!! Form::label('ITN_Mision','Misión', ['class'=>'control-label col-md-3 col-sm-3 col-xs-12']) !!}
     <div class="col-md-6 col-sm-6 col-xs-12">
         {!! Form::textarea('ITN_Mision', old('ITN_Mision'),[ 'class' => 'form-control col-md-6 col-sm-6 col-xs-12',
-            'required' => 'required',
+            'required' => 'required', 'rows' => '5',
             'data-parsley-pattern' => '^[a-zA-Z0-9-_\.,;:ñÑáéíóúÁÉÍÓÚ ]{1,800}$',
             'data-parsley-pattern-message' => 'Por favor escriba una misión válida',
             'data-parsley-length' => "[1, 800]",
@@ -144,7 +145,7 @@
     {!! Form::label('ITN_Vision','Visión', ['class'=>'control-label col-md-3 col-sm-3 col-xs-12']) !!}
     <div class="col-md-6 col-sm-6 col-xs-12">
         {!! Form::textarea('ITN_Vision', old('ITN_Vision'),[ 'class' => 'form-control col-md-6 col-sm-6 col-xs-12',
-            'required' => 'required',
+            'required' => 'required', 'rows' => '5',
             'data-parsley-pattern' => '^[a-zA-Z0-9-_\.,;:ñÑáéíóúÁÉÍÓÚ ]{1,800}$',
             'data-parsley-pattern-message' => 'Por favor escriba una visión válida',
             'data-parsley-length' => "[1, 800]",
@@ -156,7 +157,7 @@
     {!! Form::label('ITN_Descripcion','Descripción', ['class'=>'control-label col-md-3 col-sm-3 col-xs-12']) !!}
     <div class="col-md-6 col-sm-6 col-xs-12">
         {!! Form::textarea('ITN_Descripcion', old('ITN_Descripcion'),[ 'class' => 'form-control col-md-6 col-sm-6 col-xs-12',
-            'required' => 'required',
+            'required' => 'required', 'rows' => '5',
             'data-parsley-pattern' => '^[a-zA-Z0-9-_\.,;:ñÑáéíóúÁÉÍÓÚ ]{1,100}$',
             'data-parsley-pattern-message' => 'Por favor escriba una descripción válida',
             'data-parsley-length' => "[1, 100]",
@@ -188,7 +189,7 @@
 <div class="item form-group">
     {!! Form::label('ITN_FuenteBoletinAnio','del ', [ 'class'=>'control-label col-md-1 col-sm-1 col-xs-6'], ['placeholder' => 'Año']) !!}
     <div class="col-md-1 col-sm-1 col-xs-1">
-        {!! Form::text('ITN_FuenteBoletinAnio', old('ITN_FuenteBoletinAnio'),[ 'class' => 'form-control col-md-1 col-sm-1 col-xs-6', 'placeholder' => 'Año',
+        {!! Form::number('ITN_FuenteBoletinAnio', old('ITN_FuenteBoletinAnio'),[ 'class' => 'form-control col-md-1 col-sm-1 col-xs-6', 'placeholder' => 'Año',
             'required' => 'required',
             'data-parsley-type'=>"number",
             'data-parsley-length' => "[0, 4]",
