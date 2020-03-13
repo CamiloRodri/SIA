@@ -180,7 +180,7 @@ class ActividadesMejoramientoController extends Controller
                             return '0 %';
                         }
                         else{
-                            return ((($actividades->califica->get()->sortByDesc('CLA_Calificacion')->first())->CLA_Calificacion)*100)/5.0 .'%';
+                            return ((($actividades->califica->get()->where('FK_CLA_Actividad_Mejoramiento', $actividades->PK_ACM_Id)->sortByDesc('CLA_Calificacion')->first())->CLA_Calificacion)*100)/5.0 .'%';
                         }
                     })
                     ->rawColumns(['estado'])
