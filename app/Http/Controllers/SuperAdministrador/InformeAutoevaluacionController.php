@@ -55,6 +55,16 @@ class InformeAutoevaluacionController extends Controller
         /**
          * Enfocada a completar los cuadros de programa e institucion con frentes etrategicos
          */
+        if($request->file('file')){
+            $path = public_path().'/uploads';
+            $files = $request->file('file');
+            foreach($files as $file){
+                $fileName = ("foto.").$file->extension();
+                $file->move($path, $fileName);
+                dd($path);
+            }
+        }
+
         $proceso = Proceso::where('PK_PCS_Id', '=', session()->get('id_proceso'))->first();
         $programa = $proceso->programa;
         $facultad = $proceso->programa->facultad;
@@ -87,6 +97,28 @@ class InformeAutoevaluacionController extends Controller
         else{
             $documento->setValue('titulo_3', $request->get('IAT_Titulo_Tres'));
         }
+
+        $img_path_jpg = public_path().'/uploads/foto.jpg';
+        $img_path_png = public_path().'/uploads/foto.png';
+        $img_path_jpeg = public_path().'/uploads/foto.jpeg';
+        $img_ucundi = public_path().'/uploads/icon-ucundi.png';
+
+        // dd(@getimagesize($img_path_jpg), @getimagesize($img_path_png), $img_path_jpeg);
+
+        if(@getimagesize($img_path_jpg)){
+            $documento->setImageValue('foto', array('path' => $img_path_jpg, 'width' => 100, 'height' => 100, 'ratio' => true));
+        }
+        elseif(@getimagesize($img_path_png)){
+            $documento->setImageValue('foto', array('path' => $img_path_png, 'width' => 100, 'height' => 100, 'ratio' => true));
+        }
+        elseif(@getimagesize($img_path_jpeg)){
+            $documento->setImageValue('foto', array('path' => $img_path_jpeg, 'width' => 100, 'height' => 100, 'ratio' => true));
+        }
+        else{
+            $documento->setImageValue('foto', array('path' => $img_ucundi, 'width' => 100, 'height' => 100, 'ratio' => true));
+        }
+
+
 
         $documento->setValue('nombre_institucion', $institucion->ITN_Nombre);
         $documento->setValue('domicilio_institucion', $institucion->ITN_Domicilio);
@@ -632,19 +664,28 @@ class InformeAutoevaluacionController extends Controller
             ->orderBy('CLA_Calificacion', 'desc')
             ->get();
 
+            // dd($calificaciones);
+
         for($i = 0; $i < count($grupoFactores); $i ++){
             $identificador = $i + 1;
-            for($j = 0; $j < count($calificaciones); $j ++){
-                if($calificaciones[$j]->actividadesMejoramiento->Caracteristicas->factor->FCT_Identificador == $identificador){
-                    $documento->setValue('accion_implementada#'.$i, $calificaciones[$j]->actividadesMejoramiento->ACM_Nombre);
-                    $documento->setValue('seguimiento#'.$i, $calificaciones[$j]->actividadesMejoramiento->ACM_Descripcion);
+            if(empty($calificaciones)){
+                for($j = 0; $j < count($calificaciones); $j ++){
+                    if($calificaciones[$j]->actividadesMejoramiento->Caracteristicas->factor->FCT_Identificador == $identificador){
+                        $documento->setValue('accion_implementada#'.$i, $calificaciones[$j]->actividadesMejoramiento->ACM_Nombre);
+                        $documento->setValue('seguimiento#'.$i, $calificaciones[$j]->actividadesMejoramiento->ACM_Descripcion);
+                    }
+                    else{
+                        $documento->setValue('accion_implementada#'.$i, "");
+                        $documento->setValue('seguimiento#'.$i, "");
+                    }
+                break;
                 }
-                else{
-                    $documento->setValue('accion_implementada#'.$i, "");
-                    $documento->setValue('seguimiento#'.$i, "");
-                }
-            break;
             }
+            else{
+                $documento->setValue('accion_implementada#'.$i, "");
+                $documento->setValue('seguimiento#'.$i, "");
+            }
+
         }
 
         /**
@@ -655,7 +696,21 @@ class InformeAutoevaluacionController extends Controller
 
         $documento->saveAs('InformeAutoevaluacion_' . $nombreArchivo . '.docx');
 
+        /**
+         * Eliminacion de imagenes.
+         */
+        if(@getimagesize($img_path_jpg)){
+            unlink($img_path_jpg);
+        }
+        elseif(@getimagesize($img_path_png)){
+            unlink($img_path_png);
+        }
+        elseif(@getimagesize($img_path_jpeg)){
+            unlink($img_path_jpeg);
+        }
+
         $pathToFile = public_path(). '\InformeAutoevaluacion_'. $nombreArchivo .'.docx';
+
         return response()->download($pathToFile);
 
 
