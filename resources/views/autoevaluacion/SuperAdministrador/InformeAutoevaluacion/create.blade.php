@@ -11,60 +11,61 @@
             </h2>
             <ul class="nav navbar-right panel_toolbox">
                 <li>
-                    <a class="collapse-link" ><i class="fa fa-chevron-up"></i></a>
+                    <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
                 </li>
             </ul>
             <div class="clearfix">
             </div>
         </div>
         @if(session()->get('id_proceso'))
-            @if( session()->get('estado_proceso'))
+            @if(session()->get('estado_proceso'))
 
-        <p>Aquí se genera el Informe Final de Autoevaluación, puede dejar los titulos por defecto o editar los titulos que iran en el encabezado.</p>
-        <p>El siguiente cuadro es para subir la imagen (Logo de la Universidad), luego podrá generar y descargar el Informe.</p>
-    @component('admin.components.panel')
-    <div class="panel-body">
-        {!! Form::open(['route'=> 'admin.informes_autoevaluacion.store', 'method' => 'POST', 'files'=>'true', 'id' => 'my-dropzone' , 'class' => 'dropzone']) !!}
-        <div class="dz-message" style="height:200px;">
-            Suelta tu imagen aquí
-        </div>
-        <div class="dropzone-previews"></div>
-        <button type="submit" class="btn btn-success" id="submit">Guardar imagen</button>
-        {!! Form::close() !!}
-    </div>
+                <p>Aquí se genera el Informe Final de Autoevaluación, puede dejar los titulos por defecto o editar los titulos que iran en el encabezado.</p>
+                <p>El siguiente cuadro es para subir la imagen (Logo de la Universidad), luego podrá generar y descargar el Informe.</p>
+                @component('admin.components.panel')
+                    <div class="panel-body">
+                        {!! Form::open(['route'=> 'admin.informes_autoevaluacion.store', 'method' => 'POST', 'files'=>'true', 'id' => 'my-dropzone' , 'class' => 'dropzone']) !!}
+                        <div class="dz-message" style="height:200px;">
+                            Suelta tu imagen aquí
+                        </div>
+                        <div class="dropzone-previews"></div>
+                        <button type="submit" class="btn btn-success" id="submit">Guardar imagen</button>
+                        {!! Form::close() !!}
+                    </div>
 
 
 
-    </div>
-    <div class="x_panel">
+                    </div>
+                    <div class="x_panel">
 
-        {!! Form::open([
-            'route' => 'admin.informes_autoevaluacion.store',
-            'method' => 'POST',
-            'id' => 'form_crear_institucion',
-            'class' => 'form-horizontal form-label-lef',
-            'novalidate'
-        ])!!}
-        @include('autoevaluacion.SuperAdministrador.InformeAutoevaluacion._form')
-        <div class="ln_solid"></div>
-        <div class="form-group">
-            <div class="col-md-6 col-md-offset-3">
-                {!! Form::submit('Generar y Descargar',
-                    [   'class' => 'btn btn-success', 'data-toggle' => 'tooltip',
-                        'data-placement'=>'right', 'title'=>'Esta acción puede tardar más tiempo de lo esperado'
-                    ])
-                !!}
-            </div>
-        </div>
-        {!! Form::close() !!}
-    </div>
+                        {!! Form::open([
+                            'route' => 'admin.informes_autoevaluacion.store',
+                            'method' => 'POST',
+                            'id' => 'form_crear_institucion',
+                            'class' => 'form-horizontal form-label-lef',
+                            'novalidate'
+                        ])!!}
+                        @include('autoevaluacion.SuperAdministrador.InformeAutoevaluacion._form')
+                        <div class="ln_solid"></div>
+                        <div class="form-group">
+                            <div class="col-md-6 col-md-offset-3">
+                                {!! Form::submit('Generar y Descargar',
+                                    [   'class' => 'btn btn-success', 'data-toggle' => 'tooltip',
+                                        'data-placement'=>'right', 'title'=>'Esta acción puede tardar más tiempo de lo esperado'
+                                    ])
+                                !!}
+                            </div>
+                        </div>
+                        {!! Form::close() !!}
+                    </div>
+                @endcomponent
             @else
                 Este proceso aun no se ha cerrado.
             @endif
         @else
             Por favor seleccione un proceso
         @endif
-    @endcomponent
+
 @endsection
 
 {{-- Scripts necesarios para el formulario --}}
@@ -117,6 +118,14 @@
                 });
                 this.on("addedfile", function(file) {
                     alert("Por favor, guarde la imagen");
+                    // $(function () {
+                    //     new PNotify({
+                    //         title: "Imagen Cargada",
+                    //         text: 'Por favor, guarde la imagen',
+                    //         type: 'info',
+                    //         styling: 'bootstrap3'
+                    //     });
+                    // });
                 });
 
                 this.on("complete", function(file) {
@@ -125,10 +134,27 @@
 
                 this.on("success", function(file){
                     myDropzone.processQueue.bind(myDropzone);
-                    alert("Genere el Informe");
+                    alert("Ya puede generar y descargar el Informe");
+                    // $(function () {
+                    //     new PNotify({
+                    //         title: "Imagen Guardada",
+                    //         text: 'Ya puede generar un Informe con su propio logo',
+                    //         type: 'success',
+                    //         styling: 'bootstrap3'
+                    //     });
+                    // });
                 });
             }
         };
+
+        // $(function () {
+        //     new PNotify({
+        //         title: "Actividad Modificada!",
+        //         text: 'sesion',
+        //         type: 'success',
+        //         styling: 'bootstrap3'
+        //     });
+        // });
     </script>
 
 @endpush

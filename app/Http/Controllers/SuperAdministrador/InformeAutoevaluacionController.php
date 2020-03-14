@@ -649,8 +649,8 @@ class InformeAutoevaluacionController extends Controller
             $documento->setValue('actFac#'.$lista, $actividades[$i]->Caracteristicas->factor->FCT_Identificador);
             $documento->setValue('actAc#'.$lista, "");
             $documento->setValue('actNom#'.$lista, $actividades[$i]->ACM_Nombre);
-            $documento->setValue('actFi#'.$lista, $actividades[$i]->ACM_Fecha_Inicio);
-            $documento->setValue('actFf#'.$lista, $actividades[$i]->ACM_Fecha_Fin);
+            $documento->setValue('actFi#'.$lista, $actividades[$i]->ACM_Fecha_Inicio->format('d-m-Y'));
+            $documento->setValue('actFf#'.$lista, $actividades[$i]->ACM_Fecha_Fin->format('d-m-Y'));
             $documento->setValue('actInd#'.$lista, "");
             $documento->setValue('actRes#'.$lista, $actividades[$i]->responsable->usuarios->name . " " . $actividades[$i]->responsable->usuarios->lastname);
             $documento->setValue('actCar#'.$lista, $actividades[$i]->responsable->cargo->CAA_Cargo);
