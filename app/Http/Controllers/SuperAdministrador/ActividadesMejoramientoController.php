@@ -62,7 +62,7 @@ class ActividadesMejoramientoController extends Controller
             $actividades = ActividadesMejoramiento::whereHas('PlanMejoramiento', function ($query) {
                 return $query->where('FK_PDM_Proceso', '=', session()->get('id_proceso'));
             })
-                ->with('Caracteristicas.factor', 'responsable.usuarios')
+                ->with('Caracteristicas.factor', 'responsable.usuarios', 'califica')
                 ->get();
         }
         else
@@ -77,41 +77,85 @@ class ActividadesMejoramientoController extends Controller
                 ->get();
         }
 
-       if(! is_null($fechacorte)){
+       if(!is_null($fechacorte)){
             $fechacorteanterior = FechaCorte::where('PK_FCO_Id', '<', $fechacorte->PK_FCO_Id)->orderBy('PK_FCO_Id', 'des')->first();
+
             for($i = 0; $i < count($actividades); $i ++){
                 if($fechacorteanterior) {
+
                     $docEvidencia = Evidencia::whereHas('actividad_mejoramiento.califica')
                                             ->where('FK_EVD_Actividad_Mejoramiento', $actividades[$i]->PK_ACM_Id)
                                             ->whereDate('EVD_Fecha_Subido', '<=', $fechacorte->FCO_Fecha)
                                             ->whereDate('EVD_Fecha_Subido', '>', $fechacorteanterior->FCO_Fecha)
                                             ->get();
-                    if($docEvidencia->isEmpty()){
 
-                        $actividadesMejoramiento = ActividadesMejoramiento::findOrFail($actividades[$i]->PK_ACM_Id);
-                        $actividadesMejoramiento->ACM_Estado = 0;
-                        $actividadesMejoramiento->update();
+                    if($docEvidencia->isEmpty()){
+                        $validaEvidencia = Evidencia::whereHas('actividad_mejoramiento')
+                                            ->where('FK_EVD_Actividad_Mejoramiento', $actividades[$i]->PK_ACM_Id)
+                                            ->whereDate('EVD_Fecha_Subido', '<=', $fechacorte->FCO_Fecha)
+                                            ->whereDate('EVD_Fecha_Subido', '>', $fechacorteanterior->FCO_Fecha)
+                                            ->get();
+
+                        if($validaEvidencia){
+                            $actividadesMejoramiento = ActividadesMejoramiento::findOrFail($actividades[$i]->PK_ACM_Id);
+                            $actividadesMejoramiento->ACM_Estado = 1;
+                            $actividadesMejoramiento->update();
+
+                            $ev = Evidencia::whereHas('actividad_mejoramiento')
+                                            ->where('FK_EVD_Actividad_Mejoramiento', $actividades[$i]->PK_ACM_Id)
+                                            ->get();
+
+                            if($ev){
+                                $actividadesMejoramiento = ActividadesMejoramiento::findOrFail($actividades[$i]->PK_ACM_Id);
+                                $actividadesMejoramiento->ACM_Estado = 0;
+                                $actividadesMejoramiento->update();
+                            }
+                        }
+                        else{
+                            $actividadesMejoramiento = ActividadesMejoramiento::findOrFail($actividades[$i]->PK_ACM_Id);
+                            $actividadesMejoramiento->ACM_Estado = 0;
+                            $actividadesMejoramiento->update();
+                        }
                     }
                     else{
                         $calificaciones = CalificaActividad::where('FK_CLA_Actividad_Mejoramiento', $actividades[$i]->PK_ACM_Id)
                                                             ->where('FK_CLA_Fecha_Corte', $fechacorte->PK_FCO_Id)
                                                             ->get();
+
                         if($calificaciones->isEmpty()){
                             $actividadesMejoramiento = ActividadesMejoramiento::findOrFail($actividades[$i]->PK_ACM_Id);
-                            $actividadesMejoramiento->ACM_Estado = 1;
+                            $actividadesMejoramiento->ACM_Estado = 1;dd("segundo uno");
                             $actividadesMejoramiento->update();
                         }
                         else{
+
                             $actividadesMejoramiento = ActividadesMejoramiento::findOrFail($actividades[$i]->PK_ACM_Id);
                             $actividadesMejoramiento->ACM_Estado = 2;
                             $actividadesMejoramiento->update();
                         }
                     }
                 }
+
+                $calificacionActividad = CalificaActividad::whereHas('actividadesMejoramiento')
+                                                    ->where('FK_CLA_Actividad_Mejoramiento', '=', $actividades[$i]->PK_ACM_Id)
+                                                    ->orderBy('CLA_Calificacion', 'desc')
+                                                    ->first();
+
+                if(!is_null($calificacionActividad)){
+                    if($calificacionActividad->CLA_Calificacion == 5){
+                        $actividadesMejoramiento = ActividadesMejoramiento::findOrFail($actividades[$i]->PK_ACM_Id);
+                        $actividadesMejoramiento->ACM_Estado = 5;
+                        $actividadesMejoramiento->update();
+                    }
+                }
+
+                if($actividades[$i]->ACM_Fecha_Fin < Carbon::now()){
+                    $actividadesMejoramiento = ActividadesMejoramiento::findOrFail($actividades[$i]->PK_ACM_Id);
+                    $actividadesMejoramiento->ACM_Estado = 4;
+                    $actividadesMejoramiento->update();
+                }
             }
        }
-
-
 
         return view('autoevaluacion.SuperAdministrador.ActividadesMejoramiento.index',
         compact('planMejoramiento', 'fechacorte', 'fechascorte', 'fechahoy', 'actividades'));
@@ -170,6 +214,13 @@ class ActividadesMejoramientoController extends Controller
                                 break;
                             case 3:
                                 return "<span class='label label-sm label-success'>Evi. re-calificada</span>";
+                                break;
+                            case 4:
+                                return "<span class='label label-sm label-primary'>Actividad Finalizada</span>";
+                                break;
+                            case 5:
+                                return "<span class='label label-sm label-primary'>Actividad Cumplida</span>";
+                                break;
                             default:
                             return "<span class='label label-sm label-danger'>Error</span>";
                         }
