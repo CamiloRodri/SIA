@@ -163,7 +163,8 @@
                 e.preventDefault();
                 $tr = $(this).closest('tr');
                 var dataTable = table.row($tr).data();
-                var route = '{{ url('admin/evidencia/') }}' + '/' + dataTable.PK_EVD_Id;
+                var route = '{{ url('admin/actividades_mejoramiento/evidencia/') }}' + '/' + dataTable.PK_EVD_Id;
+                console.log(route);
                 var type = 'DELETE';
                 dataType: "JSON",
                     SwalDelete(dataTable.PK_EVD_Id, route);
@@ -172,7 +173,7 @@
                 e.preventDefault();
                 $tr = $(this).closest('tr');
                 var dataTable = table.row($tr).data();
-                var route = '{{ url('admin/evidencia') }}' + '/' + dataTable.PK_EVD_Id + '/edit';
+                var route = '{{ url('admin/actividades_mejoramiento/evidencia') }}' + '/' + dataTable.PK_EVD_Id + '/edit';
                 window.location.href = route;
             });
 

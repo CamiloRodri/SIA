@@ -320,7 +320,11 @@ class EvidenciaController extends Controller
 
         $evidencia->update();
 
-        // return redirect()->route('admin.evidencia.index', $id_Actividad_Mejoramiento);
+        return response(['msg' => 'La Evidencia ha sido modificado exitosamente.',
+            'title' => 'Evidencia Modificada!'
+        ], 200)// 200 Status Code: Standard response for successful HTTP request
+        ->header('Content-Type', 'application/json');
+
 
     }
 
