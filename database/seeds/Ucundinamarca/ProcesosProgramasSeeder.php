@@ -62,6 +62,12 @@ class ProcesosProgramasSeeder extends Seeder
             'FK_PCU_Usuario' => $usuario
         ]);
 
+        $usuario = User::where('name','Resposable')->value('id');
+        ProcesoUsuario::create([
+            'FK_PCU_Proceso' => $proceso,
+            'FK_PCU_Usuario' => $usuario
+        ]);
+
         $usuario = User::where('name','Evaluador')->value('id');
         ProcesoUsuario::create([
             'FK_PCU_Proceso' => $proceso,

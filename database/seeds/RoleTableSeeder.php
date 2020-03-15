@@ -227,6 +227,32 @@ class RoleTableSeeder extends Seeder
             'ACCEDER_INFORMES_DOCUMENTOS_INSTITUCIONALES'
         ]);
 
+        $role = Role::create(['name' => 'RESPONSABLE']);
+        $role->givePermissionTo([
+            'ACCESO_MODULO_FUENTES_PRIMARIAS',
+            'ACCESO_MODULO_SUPERADMINISTRADOR',
+            'ACCESO_MODULO_FUENTES_SECUNDARIAS',
+            'ACCESO_MODULO_EVALUADOR',
+            'ACCEDER_DOCUMENTOS_AUTOEVALUACION',
+            'VER_DOCUMENTOS_AUTOEVALUACION',
+            'EVALUAR_DOCUMENTOS_AUTOEVALUACION',
+            'ACCEDER_INFORMES_FUENTES_SECUNDARIAS',
+            'ACCEDER_INFORMES_DOCUMENTOS_AUTOEVALUACION',
+            'ACCESO_PLAN_MEJORAMIENTO',
+            'ACCEDER_ACTIVIDADES_MEJORAMIENTO',
+            'VER_ACTIVIDADES_MEJORAMIENTO',
+            'ACCEDER_CALIFICA_ACTIVIDADES',
+            'VER_CALIFICA_ACTIVIDADES',
+            'ACCEDER_EVIDENCIA',
+            'VER_EVIDENCIA',
+            'CREAR_EVIDENCIA',
+            'MODIFICAR_EVIDENCIA',
+            'ELIMINAR_EVIDENCIA',
+            'ACCESO_FECHA_CORTE',
+            'VER_FECHA_CORTE',
+            'ACCEDER_CALENDARIO_ACTIVIDADES'
+        ]);
+
         $role = Role::create(['name' => 'EVALUADOR']);
         $role->givePermissionTo([
             'ACCESO_MODULO_FUENTES_PRIMARIAS',

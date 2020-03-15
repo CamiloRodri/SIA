@@ -56,6 +56,16 @@ class UsersTableSeeder extends Seeder
         $user1->assignRole('ADMIN');
 
         $user1 = User::create([
+            'name' => 'Resposable',
+            'lastname' => 'Ucundi',
+            'email' => 'respo@ucundinamarca.edu.co',
+            'password' => '123456',
+            'cedula' => '102938',
+            'id_estado' => '1'
+        ]);
+        $user1->assignRole('RESPONSABLE');
+
+        $user1 = User::create([
             'name' => 'Evaluador',
             'lastname' => 'eval',
             'email' => 'evaluador@ucundinamarca.edu.co',
@@ -64,6 +74,6 @@ class UsersTableSeeder extends Seeder
             'id_estado' => '1'
         ]);
         $user1->assignRole('EVALUADOR');
-        
+
     }
 }
