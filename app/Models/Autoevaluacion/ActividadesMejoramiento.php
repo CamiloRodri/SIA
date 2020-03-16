@@ -46,7 +46,7 @@ class ActividadesMejoramiento extends Model
 
     public function PlanMejoramiento()
     {
-        return $this->belongsTo(planMejoramiento::class, 'FK_ACM_Plan_Mejoramiento', 'PK_PDM_Id');
+        return $this->belongsTo(PlanMejoramiento::class, 'FK_ACM_Plan_Mejoramiento', 'PK_PDM_Id');
     }
 
     public function responsable()
