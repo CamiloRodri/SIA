@@ -96,8 +96,27 @@ class ActividadesMejoramientoController extends Controller
                     $evidencia = new Evidencia;
                     $evidencia = $docEvidencia->sortByDesc('EVD_Fecha_Subido')->first();
 
-                    if($evidencia->EVD_Fecha_Subido <= $fechacorte->FCO_Fecha && $evidencia->EVD_Fecha_Subido > $fechacorteanterior->FCO_Fecha){
+                    if(!is_null($fechacorteanterior)){
+                        if($evidencia->EVD_Fecha_Subido <= $fechacorte->FCO_Fecha && $evidencia->EVD_Fecha_Subido > $fechacorteanterior->FCO_Fecha){
 
+                            if(is_null($evidencia->actividad_mejoramiento->califica)){
+                                $actividadesMejoramiento = ActividadesMejoramiento::findOrFail($actividades[$i]->PK_ACM_Id);
+                                $actividadesMejoramiento->ACM_Estado = 1;
+                                $actividadesMejoramiento->update();
+                            }
+                            else{
+                                $actividadesMejoramiento = ActividadesMejoramiento::findOrFail($actividades[$i]->PK_ACM_Id);
+                                $actividadesMejoramiento->ACM_Estado = 2;
+                                $actividadesMejoramiento->update();
+                            }
+                        }
+                        else{
+                            $actividadesMejoramiento = ActividadesMejoramiento::findOrFail($actividades[$i]->PK_ACM_Id);
+                            $actividadesMejoramiento->ACM_Estado = 0;
+                            $actividadesMejoramiento->update();
+                        }
+                    }
+                    else{
                         if(is_null($evidencia->actividad_mejoramiento->califica)){
                             $actividadesMejoramiento = ActividadesMejoramiento::findOrFail($actividades[$i]->PK_ACM_Id);
                             $actividadesMejoramiento->ACM_Estado = 1;
@@ -108,11 +127,6 @@ class ActividadesMejoramientoController extends Controller
                             $actividadesMejoramiento->ACM_Estado = 2;
                             $actividadesMejoramiento->update();
                         }
-                    }
-                    else{
-                        $actividadesMejoramiento = ActividadesMejoramiento::findOrFail($actividades[$i]->PK_ACM_Id);
-                        $actividadesMejoramiento->ACM_Estado = 0;
-                        $actividadesMejoramiento->update();
                     }
 
 
