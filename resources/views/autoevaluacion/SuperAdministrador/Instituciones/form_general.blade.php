@@ -15,7 +15,7 @@
     <div class="col-md-6 col-sm-6 col-xs-12">
         {!! Form::text('ITN_Domicilio', old('ITN_Domicilio'),[ 'class' => 'form-control col-md-6 col-sm-6 col-xs-12',
             'required' => 'required',
-            'data-parsley-pattern' => '^[a-zA-Z0-9-_\.,;:ñÑáéíóúÁÉÍÓÚ ]{1,100}$',
+            'data-parsley-pattern' => '^[a-zA-Z0-9-_\.,;:ñÑáéíóúÁÉÍÓÚ# ]{1,100}$',
             'data-parsley-pattern-message' => 'Por favor escriba un domicilio válido',
             'data-parsley-length' => "[1, 50]",
             'data-parsley-trigger'=>"change"] )
@@ -134,7 +134,7 @@
     <div class="col-md-6 col-sm-6 col-xs-12">
         {!! Form::textarea('ITN_Mision', old('ITN_Mision'),[ 'class' => 'form-control col-md-6 col-sm-6 col-xs-12',
             'required' => 'required', 'rows' => '5',
-            'data-parsley-pattern' => '^[a-zA-Z0-9-_\.,;:ñÑáéíóúÁÉÍÓÚ ]{1,800}$',
+            'data-parsley-pattern' => '^[a-zA-Z0-9-_\.,;:ñÑáéíóúÁÉÍÓÚ\n ]{1,800}$',
             'data-parsley-pattern-message' => 'Por favor escriba una misión válida',
             'data-parsley-length' => "[1, 800]",
             'data-parsley-trigger'=>"change"] )
@@ -146,7 +146,7 @@
     <div class="col-md-6 col-sm-6 col-xs-12">
         {!! Form::textarea('ITN_Vision', old('ITN_Vision'),[ 'class' => 'form-control col-md-6 col-sm-6 col-xs-12',
             'required' => 'required', 'rows' => '5',
-            'data-parsley-pattern' => '^[a-zA-Z0-9-_\.,;:ñÑáéíóúÁÉÍÓÚ ]{1,800}$',
+            'data-parsley-pattern' => '^[a-zA-Z0-9-_\.,;:ñÑáéíóúÁÉÍÓÚ\n ]{1,800}$',
             'data-parsley-pattern-message' => 'Por favor escriba una visión válida',
             'data-parsley-length' => "[1, 800]",
             'data-parsley-trigger'=>"change"] )
@@ -160,7 +160,7 @@
             'required' => 'required', 'rows' => '5',
             'data-parsley-pattern' => '^[a-zA-Z0-9-_\.,;:ñÑáéíóúÁÉÍÓÚ ]{1,100}$',
             'data-parsley-pattern-message' => 'Por favor escriba una descripción válida',
-            'data-parsley-length' => "[1, 100]",
+            'data-parsley-length' => "[1, 200]",
             'data-parsley-trigger'=>"change"] )
         !!}
     </div>

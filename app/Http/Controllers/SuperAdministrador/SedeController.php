@@ -98,7 +98,6 @@ class SedeController extends Controller
         $sede->fill($request->only(['SDS_Nombre', 'SDS_Descripcion']));
         $sede->FK_SDS_Institucion = $request->get('ITN_Nombre');
         $sede->FK_SDS_Estado = $request->get('PK_ESD_Id');
-        \Debugbar::info($sede);
         $sede->save();
 
         return response([

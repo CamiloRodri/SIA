@@ -10,7 +10,6 @@ use App\Models\Autoevaluacion\Estado;
 use App\Models\Autoevaluacion\Metodologia;
 use Yajra\DataTables\DataTables;
 use Illuminate\Http\Request;
-use Barryvdh\Debugbar;
 
 class InstitucionController extends Controller
 {
@@ -80,7 +79,7 @@ class InstitucionController extends Controller
         $estados = Estado::pluck('ESD_Nombre', 'PK_ESD_Id');
         $metodologias = Metodologia::pluck('MTD_Nombre', 'PK_MTD_Id');
         $frenteEstrategicos = [ '1','2','3','4','5','6','7','8'];
-        return view('autoevaluacion.SuperAdministrador.Instituciones.create', 
+        return view('autoevaluacion.SuperAdministrador.Instituciones.create',
                     compact('estados', 'metodologias','frenteEstrategicos'));
     }
 
@@ -92,7 +91,7 @@ class InstitucionController extends Controller
      */
     public function store(InstitucionRequest $request)
     {
-        
+
         $institucion = new Institucion();
         $institucion->ITN_Nombre = $request->get('ITN_Nombre');
         $institucion->ITN_Domicilio = $request->get('ITN_Domicilio');
@@ -108,12 +107,12 @@ class InstitucionController extends Controller
         $institucion->ITN_Mision = $request->get('ITN_Mision');
         $institucion->ITN_Vision = $request->get('ITN_Vision');
         $institucion->ITN_Descripcion = $request->get('ITN_Descripcion');
-        $institucion->ITN_FuenteBoletinMes = $request->get('ITN_FuenteBoletinMes');
+        $institucion->ITN_FuenteBoletinMes = mb_strtolower($request->get('ITN_FuenteBoletinMes'), 'UTF-8');
         $institucion->ITN_FuenteBoletinAnio = $request->get('ITN_FuenteBoletinAnio');
 
         $institucion->FK_ITN_Estado = $request->get('FK_ITN_Estado');
         $institucion->FK_ITN_Metodologia = $request->get('FK_ITN_Metodologia');
-        
+
         $institucion->save();
 
         $cantInstituciones = $request->get('created_at');
@@ -135,7 +134,7 @@ class InstitucionController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int 
+     * @param  int
      *  $id
      * @return \Illuminate\Http\Response
      */
@@ -189,7 +188,7 @@ class InstitucionController extends Controller
         $institucion->ITN_Mision = $request->get('ITN_Mision');
         $institucion->ITN_Vision = $request->get('ITN_Vision');
         $institucion->ITN_Descripcion = $request->get('ITN_Descripcion');
-        $institucion->ITN_FuenteBoletinMes = $request->get('ITN_FuenteBoletinMes');
+        $institucion->ITN_FuenteBoletinMes = mb_strtolower($request->get('ITN_FuenteBoletinMes'), 'UTF-8');
         $institucion->ITN_FuenteBoletinAnio = $request->get('ITN_FuenteBoletinAnio');
 
         $institucion->FK_ITN_Estado = $request->get('FK_ITN_Estado');
@@ -198,13 +197,11 @@ class InstitucionController extends Controller
         $institucion->update();
 
         $cantFrentes = FrenteEstrategico::where('FK_FES_Institucion', $id)->count();
-        \Debugbar::info($cantFrentes);
 
         for ($i = 1; $i <= $cantFrentes+1; $i++) {
             $frenteEstrategicos = new FrenteEstrategico();
             $frenteEstrategicos->FES_Nombre = $request->get('PK_FES_Nombre');
             $frenteEstrategicos->FES_Descripcion = $request->get('PK_FES_Descripcion');
-            \Debugbar::info($frenteEstrategicos->FES_Descripcion);
             // $frenteEstrategico->FK_FES_Institucion = $institucion->PK_ITN_Id;
             $frenteEstrategicos->update();
         }
