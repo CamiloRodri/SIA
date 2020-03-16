@@ -62,7 +62,7 @@ class InformeAutoevaluacionController extends Controller
                 foreach($files as $file){
                     $fileName = ("foto.").$file->extension();
                     $file->move($path, $fileName);
-                    dd($path);
+                    // dd($path);
                 }
             }
 
@@ -720,7 +720,7 @@ class InformeAutoevaluacionController extends Controller
 
         }
         catch(\Exception $ex){
-            dd($ex);
+            // dd($ex);
             if(strcasecmp($ex->getMessage(), "Division by zero") == 0){
                 return redirect()->back()->with('division_zero','Mensaje Error');
             }
