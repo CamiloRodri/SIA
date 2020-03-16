@@ -81,59 +81,98 @@ class ActividadesMejoramientoController extends Controller
             $fechacorteanterior = FechaCorte::where('PK_FCO_Id', '<', $fechacorte->PK_FCO_Id)->orderBy('PK_FCO_Id', 'des')->first();
 
             for($i = 0; $i < count($actividades); $i ++){
-                if($fechacorteanterior) {
 
-                    $docEvidencia = Evidencia::whereHas('actividad_mejoramiento.califica')
-                                            ->where('FK_EVD_Actividad_Mejoramiento', $actividades[$i]->PK_ACM_Id)
-                                            ->whereDate('EVD_Fecha_Subido', '<=', $fechacorte->FCO_Fecha)
-                                            ->whereDate('EVD_Fecha_Subido', '>', $fechacorteanterior->FCO_Fecha)
-                                            ->get();
+                $docEvidencia = Evidencia::whereHas('actividad_mejoramiento')
+                                        ->where('FK_EVD_Actividad_Mejoramiento', $actividades[$i]->PK_ACM_Id)
+                                        ->with('actividad_mejoramiento.califica')
+                                        ->get();
 
-                    if($docEvidencia->isEmpty()){
-                        $validaEvidencia = Evidencia::whereHas('actividad_mejoramiento')
-                                            ->where('FK_EVD_Actividad_Mejoramiento', $actividades[$i]->PK_ACM_Id)
-                                            ->whereDate('EVD_Fecha_Subido', '<=', $fechacorte->FCO_Fecha)
-                                            ->whereDate('EVD_Fecha_Subido', '>', $fechacorteanterior->FCO_Fecha)
-                                            ->get();
+                if($docEvidencia->isEmpty()){
+                    $actividadesMejoramiento = ActividadesMejoramiento::findOrFail($actividades[$i]->PK_ACM_Id);
+                    $actividadesMejoramiento->ACM_Estado = 0;
+                    $actividadesMejoramiento->update();
+                }
+                else{
+                    $evidencia = new Evidencia;
+                    $evidencia = $docEvidencia->sortByDesc('EVD_Fecha_Subido')->first();
 
-                        if($validaEvidencia){
+                    if($evidencia->EVD_Fecha_Subido <= $fechacorte->FCO_Fecha && $evidencia->EVD_Fecha_Subido > $fechacorteanterior->FCO_Fecha){
+
+                        if(is_null($evidencia->actividad_mejoramiento->califica)){
                             $actividadesMejoramiento = ActividadesMejoramiento::findOrFail($actividades[$i]->PK_ACM_Id);
                             $actividadesMejoramiento->ACM_Estado = 1;
                             $actividadesMejoramiento->update();
-
-                            $ev = Evidencia::whereHas('actividad_mejoramiento')
-                                            ->where('FK_EVD_Actividad_Mejoramiento', $actividades[$i]->PK_ACM_Id)
-                                            ->get();
-
-                            if($ev){
-                                $actividadesMejoramiento = ActividadesMejoramiento::findOrFail($actividades[$i]->PK_ACM_Id);
-                                $actividadesMejoramiento->ACM_Estado = 0;
-                                $actividadesMejoramiento->update();
-                            }
                         }
                         else{
-                            $actividadesMejoramiento = ActividadesMejoramiento::findOrFail($actividades[$i]->PK_ACM_Id);
-                            $actividadesMejoramiento->ACM_Estado = 0;
-                            $actividadesMejoramiento->update();
-                        }
-                    }
-                    else{
-                        $calificaciones = CalificaActividad::where('FK_CLA_Actividad_Mejoramiento', $actividades[$i]->PK_ACM_Id)
-                                                            ->where('FK_CLA_Fecha_Corte', $fechacorte->PK_FCO_Id)
-                                                            ->get();
-
-                        if($calificaciones->isEmpty()){
-                            $actividadesMejoramiento = ActividadesMejoramiento::findOrFail($actividades[$i]->PK_ACM_Id);
-                            $actividadesMejoramiento->ACM_Estado = 1;dd("segundo uno");
-                            $actividadesMejoramiento->update();
-                        }
-                        else{
-
                             $actividadesMejoramiento = ActividadesMejoramiento::findOrFail($actividades[$i]->PK_ACM_Id);
                             $actividadesMejoramiento->ACM_Estado = 2;
                             $actividadesMejoramiento->update();
                         }
                     }
+                    else{
+                        $actividadesMejoramiento = ActividadesMejoramiento::findOrFail($actividades[$i]->PK_ACM_Id);
+                        $actividadesMejoramiento->ACM_Estado = 0;
+                        $actividadesMejoramiento->update();
+                    }
+
+
+                }
+
+                // dd($docEvidencia, $evidencia);
+
+                {
+                    //     $docEvidencia = Evidencia::whereHas('actividad_mejoramiento.califica')
+                    //                             ->where('FK_EVD_Actividad_Mejoramiento', $actividades[$i]->PK_ACM_Id)
+                    //                             ->whereDate('EVD_Fecha_Subido', '<=', $fechacorte->FCO_Fecha)
+                    //                             ->whereDate('EVD_Fecha_Subido', '>', $fechacorteanterior->FCO_Fecha)
+                    //                             ->get();
+
+                    //     if($docEvidencia->isEmpty()){
+                    //         $validaEvidencia = Evidencia::whereHas('actividad_mejoramiento')
+                    //                             ->where('FK_EVD_Actividad_Mejoramiento', $actividades[$i]->PK_ACM_Id)
+                    //                             ->whereDate('EVD_Fecha_Subido', '<=', $fechacorte->FCO_Fecha)
+                    //                             ->whereDate('EVD_Fecha_Subido', '>', $fechacorteanterior->FCO_Fecha)
+                    //                             ->get();
+
+                    //         if($validaEvidencia){
+                    //             $actividadesMejoramiento = ActividadesMejoramiento::findOrFail($actividades[$i]->PK_ACM_Id);
+                    //             $actividadesMejoramiento->ACM_Estado = 1;
+                    //             $actividadesMejoramiento->update();
+
+                    //             $ev = Evidencia::whereHas('actividad_mejoramiento')
+                    //                             ->where('FK_EVD_Actividad_Mejoramiento', $actividades[$i]->PK_ACM_Id)
+                    //                             ->get();
+
+                    //             if($ev){
+                    //                 $actividadesMejoramiento = ActividadesMejoramiento::findOrFail($actividades[$i]->PK_ACM_Id);
+                    //                 $actividadesMejoramiento->ACM_Estado = 0;
+                    //                 $actividadesMejoramiento->update();
+                    //             }
+                    //         }
+                    //         else{
+                    //             $actividadesMejoramiento = ActividadesMejoramiento::findOrFail($actividades[$i]->PK_ACM_Id);
+                    //             $actividadesMejoramiento->ACM_Estado = 0;
+                    //             $actividadesMejoramiento->update();
+                    //         }
+                    //     }
+                    //     else{
+                    //         $calificaciones = CalificaActividad::where('FK_CLA_Actividad_Mejoramiento', $actividades[$i]->PK_ACM_Id)
+                    //                                             ->where('FK_CLA_Fecha_Corte', $fechacorte->PK_FCO_Id)
+                    //                                             ->get();
+
+                    //         if($calificaciones->isEmpty()){
+                    //             $actividadesMejoramiento = ActividadesMejoramiento::findOrFail($actividades[$i]->PK_ACM_Id);
+                    //             $actividadesMejoramiento->ACM_Estado = 1;dd("segundo uno");
+                    //             $actividadesMejoramiento->update();
+                    //         }
+                    //         else{
+
+                    //             $actividadesMejoramiento = ActividadesMejoramiento::findOrFail($actividades[$i]->PK_ACM_Id);
+                    //             $actividadesMejoramiento->ACM_Estado = 2;
+                    //             $actividadesMejoramiento->update();
+                    //         }
+                    //     }
+                    // }
                 }
 
                 $calificacionActividad = CalificaActividad::whereHas('actividadesMejoramiento')
@@ -149,13 +188,14 @@ class ActividadesMejoramientoController extends Controller
                     }
                 }
 
-                if($actividades[$i]->ACM_Fecha_Fin < Carbon::now()){
+                if($actividades[$i]->ACM_Fecha_Fin->addDay() < Carbon::now()){
                     $actividadesMejoramiento = ActividadesMejoramiento::findOrFail($actividades[$i]->PK_ACM_Id);
                     $actividadesMejoramiento->ACM_Estado = 4;
                     $actividadesMejoramiento->update();
                 }
             }
        }
+    //    dd("Siguio derechi");
 
         return view('autoevaluacion.SuperAdministrador.ActividadesMejoramiento.index',
         compact('planMejoramiento', 'fechacorte', 'fechascorte', 'fechahoy', 'actividades'));
