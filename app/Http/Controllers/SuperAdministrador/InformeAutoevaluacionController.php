@@ -66,6 +66,16 @@ class InformeAutoevaluacionController extends Controller
                 }
             }
 
+            $actividades = ActividadesMejoramiento::whereHas('PlanMejoramiento', function ($query) {
+                return $query->where('FK_PDM_Proceso', '=', session()->get('id_proceso'));
+            })
+                ->with('Caracteristicas.factor', 'responsable.usuarios', 'responsable.cargo')
+                ->get();
+
+            if(!empty($actividades)){
+                $sum = 4 / 0;
+            }
+
             $proceso = Proceso::where('PK_PCS_Id', '=', session()->get('id_proceso'))->first();
             $programa = $proceso->programa;
             $facultad = $proceso->programa->facultad;
@@ -638,12 +648,6 @@ class InformeAutoevaluacionController extends Controller
                 $documento->setValue('no_debilidadSintesis#'.$lista, $consolidaciones[$i]->CNS_Debilidad);
             }
 
-            $actividades = ActividadesMejoramiento::whereHas('PlanMejoramiento', function ($query) {
-                return $query->where('FK_PDM_Proceso', '=', session()->get('id_proceso'));
-            })
-                ->with('Caracteristicas.factor', 'responsable.usuarios', 'responsable.cargo')
-                ->get();
-
             $documento->cloneRow('actFac', count($actividades));
             for($i = 0;$i < count($actividades); $i++){
                 $lista = $i + 1;
@@ -716,6 +720,7 @@ class InformeAutoevaluacionController extends Controller
 
         }
         catch(\Exception $ex){
+            dd($ex);
             if(strcasecmp($ex->getMessage(), "Division by zero") == 0){
                 return redirect()->back()->with('division_zero','Mensaje Error');
             }
@@ -724,7 +729,7 @@ class InformeAutoevaluacionController extends Controller
             }
 
         }
-        
+
     }
 
     /**
