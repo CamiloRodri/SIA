@@ -147,14 +147,25 @@
             }
         };
 
-        // $(function () {
-        //     new PNotify({
-        //         title: "Actividad Modificada!",
-        //         text: 'sesion',
-        //         type: 'success',
-        //         styling: 'bootstrap3'
-        //     });
-        // });
+        @if (session('division_zero'))
+            new PNotify({
+                title: 'Información Incompleta',
+                text: 'No se ha realizado la solución de la encuesta.',
+                type: 'error',
+                styling: 'bootstrap3',
+                sound: true
+	        });
+        @endif
+        @if (session('error'))
+            new PNotify({
+                tittle:'Información Incompleta',
+                text:'Por favor, completar la información requerida, Institución, Programa, además de completar el proceso de Plan de Mejoramiento.',
+                type:'error',
+                styling:'bootstrap3',
+                sound: true
+	        });
+        @endif
+        
     </script>
 
 @endpush
