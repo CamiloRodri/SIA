@@ -55,7 +55,7 @@ class InformeAutoevaluacionController extends Controller
         /**
          * Enfocada a completar los cuadros de programa e institucion con frentes etrategicos
          */
-        try{
+        // try{
             if($request->file('file')){
                 $path = public_path().'/uploads';
                 $files = $request->file('file');
@@ -72,9 +72,9 @@ class InformeAutoevaluacionController extends Controller
                 ->with('Caracteristicas.factor', 'responsable.usuarios', 'responsable.cargo')
                 ->get();
 
-            if(!empty($actividades)){
-                $sum = 4 / 0;
-            }
+            // if(!empty($actividades)){
+            //     $sum = 4 / 0;
+            // }
 
             $proceso = Proceso::where('PK_PCS_Id', '=', session()->get('id_proceso'))->first();
             $programa = $proceso->programa;
@@ -714,21 +714,25 @@ class InformeAutoevaluacionController extends Controller
                 unlink($img_path_jpeg);
             }
 
-            $pathToFile = public_path(). '\InformeAutoevaluacion_'. $nombreArchivo .'.docx';
+            $pathToFile = public_path(). '/InformeAutoevaluacion_'. $nombreArchivo .'.docx';
+
+            // dd($pathToFile);
 
             return response()->download($pathToFile);
 
-        }
-        catch(\Exception $ex){
-            // dd($ex);
-            if(strcasecmp($ex->getMessage(), "Division by zero") == 0){
-                return redirect()->back()->with('division_zero','Mensaje Error');
-            }
-            else{
-                return redirect()->back()->with('error','Mensaje Error');
-            }
 
-        }
+
+        // }
+        // catch(\Exception $ex){
+        //     // dd($ex);
+        //     if(strcasecmp($ex->getMessage(), "Division by zero") == 0){
+        //         return redirect()->back()->with('division_zero','Mensaje Error');
+        //     }
+        //     else{
+        //         return redirect()->back()->with('error','Mensaje Error');
+        //     }
+
+        // }
 
     }
 
