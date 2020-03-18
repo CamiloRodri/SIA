@@ -54,18 +54,24 @@ class pageController extends Controller
 
     public function seleccionarProceso(Request $request)
     {
-        $proceso = new Proceso();
-        $proceso = $proceso::findOrFail($request->get('PK_PCS_Id'))->nombre_proceso;
-        $estado = Proceso::findOrFail($request->get('PK_PCS_Id'))->with('fase')->first();
-        if(strcasecmp($estado->fase->FSS_Nombre, "cerrado") == 0){
-            session(['estado_proceso' => "cerrado" ]);
+        if(!is_null($request->get('PK_PCS_Id'))){
+            $proceso = new Proceso();
+            $proceso = $proceso::findOrFail($request->get('PK_PCS_Id'))->nombre_proceso;
+            $estado = Proceso::findOrFail($request->get('PK_PCS_Id'))->with('fase')->first();
+            if(strcasecmp($estado->fase->FSS_Nombre, "cerrado") == 0){
+                session(['estado_proceso' => "cerrado" ]);
+            }
+            else{
+                session()->forget('estado_proceso');
+            }
+            session(['proceso' => str_limit($proceso, 45, '...')]);
+            session(['id_proceso' => $request->get('PK_PCS_Id')]);
+            return redirect()->back();
         }
         else{
-            session()->forget('estado_proceso');
+            return redirect()->back();
         }
-        session(['proceso' => str_limit($proceso, 45, '...')]);
-        session(['id_proceso' => $request->get('PK_PCS_Id')]);
-        return redirect()->back();
+
     }
 
     public function pdf_reporte(Request $request)

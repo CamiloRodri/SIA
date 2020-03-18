@@ -41,6 +41,20 @@ class InformeAutoevaluacionController extends Controller
     public function create()
     {
         //
+        $img_path_jpg = public_path().'/uploads/foto.jpg';
+        $img_path_png = public_path().'/uploads/foto.png';
+        $img_path_jpeg = public_path().'/uploads/foto.jpeg';
+
+        if(@getimagesize($img_path_jpg)){
+            unlink($img_path_jpg);
+        }
+        elseif(@getimagesize($img_path_png)){
+            unlink($img_path_png);
+        }
+        elseif(@getimagesize($img_path_jpeg)){
+            unlink($img_path_jpeg);
+        }
+
         return view('autoevaluacion.SuperAdministrador.InformeAutoevaluacion.create');
     }
 
@@ -688,19 +702,18 @@ class InformeAutoevaluacionController extends Controller
              * Path para descargar
              */
             $documento->saveAs('InformeAutoevaluacion_' . $nombreArchivo . '.docx');
-
             /**
              * Eliminacion de imagenes.
              */
-            if(@getimagesize($img_path_jpg)){
-                unlink($img_path_jpg);
-            }
-            elseif(@getimagesize($img_path_png)){
-                unlink($img_path_png);
-            }
-            elseif(@getimagesize($img_path_jpeg)){
-                unlink($img_path_jpeg);
-            }
+            // if(@getimagesize($img_path_jpg)){
+            //     unlink($img_path_jpg);
+            // }
+            // elseif(@getimagesize($img_path_png)){
+            //     unlink($img_path_png);
+            // }
+            // elseif(@getimagesize($img_path_jpeg)){
+            //     unlink($img_path_jpeg);
+            // }
 
             $pathToFile = public_path(). '/InformeAutoevaluacion_'. $nombreArchivo .'.docx';
 
