@@ -55,14 +55,13 @@ class InformeAutoevaluacionController extends Controller
         /**
          * Enfocada a completar los cuadros de programa e institucion con frentes etrategicos
          */
-        // try{
+        try{
             if($request->file('file')){
                 $path = public_path().'/uploads';
                 $files = $request->file('file');
                 foreach($files as $file){
                     $fileName = ("foto.").$file->extension();
                     $file->move($path, $fileName);
-                    // dd($path);
                 }
             }
 
@@ -71,10 +70,6 @@ class InformeAutoevaluacionController extends Controller
             })
                 ->with('Caracteristicas.factor', 'responsable.usuarios', 'responsable.cargo')
                 ->get();
-
-            // if(!empty($actividades)){
-            //     $sum = 4 / 0;
-            // }
 
             $proceso = Proceso::where('PK_PCS_Id', '=', session()->get('id_proceso'))->first();
             $programa = $proceso->programa;
@@ -113,8 +108,6 @@ class InformeAutoevaluacionController extends Controller
             $img_path_png = public_path().'/uploads/foto.png';
             $img_path_jpeg = public_path().'/uploads/foto.jpeg';
             $img_ucundi = public_path().'/uploads/icon-ucundi.png';
-
-            // dd(@getimagesize($img_path_jpg), @getimagesize($img_path_png), $img_path_jpeg);
 
             if(@getimagesize($img_path_jpg)){
                 $documento->setImageValue('foto', array('path' => $img_path_jpg, 'width' => 100, 'height' => 100, 'ratio' => true));
@@ -669,8 +662,6 @@ class InformeAutoevaluacionController extends Controller
                 ->orderBy('CLA_Calificacion', 'desc')
                 ->get();
 
-                // dd($calificaciones);
-
             for($i = 0; $i < count($grupoFactores); $i ++){
                 $identificador = $i + 1;
                 if(empty($calificaciones)){
@@ -696,9 +687,6 @@ class InformeAutoevaluacionController extends Controller
             /**
              * Path para descargar
              */
-            // $ruta = public_path(). "\storage\Plantila_AutoEvaluacion_V2.docx";
-            // dd(public_path(). "\storage\Plantila_AutoEvaluacion_V2.docx");
-
             $documento->saveAs('InformeAutoevaluacion_' . $nombreArchivo . '.docx');
 
             /**
@@ -716,23 +704,12 @@ class InformeAutoevaluacionController extends Controller
 
             $pathToFile = public_path(). '/InformeAutoevaluacion_'. $nombreArchivo .'.docx';
 
-            // dd($pathToFile);
-
             return response()->download($pathToFile);
 
-
-
-        // }
-        // catch(\Exception $ex){
-        //     // dd($ex);
-        //     if(strcasecmp($ex->getMessage(), "Division by zero") == 0){
-        //         return redirect()->back()->with('division_zero','Mensaje Error');
-        //     }
-        //     else{
-        //         return redirect()->back()->with('error','Mensaje Error');
-        //     }
-
-        // }
+        }
+        catch(\Exception $ex){
+            return redirect()->back()->with('error','Mensaje Error');
+        }
 
     }
 

@@ -7,17 +7,12 @@ use App\Http\Controllers\Controller;
 use App\Models\Autoevaluacion\Consolidacion;
 use App\Models\Autoevaluacion\Factor;
 use App\Models\Autoevaluacion\Caracteristica;
-use App\Models\Autoevaluacion\Estado;
 use App\Models\Autoevaluacion\Fase;
 use App\Models\Autoevaluacion\Proceso;
-use App\Models\Autoevaluacion\IndicadorDocumental;
-use App\Models\Autoevaluacion\Lineamiento;
-use App\Models\Autoevaluacion\DocumentoAutoevaluacion;
 
 use App\Http\Requests\ConsolidacionesRequest;
 use Illuminate\Http\Request;
-use DataTables;
-use Carbon\Carbon;
+use Yajra\DataTables\DataTables;
 
 class ConsolidacionController extends Controller
 {
@@ -66,7 +61,6 @@ class ConsolidacionController extends Controller
      */
     public function data(Request $request)
     {
-    	// app('debugbar')->addMessage('H');
         if ($request->ajax() && $request->isMethod('GET')) {
             $consolidaciones=Consolidacion::where('FK_CNS_Proceso', '=', session()->get('id_proceso'))
             	->with('caracteristica.factor')
