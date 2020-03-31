@@ -52,8 +52,8 @@ class EvidenciaController extends Controller
         {
             $actividad = ActividadesMejoramiento::find($id);
 
-            if(strlen($actividad->ACM_Nombre) > 40){
-                $nombre_actividad = substr($actividad->ACM_Nombre, 0, 40) . " ...";
+            if(strlen($actividad->ACM_Nombre) > 35){
+                $nombre_actividad = substr($actividad->ACM_Nombre, 0, 35) . " ...";
             }
 
             $responsable = Responsable::where('PK_RPS_Id','=',$actividad->FK_ACM_Responsable)
