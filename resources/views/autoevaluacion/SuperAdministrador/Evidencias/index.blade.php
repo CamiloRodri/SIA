@@ -9,8 +9,13 @@
 
     <div class="col-md-6">
         <div class="actions">
-            <a href="{{ route('admin.evidencia.create', $actividad->PK_ACM_Id) }}" class="btn btn-info">
-            <i class="fa fa-plus"></i> Agregar Evidencia para {{ $actividad->ACM_Nombre }} </a></div>
+            <a href="{{ route('admin.evidencia.create', $actividad->PK_ACM_Id) }}" class="btn btn-info"
+                @if(isset($nombre_actividad))
+                    data-toggle="tooltip" data-placement="bottom" title="{{ $actividad->ACM_Nombre }}">
+                    <i class="fa fa-plus"></i> Agregar Evidencia para {{ $nombre_actividad }} </a></div>
+                @else
+                    <i class="fa fa-plus"></i> Agregar Evidencia para {{ $actividad->ACM_Nombre }} </a></div>
+                @endif
     </div>
     <div class="col-md-6">
         <div class="actions">

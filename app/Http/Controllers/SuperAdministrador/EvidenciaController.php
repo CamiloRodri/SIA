@@ -39,6 +39,7 @@ class EvidenciaController extends Controller
      */
     public function index($id)
     {
+
         $fechacorte = FechaCorte::whereDate('FCO_Fecha', '>=', Carbon::now()->format('Y-m-d'))
                     ->where('FK_FCO_Proceso', '=', session()->get('id_proceso'))
                     ->get()
@@ -50,6 +51,11 @@ class EvidenciaController extends Controller
         else
         {
             $actividad = ActividadesMejoramiento::find($id);
+
+            if(strlen($actividad->ACM_Nombre) > 40){
+                $nombre_actividad = substr($actividad->ACM_Nombre, 0, 40) . " ...";
+            }
+
             $responsable = Responsable::where('PK_RPS_Id','=',$actividad->FK_ACM_Responsable)
             ->first();
             $id_usuario = Auth::user()->id;
@@ -77,7 +83,7 @@ class EvidenciaController extends Controller
                 {
                     if($id_usuario = $responsable->FK_RPS_Responsable )
                     {
-                        return view('autoevaluacion.SuperAdministrador.Evidencias.index', compact('actividad'));
+                        return view('autoevaluacion.SuperAdministrador.Evidencias.index', compact('actividad', 'nombre_actividad'));
                     }
                     else
                     {
@@ -86,7 +92,7 @@ class EvidenciaController extends Controller
                 }
                 else
                 {
-                    return view('autoevaluacion.SuperAdministrador.Evidencias.index', compact('actividad'));
+                    return view('autoevaluacion.SuperAdministrador.Evidencias.index', compact('actividad', 'nombre_actividad'));
                 }
             }
             else

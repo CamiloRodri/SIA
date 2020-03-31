@@ -341,9 +341,7 @@
                             por lo cual ha sido designado como responsable de la actividad: <br><br>{!!$ACM_Nombre!!},
                             <br>Descripción: {!!$ACM_Descripcion!!}
                             <br><br>Fecha de Finalización: {{date('j M, Y -- h:i:s a', strtotime($ACM_Fecha_Fin))}}.
-                            {{-- <br><br>Fecha de Finalización: {{\Carbon\Carbon::parse($ACM_Fecha_Fin->date)->format('j F, Y')}}. --}}
-                            {{-- \Carbon\Carbon::parse($ACM_Fecha_Fin->date)->format('j F, Y') --}}
-                            <br>{!!$dias_restantes!!}
+                            <br><br>{!!$dias_restantes!!}
                         </p>
                         <table role="presentation" border="0" cellpadding="0" cellspacing="0" class="btn btn-primary">
                           <tbody>
