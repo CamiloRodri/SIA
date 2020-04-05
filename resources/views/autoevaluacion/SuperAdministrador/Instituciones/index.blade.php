@@ -1,15 +1,15 @@
 {{-- Titulo de la pagina --}}
-@section('title', 'Institución')
+@section('title', 'Instituciones')
 {{-- Contenido principal --}}
 @extends('admin.layouts.app')
 
-@section('content') 
+@section('content')
     @component('admin.components.panel')
-        @slot('title', 'Institución')
+        @slot('title', 'Instituciones')
         @can('CREAR_INSTITUCION')
             <div class="col-md-12">
                 <div class="actions">
-                    <a href="{{ route('admin.institucion.create')}}" class="btn btn-info">
+                    <a href="{{ route('admin.instituciones.create')}}" class="btn btn-info">
                         <i class="fa fa-plus"></i> Agregar Institución</a>
                 </div>
             </div>
@@ -19,15 +19,15 @@
         @endcan
         @can('VER_INSTITUCION')
             <div class="col-md-12">
-                @component('admin.components.datatable', 
+                @component('admin.components.datatable',
                 ['id' => 'institucion_table_ajax'])
-                    @slot('columns', 
-                    ['id', 
-                    'Nombre', 
-                    'Caracter', 
+                    @slot('columns',
+                    ['id',
+                    'Nombre',
+                    'Caracter',
                     'Metodología',
-                    'Domicilio', 
-                    'Estado', 
+                    'Domicilio',
+                    'Estado',
                     'Acciones' => ['style' => 'width:125px;']])
                 @endcomponent
             </div>
@@ -78,7 +78,7 @@
                 keys: true,
                 dom: 'lBfrtip',
                 buttons: ['copy', 'csv', 'excel', 'pdf', 'print'],
-                "ajax": "{{ route('admin.institucion.data') }}",
+                "ajax": "{{ route('admin.instituciones.data') }}",
                 "columns": [
 
                     {data: 'PK_ITN_Id', name: 'id', "visible": false},
@@ -154,7 +154,7 @@
                 e.preventDefault();
                 $tr = $(this).closest('tr');
                 var dataTable = table.row($tr).data();
-                var route = '{{ url('admin/institucion') }}' + '/' + dataTable.PK_ITN_Id;
+                var route = '{{ url('admin/instituciones') }}' + '/' + dataTable.PK_ITN_Id;
                 var type = 'DELETE';
                 dataType: "JSON",
                     SwalDelete(dataTable.PK_ITN_Id, route);
@@ -165,7 +165,7 @@
                 e.preventDefault();
                 $tr = $(this).closest('tr');
                 var dataTable = table.row($tr).data();
-                var route = '{{ url('admin/institucion/') }}' + '/' + dataTable.PK_ITN_Id + '/edit';
+                var route = '{{ url('admin/instituciones/') }}' + '/' + dataTable.PK_ITN_Id + '/edit';
                 window.location.href = route;
             });
 

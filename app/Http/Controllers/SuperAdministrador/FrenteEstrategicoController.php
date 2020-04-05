@@ -36,7 +36,7 @@ class FrenteEstrategicoController extends Controller
     public function data(Request $request)
     {
         if ($request->ajax() && $request->isMethod('GET')) {
-            $frente_estrategicio = FrenteEstrategico::all();
+            $frente_estrategicio = FrenteEstrategico::where('FK_FES_Institucion', '=', session('institucion'));
             return Datatables::of($frente_estrategicio)
                 ->make(true);
             $institucion = Institucion::pluck('ITN_Nombre', 'PK_ITN_Id');
@@ -59,14 +59,12 @@ class FrenteEstrategicoController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(FrenteEstrategicoRequest $request)
     {
         $frente_estrategicio = new FrenteEstrategico();
-        $institucion = Institucion::pluck('ITN_Nombre', 'PK_ITN_Id');
         $frente_estrategicio->fill($request->only(['FES_Nombre']));
         $frente_estrategicio->fill($request->only(['FES_Descripcion']));
-        $frente_estrategicio->fill($request->only(['FK_FES_Institucion']));
-        //$frente_estrategicio->fill($request->only(['FK_FES_Institucion']));
+        $frente_estrategicio->FK_FES_Institucion = session('institucion');
         $frente_estrategicio->save();
 
         return response(['msg' => 'Frente estrategico registrado correctamente.',
@@ -104,11 +102,11 @@ class FrenteEstrategicoController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(FrenteEstrategicoRequest $request, $id)
     {
         $frente_estrategicio = FrenteEstrategico::findOrFail($id);
         $frente_estrategicio->fill($request->all());
-        $frente_estrategicio->FK_FES_Institucion = $request->get('FK_FES_Institucion');
+        $frente_estrategicio->FK_FES_Institucion = session('institucion');
         $frente_estrategicio->update();
 
         return response(['msg' => 'Frente estrategico modificado correctamente.',

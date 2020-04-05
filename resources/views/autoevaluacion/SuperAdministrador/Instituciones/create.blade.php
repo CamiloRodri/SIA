@@ -7,7 +7,7 @@
     @component('admin.components.panel')
         @slot('title', 'Crear Institución')
         {!! Form::open([
-            'route' => 'admin.institucion.store',
+            'route' => 'admin.instituciones.store',
             'method' => 'POST',
             'id' => 'form_crear_institucion',
             'class' => 'form-horizontal form-label-lef',
@@ -17,7 +17,7 @@
         <div class="ln_solid"></div>
         <div class="form-group">
             <div class="col-md-6 col-md-offset-3">
-                {{ link_to_route('admin.institucion.index',"Cancelar", [], 
+                {{ link_to_route('admin.instituciones.index',"Cancelar", [],
                 ['class' => 'btn btn-info']) }}
                 {!! Form::submit('Crear Institución', ['class' => 'btn btn-success']) !!}
             </div>
@@ -80,7 +80,7 @@
                     container.innerHTML += '<br>';
                     var descripcion = document.createElement("TEXTAREA");
                     descripcion.name = "Descripcion_" + i;
-                    descripcion.style = "margin: 0px;width: 324px;height: 214px";                    
+                    descripcion.style = "margin: 0px;width: 324px;height: 214px";
                     container.appendChild(descripcion);
                     container.appendChild(document.createElement("br"));
                     container.appendChild(document.createElement("br"));

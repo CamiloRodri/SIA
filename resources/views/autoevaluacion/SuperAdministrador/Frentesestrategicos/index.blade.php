@@ -1,16 +1,22 @@
 {{-- Titulo de la pagina --}}
-@section('title', 'Frente Estrategico')
+@section('title', 'Frente Estratégico')
 {{-- Contenido principal --}}
 @extends('admin.layouts.app')
 
 @section('content') @component('admin.components.panel')
-    @slot('title', 'Frente Estrategico')
+    @slot('title', 'Frente Estratégico')
     <div class="col-md-12">
         @can('CREAR_FRENTE_ESTRATEGICO')
-            <div class="actions">
+            <div class="col-md-6 actions">
                 <a id="crear_frentes_estrategicos" href="#" class="btn btn-info" data-toggle="modal" data-target="#modal_frente_estrategico">
-                    <i class="fa fa-plus"></i> Agregar Frente Estrategico</a></div>
-    @endcan
+                    <i class="fa fa-plus"></i> Agregar Frente Estratégico</a>
+            </div>
+            <div class="col-md-6">
+                {{-- {{ link_to_route('admin.institucion.edit',"Regresar a la Institución", session('institucion'), ['class' => 'btn btn-warning']) }} --}}
+                <a href="{{ route('admin.instituciones.edit', session('institucion')) }}" class="btn btn-warning">
+                    <i class="fa fa-backward"></i> Regresar a la Institución </a></div>
+            </div>
+        @endcan
     <!-- Modal-->
         <div class="modal fade" id="modal_frente_estrategico" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
             <div class="modal-dialog" role="document">
@@ -30,7 +36,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                        {!! Form::submit('Crear Frente Estrategico', ['class' => 'btn btn-success', 'id' => 'accion']) 
+                        {!! Form::submit('Crear Frente Estrategico', ['class' => 'btn btn-success', 'id' => 'accion'])
                         !!}
                     </div>
                     {!! Form::close() !!}
@@ -47,7 +53,7 @@
         <div class="col-md-12">
             @component('admin.components.datatable',
             ['id' => 'frente_estrategico_table_ajax'])
-                @slot('columns', [ 'id', 'Nombre','Descripcion','Institucion','Acciones' =>
+                @slot('columns', [ 'id', 'Nombre', 'Descripcion', 'Acciones' =>
                 ['style' => 'width:85px;'] ])
             @endcomponent
 
@@ -97,7 +103,6 @@
                 {data: 'PK_FES_Id', name: 'id', "visible": false},
                 {data: 'FES_Nombre', name: 'Nombre', className: "min-table-p"},
                 {data: 'FES_Descripcion', name: 'Descripcion', className: "min-table-p"},
-                {data: 'FK_FES_Institucion', name: 'Institucion', className: "min-table-p"},
                 {
                     defaultContent:
                         '@can('ELIMINAR_FRENTE_ESTRATEGICO')<a href="javascript:;" class="btn btn-simple btn-danger btn-sm remove" data-toggle="confirmation"><i class="fa fa-trash"></i></a>@endcan' +
@@ -166,7 +171,7 @@
                 let method = formCreate.attr('method');
                 let data = formCreate.serialize();
                 if ($('#accion').hasClass('modificar')) {
-                    route = '{{ url('admin/frente_estrategico') }}' + '/' + $('#PK_FES_Id').val();
+                    route = '{{ url('admin/institucion/frente_estrategico') }}' + '/' + $('#PK_FES_Id').val();
                     method = "PUT";
                 }
                 $.ajax({
@@ -205,7 +210,7 @@
                 e.preventDefault();
                 $tr = $(this).closest('tr');
                 var dataTable = table.row($tr).data();
-                var route = '{{ url('admin/frente_estrategico') }}' + '/' + dataTable.PK_FES_Id;
+                var route = '{{ url('admin/institucion/frente_estrategico') }}' + '/' + dataTable.PK_FES_Id;
                 var type = 'DELETE';
                 dataType: "JSON",
                     SwalDelete(dataTable.PK_FES_Id, route);
@@ -213,12 +218,12 @@
             table.on('click', '.edit', function (e) {
                 $tr = $(this).closest('tr');
                 var dataTable = table.row($tr).data();
+                $('#PK_FES_Id').val(dataTable.PK_FES_Id);
                 $('#FES_Nombre').val(dataTable.FES_Nombre);
                 $('#PK_FES_id').val(dataTable.PK_FES_Id);
                 $('#FES_Descripcion').val(dataTable.FES_Descripcion);
-                $('#FK_FES_Institucion').val(dataTable.FK_FES_Institucion);
                 $('#modal_frente_estrategico').modal('show');
-                $('.modal-title').text("Modificar frente estrategico");
+                $('.modal-title').text("Modificar Frente Estratégico");
                 $('#accion').val("Modificar");
                 $('#accion').addClass('modificar');
             });

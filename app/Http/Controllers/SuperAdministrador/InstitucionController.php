@@ -4,6 +4,7 @@ namespace App\Http\Controllers\SuperAdministrador;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\InstitucionRequest;
+use App\Http\Requests\InstitucionUpdateRequest;
 use App\Models\Autoevaluacion\FrenteEstrategico;
 use App\Models\Autoevaluacion\Institucion;
 use App\Models\Autoevaluacion\Estado;
@@ -152,15 +153,14 @@ class InstitucionController extends Controller
      */
     public function edit($id)
     {
+        session(['institucion' => $id ]);
         $institucion = Institucion::findOrFail($id);
         $metodologias = Metodologia::pluck('MTD_Nombre', 'PK_MTD_Id');
         $estados = Estado::pluck('ESD_Nombre', 'PK_ESD_Id');
 
-        $frenteEstrategicos = FrenteEstrategico::where('FK_FES_Institucion', $id)->get();
-
         return view(
             'autoevaluacion.SuperAdministrador.Instituciones.edit',
-            compact('institucion', 'metodologias', 'estados', 'frenteEstrategicos')
+            compact('institucion', 'metodologias', 'estados')
         );
     }
 
@@ -171,7 +171,7 @@ class InstitucionController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(InstitucionRequest $request, $id)
+    public function update(InstitucionUpdateRequest $request, $id)
     {
         $institucion = Institucion::find($id);
         $institucion->ITN_Nombre = $request->get('ITN_Nombre');
@@ -195,16 +195,6 @@ class InstitucionController extends Controller
         $institucion->FK_ITN_Metodologia = $request->get('FK_ITN_Metodologia');
 
         $institucion->update();
-
-        $cantFrentes = FrenteEstrategico::where('FK_FES_Institucion', $id)->count();
-
-        for ($i = 1; $i <= $cantFrentes+1; $i++) {
-            $frenteEstrategicos = new FrenteEstrategico();
-            $frenteEstrategicos->FES_Nombre = $request->get('PK_FES_Nombre');
-            $frenteEstrategicos->FES_Descripcion = $request->get('PK_FES_Descripcion');
-            // $frenteEstrategico->FK_FES_Institucion = $institucion->PK_ITN_Id;
-            $frenteEstrategicos->update();
-        }
 
         return response([
             'msg' => 'La Institución ha sido modificado exitosamente.',

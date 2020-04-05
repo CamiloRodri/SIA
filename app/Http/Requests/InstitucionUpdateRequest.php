@@ -3,9 +3,8 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule;
 
-class InstitucionRequest extends FormRequest
+class InstitucionUpdateRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -26,18 +25,18 @@ class InstitucionRequest extends FormRequest
     {
         $id = $this->route()->parameter('institucion');
         return [
-            'ITN_Nombre' => 'required|max:60|' . Rule::unique('TBL_Instituciones')->ignore($id, 'PK_ITN_Id'),
+            'ITN_Nombre' => 'required|max:60|',
             'ITN_Domicilio' => 'required',
             'ITN_Caracter' => 'required',
             'ITN_CodigoSNIES' => 'required',
             'ITN_Norma_Creacion' => 'required',
-            'ITN_Estudiantes' => 'required|numeric|min:3',
+            'ITN_Estudiantes' => 'required|numeric',
             'FK_ITN_Metodologia' => 'exists:TBL_Metodologias,PK_MTD_Id',
-            'ITN_Profesor_Planta' => 'required|numeric|min:3',
-            'ITN_Profesor_TCompleto' => 'required|numeric|min:3',
-            'ITN_Profesor_TMedio' => 'required|numeric|min:3',
-            'ITN_Profesor_Catedra' => 'required|numeric|min:3',
-            'ITN_Graduados' => 'required|numeric|min:3',
+            'ITN_Profesor_Planta' => 'required|numeric',
+            'ITN_Profesor_TCompleto' => 'required|numeric',
+            'ITN_Profesor_TMedio' => 'required|numeric',
+            'ITN_Profesor_Catedra' => 'required|numeric',
+            'ITN_Graduados' => 'required|numeric',
             'ITN_Mision' => 'required|string|max:800',
             'ITN_Vision' => 'required|string|max:800',
             'ITN_Descripcion' => 'required',
@@ -65,20 +64,15 @@ class InstitucionRequest extends FormRequest
             'ITN_CodigoSNIES.required' => 'El campo es requerido',
             'ITN_Norma_Creacion.required' => 'El campo es requerido',
             'ITN_Estudiantes.required' => 'El campo es requerido',
-            'ITN_Estudiantes.numeric' => 'El campo debe ser numérico',
-            'ITN_Estudiantes.min' => 'El campo debe ser mayor a 3',
+            'ITN_Estudiantes' => 'El campo debe ser numérico',
             'ITN_Profesor_Planta.required' => 'El campo es requerido',
             'ITN_Profesor_Planta.numeric' => 'El campo Planta debe ser numérico',
-            'ITN_Profesor_Planta.min' => 'El campo Planta debe ser mayor a 3',
             'ITN_Profesor_TCompleto.required' => 'El campo es requerido',
             'ITN_Profesor_TCompleto.numeric' => 'El campo Tiempo Completo debe ser numérico',
-            'ITN_Profesor_TCompleto.min' => 'El campo Tiempo Completo debe ser mayor 3',
             'ITN_Profesor_TMedio.required' => 'El campo es requerido',
             'ITN_Profesor_TMedio.numeric' => 'El Tiempo Medio debe ser numérico',
-            'ITN_Profesor_TMedio.min' => 'El Tiempo Medio debe ser mayor a 3',
             'ITN_Profesor_Catedra.required' => 'El campo Catedra es requerido',
             'ITN_Profesor_Catedra.numeric' => 'El campo Catedra debe ser numérico',
-            'ITN_Profesor_Catedra.min' => 'El campo Catedra debe ser mayor a 3',
             'ITN_Graduados.required' => 'El campo es requerido',
             'ITN_Mision.required' => 'El campo es requerido',
             'ITN_Vision.required' => 'El campo es requerido',
@@ -90,23 +84,4 @@ class InstitucionRequest extends FormRequest
             'FK_ITN_Estado.exists' => 'El Estado no se encuentra en nuestros registros'
         ];
     }
-
-    // public function withValidator($validator)
-    // {
-    //     $validator->after(function ($validator) {
-    //         $frenteEstrategico = FrenteEstrategico::select('TRP_TotalPonderacion', 'TRP_CantidadRespuestas')
-    //             ->where('PK_TRP_Id', $this->request->get('PK_TRP_Id'))
-    //             ->first();
-    //         $sumatoria = 0;
-    //         for ($i = 1; $i <= $frenteEstrategico->TRP_CantidadRespuestas; $i++) {
-    //             $ponderacion = PonderacionRespuesta::select('PRT_Ponderacion')
-    //                 ->where('PK_PRT_Id', $this->request->get('Ponderacion_' . $i))
-    //                 ->first();
-    //             $sumatoria = $sumatoria + $ponderacion->PRT_Ponderacion;
-    //         }
-    //         if ($sumatoria != $frenteEstrategico->TRP_TotalPonderacion) {
-    //             $validator->errors()->add('Seleccione un proceso', 'Las ponderaciones no coinciden!');
-    //         }
-    //     });
-    // }
 }

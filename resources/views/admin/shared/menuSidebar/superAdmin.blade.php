@@ -24,7 +24,7 @@
     <ul class="nav child_menu">
         @can('ACCEDER_INSTITUCION')
             <li>
-                <a href="{{ route('admin.institucion.index')}}"><i class="fa fa-university"></i> Institución</a>
+                <a href="{{ route('admin.instituciones.index')}}"><i class="fa fa-university"></i> Instituciones</a>
             </li>
         @endcan
         @can('ACCEDER_SEDES')
@@ -46,13 +46,13 @@
         @can('ACCEDER_PROCESOS_INSTITUCIONALES')
             <li>
                 <a href="{{ route('admin.procesos_institucionales.index')}}"><i class="fa fa-building-o"></i> Procesos
-                    institucionales</a>
+                    Institucionales</a>
             </li>
         @endcan
         @can('ACCEDER_PROCESOS_PROGRAMAS')
             <li>
                 <a href="{{ route('admin.procesos_programas.index')}}"><i class="fa fa-graduation-cap"></i> Procesos
-                    programas</a>
+                    Programas</a>
             </li>
         @endcan
         @can('ACCEDER_GRUPOS_INTERES')
@@ -97,16 +97,16 @@
                         <a href="{{ route('admin.responsables.index')}}"><i class="fa fa-child"></i>Responsables</a>
                     </li>
                 @endcan
-                @can('ACCEDER_VALORIZACION_CARACTERISTICAS')
-                    <li>
-                        <a href="{{ route('admin.caracteristicas_mejoramiento.index')}}"><i
-                                    class="fa fa-line-chart"></i> Valorizacion de Caracteristicas</a>
-                    </li>
-                @endcan
                 @can('ACCEDER_CONSOLIDACION_FACTORES')
                     <li>
                         <a href="{{ route('admin.consolidacion_factores.index')}}"><i
                                     class="fa fa-crosshairs"></i>Consolidación de Factores</a>
+                    </li>
+                @endcan
+                @can('ACCEDER_VALORIZACION_CARACTERISTICAS')
+                    <li>
+                        <a href="{{ route('admin.caracteristicas_mejoramiento.index')}}"><i
+                                    class="fa fa-line-chart"></i> Valorización de Caracteristicas</a>
                     </li>
                 @endcan
                 @can('ACCEDER_ACTIVIDADES_MEJORAMIENTO')

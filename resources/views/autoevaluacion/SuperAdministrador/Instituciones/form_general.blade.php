@@ -80,7 +80,7 @@
     </div>
 </div>
 <div class="item form-group">
-    {!! Form::label('ITN_Profesor_Planta','Planta', ['class'=>'control-label col-md-3 col-sm-3 col-xs-12']) !!}
+    {!! Form::label('ITN_Profesor_Planta','N° Docentes Planta', ['class'=>'control-label col-md-3 col-sm-3 col-xs-12']) !!}
     <div class="col-md-6 col-sm-6 col-xs-12">
         {!! Form::number('ITN_Profesor_Planta', old('ITN_Profesor_Planta'),[ 'class' => 'form-control col-md-6 col-sm-6 col-xs-12',
             'data-parsley-type'=>"number",
@@ -90,9 +90,9 @@
     </div>
 </div>
 <div class="item form-group">
-    {!! Form::label('ITN_Profesor_TCompleto','Tiempo completo ocasional', ['class'=>'control-label col-md-3 col-sm-3 col-xs-12']) !!}
+    {!! Form::label('ITN_Profesor_TCompleto','N° Docentes Tiempo Completo', ['class'=>'control-label col-md-3 col-sm-3 col-xs-12']) !!}
     <div class="col-md-6 col-sm-6 col-xs-12">
-        {!! Form::number('ITN_Profesor_TCompleto', old('ITN_Profesor_TCompleto'),[ 'class' => 'form-control col-md-6 col-sm-6 col-xs-12',
+        {!! Form::number('ITN_Profesor_TCompleto', old('ITN_Profesor_TCompleto'),[ 'class' => 'form-control col-md-6 col-sm-6 col-xs-12', 'placeholder' => ' Tiempo Completo Ocasional',
             'data-parsley-type'=>"number",
             'data-parsley-length' => "[0, 60]",
             'data-parsley-trigger'=>"change"])
@@ -100,7 +100,7 @@
     </div>
 </div>
 <div class="item form-group">
-    {!! Form::label('ITN_Profesor_TMedio','Medio tiempo', ['class'=>'control-label col-md-3 col-sm-3 col-xs-12']) !!}
+    {!! Form::label('ITN_Profesor_TMedio','N° Docentes Medio tiempo', ['class'=>'control-label col-md-3 col-sm-3 col-xs-12']) !!}
     <div class="col-md-6 col-sm-6 col-xs-12">
         {!! Form::number('ITN_Profesor_TMedio', old('ITN_Profesor_TMedio'),[ 'class' => 'form-control col-md-6 col-sm-6 col-xs-12',
             'data-parsley-type'=>"number",
@@ -110,7 +110,7 @@
     </div>
 </div>
 <div class="item form-group">
-    {!! Form::label('ITN_Profesor_Catedra','Catedra', ['class'=>'control-label col-md-3 col-sm-3 col-xs-12']) !!}
+    {!! Form::label('ITN_Profesor_Catedra','N° Docentes Catedra', ['class'=>'control-label col-md-3 col-sm-3 col-xs-12']) !!}
     <div class="col-md-6 col-sm-6 col-xs-12">
         {!! Form::number('ITN_Profesor_Catedra', old('ITN_Profesor_Catedra'),[ 'class' => 'form-control col-md-6 col-sm-6 col-xs-12',
             'data-parsley-type'=>"number",
@@ -120,7 +120,7 @@
     </div>
 </div>
 <div class="item form-group">
-    {!! Form::label('ITN_Graduados','N° de estudiantes graduados', ['class'=>'control-label col-md-3 col-sm-3 col-xs-12']) !!}
+    {!! Form::label('ITN_Graduados','N° de Estudiantes Graduados', ['class'=>'control-label col-md-3 col-sm-3 col-xs-12']) !!}
     <div class="col-md-6 col-sm-6 col-xs-12">
         {!! Form::number('ITN_Graduados', old('ITN_Graduados'),[ 'class' => 'form-control col-md-6 col-sm-6 col-xs-12',
             'data-parsley-type'=>"number",

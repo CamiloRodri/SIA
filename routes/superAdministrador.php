@@ -41,12 +41,15 @@ Route::resource('factores', 'FactorController', ['as' => 'admin']);
 Route::get('factores/data/data', array('as' => 'admin.factores.data', 'uses' => 'FactorController@data'));
 
 //Institución
-Route::resource('institucion', 'InstitucionController', ['as' => 'admin']);
-Route::get('institucion/data/data', array('as' => 'admin.institucion.data', 'uses' => 'InstitucionController@data'));
+Route::resource('instituciones', 'InstitucionController', ['as' => 'admin']);
+Route::get('instituciones/data/data', array('as' => 'admin.instituciones.data', 'uses' => 'InstitucionController@data'));
 
 //Frente Estrategico
-Route::resource('frente_estrategico', 'FrenteEstrategicoController', ['as' => 'admin']);
-Route::get('frente_estrategico/data/data', array('as' => 'admin.frente_estrategico.data', 'uses' => 'FrenteEstrategicoController@data'));
+Route::resource('institucion/frente_estrategico',
+    'FrenteEstrategicoController',
+    ['as' => 'admin']);
+Route::get('frente_estrategico/data/data', array('as' => 'admin.frente_estrategico.data',
+    'uses' => 'FrenteEstrategicoController@data'));
 
 //Evidencia (Acticidad de Mejoramiento)
 Route::get('evidencia/data/data/{id}', array(

@@ -8,17 +8,20 @@
         @slot('title', 'Modificar Institución')
         {!! Form::model(
             $institucion, [
-                'route' => ['admin.institucion.update', $institucion],
-                'method' => 'PUT', 
+                'route' => ['admin.instituciones.update', $institucion],
+                'method' => 'PUT',
                 'id' => 'form_modificar_institucion',
-                'class' => 'form-horizontal form-label-lef', 'novalidate' 
+                'class' => 'form-horizontal form-label-lef', 'novalidate'
                 ])
         !!}
-        @include('autoevaluacion.SuperAdministrador.Instituciones.form')
+        @include('autoevaluacion.SuperAdministrador.Instituciones.form_general')
         <div class="ln_solid"></div>
         <div class="form-group">
             <div class="col-md-6 col-md-offset-3">
-                {{ link_to_route('admin.institucion.index',"Cancelar", [], ['class' => 'btn btn-info']) }}
+                {{ link_to_route('admin.frente_estrategico.index',"Ver Frentes Estrategicos", [], ['class' => 'btn btn-dark']) }}
+            </div><br><br>
+            <div class="col-md-6 col-md-offset-3">
+                {{ link_to_route('admin.instituciones.index',"Cancelar", [], ['class' => 'btn btn-info']) }}
                 {!! Form::submit('Modificar Institución',
                 ['class' => 'btn btn-success']) !!}
             </div>
@@ -81,7 +84,7 @@
                     Accept: 'application/json',
                     success: function (response, NULL, jqXHR) {
                         sessionStorage.setItem('update', 'La Institución se ha modificado exitosamente.');
-                        window.location.href = " {{ route('admin.institucion.index')}} ";
+                        window.location.href = " {{ route('admin.instituciones.index')}} ";
                     },
                     error: function (data) {
                         console.log(data);
