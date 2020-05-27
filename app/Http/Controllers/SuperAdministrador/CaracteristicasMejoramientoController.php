@@ -146,14 +146,16 @@ class CaracteristicasMejoramientoController extends Controller
                     })
                     ->addColumn('Calificacion', function ($docAuto) {
                         // $docAuto->DOA_Calificacion = session()->pull('valorizacion')[0];
-                        if ($docAuto->DOA_Calificacion >= 0.0 && $docAuto->DOA_Calificacion < 3.9 || $docAuto->DOA_Calificacion == null) {
+                        if ($docAuto->DOA_Calificacion >= 0.0 && $docAuto->DOA_Calificacion < 2.0 || $docAuto->DOA_Calificacion == null) {
                             return "<span class='label label-sm label-danger'>No se cumple</span>";
-                        } elseif ($docAuto->DOA_Calificacion >= 4.0 && $docAuto->DOA_Calificacion <= 6.9) {
+                        } elseif ($docAuto->DOA_Calificacion >= 2.0 && $docAuto->DOA_Calificacion < 3) {
                             return "<span class='label label-sm label-warning'>Parcialmente</span>";
-                        } elseif ($docAuto->DOA_Calificacion >= 7.0 && $docAuto->DOA_Calificacion <= 9.5) {
+                        } elseif ($docAuto->DOA_Calificacion >= 3 && $docAuto->DOA_Calificacion < 3.7) {
                             return "<span class='label label-sm label-info'>Se cumple aceptablemente</span>";
+                        } elseif ($docAuto->DOA_Calificacion >= 3.7 && $docAuto->DOA_Calificacion < 4.4) {
+                            return "<span class='label label-sm label-success'>Se cumple alto grado</span>";
                         } else {
-                            return "<span class='label label-sm label-success'>Se cumple totalmente</span>";
+                            return "<span class='label label-sm label-success'>Se cumple plenamente</span>";
                         }
                     })
                     ->rawColumns(['Calificacion'])

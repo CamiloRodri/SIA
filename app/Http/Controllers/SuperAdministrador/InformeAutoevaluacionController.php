@@ -319,19 +319,19 @@ class InformeAutoevaluacionController extends Controller
 
             $documento->setValue('total_estudiantes', $programa->PAC_Estudiantes);
             $documento->setValue('solucion_estudiantes', $totalEstudiates);
-            $documento->setValue('cobertura_estudiantes', round($coberturaEstudiantes."%", 2));
-            $documento->setValue('total_docentes',"120");
+            $documento->setValue('cobertura_estudiantes', round($coberturaEstudiantes, 2));
+            $documento->setValue('total_docentes', $programa->PAC_Docentes_Actual);
             $documento->setValue('solucion_docentes', $totalDocentes);
-            $documento->setValue('cobertura_docentes', round($coberturaDocentes."%"), 2);
-            $documento->setValue('total_admin', "18");
+            $documento->setValue('cobertura_docentes', round($coberturaDocentes), 2);
+            $documento->setValue('total_admin', ($programa->PAC_Administrativos + $programa->PAC_Directivos_Academicos));
             $documento->setValue('solucion_admin', $totalAdmin_Directivo);
-            $documento->setValue('cobertura_admin', round($coberturaAdmin_Directivo."%"), 2);
-            $documento->setValue('total_egresados', "439");
+            $documento->setValue('cobertura_admin', round($coberturaAdmin_Directivo), 2);
+            $documento->setValue('total_egresados', $programa->PAC_Egresados_Cinco);
             $documento->setValue('solucion_egresados', $totalEgresados);
-            $documento->setValue('cobertura_egresados', round($coberturaEgresados."%"), 2);
-            $documento->setValue('total_empresa', "10");
+            $documento->setValue('cobertura_egresados', round($coberturaEgresados), 2);
+            $documento->setValue('total_empresa', $programa->PAC_Empresarios	);
             $documento->setValue('solucion_empresa', $totalEmpresa);
-            $documento->setValue('cobertura_empresa', round($coberturaEmpresa)."%", 2);
+            $documento->setValue('cobertura_empresa', round($coberturaEmpresa), 2);
 
 
             /**
